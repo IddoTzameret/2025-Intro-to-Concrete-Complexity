@@ -23,7 +23,7 @@
 % use \sectionmark{}
 % to alter or adjust the section heading in the running head
 
-We've seen that proving that SAT is not in $P/poly$, i.e., can't be solved by polynomial-size circuits, implies that $P \neq NP$.
+We've seen that proving that SAT is not in \Ppoly, i.e., can't be solved by polynomial-size circuits, implies that $\P \neq \NP$.
 Due to the notorious difficulty of these questions, we are interested in proving \emph{weaker} lower bounds, namely, some lower bounds against restricted classes of circuits. 
 Here, we study such a restricted circuit class: A boolean circuit without negation gates, i.e., monotone circuits.
 
@@ -50,11 +50,11 @@ $$
 
 
 Recall that a computational (decision) problem is a \emph{language}, namely an infinite set of finite strings over a finite alphabet (usually the alphabet $\{0,1\}$). Here, our language consists of all the strings that encode (in some natural way) an accepted graph, i.e., a $k$-clique with $n$ nodes.
-The natural way to encode a graph in our case is this: a graph  $G=(V, E) $ w / $n$ nodes, is encoded by $\binom{n}{2}$ input variables  $x_{ij}$, where the semantic of the encoding is: $x_{i j}=1$ iff $(i, j) \in E$. In other words, if the input variable $x_{ij}=1$,   our input graph contains the edge $(i,j)$, and otherwise it does not. 
+The natural way to encode a graph in our case is this: a graph  $G=(V, E) $ with $n$ nodes, is encoded by $\binom{n}{2}$ input variables  $x_{ij}$, where the semantic of the encoding is: $x_{i j}=1$ iff $(i, j) \in E$. In other words, if the input variable $x_{ij}=1$,   our input graph contains the edge $(i,j)$, and otherwise it does not. 
 
-We are interested in CLIQUE $(k, n)$ for a fixed $k$, as the following Boolean function: 
+We are interested in CLIQUE$(k, n)$ for a fixed $k$, as the following Boolean function: 
 \begin{svgraybox}
-The computational problem \textbf{CLIQUE $(k, n)$:}  
+The computational problem \textbf{CLIQUE$(k, n)$:}  
 
 Input: Graph w/ $n$ nodes and a number $k$
 

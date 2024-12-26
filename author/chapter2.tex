@@ -54,11 +54,13 @@ The natural way to encode a graph in our case is this: a graph  $G=(V, E) $ with
 
 We are interested in CLIQUE$(k, n)$ for a fixed $k$, as the following Boolean function: 
 \begin{svgraybox}
-The computational problem \textbf{CLIQUE$(k, n)$:}  
+The computational problem \textbf{CLIQUE$(k, n)$}: 
 
-Input: Graph w/ $n$ nodes and a number $k$
+\textit{Input}: Undirected graph $G=(V,E)$ with $n$ nodes, and a number $k$ (given in unary, i.e., $1^k$).
 
-Accept if the graph contains a $k$-clique. Reject otherwise.
+\textit{Accept}: if the graph $G$ contains a $k$-clique. 
+
+\textit{Reject}: otherwise.
 \end{svgraybox}
 
 
@@ -69,9 +71,9 @@ It is known that CLIQUE$(k,n)$ is NP-complete (see standard complexity textbooks
 
 Since CLIQUE$(n, k)$ is a monotone (Boolean)
 function we can compute it by a monotone Boolean circuit.
-\medskip 
 
-\textbf{Example of a monotone circuit computing CLIQUE$(n, k)$:} ``run" over all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one of those is a clique:
+\begin{trailer}{Example of a monotone circuit computing CLIQUE$(n, k)$}
+ ``Run" over all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one of those is a clique:
 
 \begin{figure}
     \centering
@@ -79,13 +81,11 @@ function we can compute it by a monotone Boolean circuit.
     \label{fig:enter-label}
 \end{figure}
 
-
-
-
-
 $S_1, S_2, \ldots, S_{\binom{n}{k}}$ are the $\binom{n}{k}$ subgraphs in $G$ each of size $k$.
 Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.
 We call such a circuit for computing $\operatorname{CLIQUE}  (n, k)$ consisting of a big $\lor$ of all $S_i$'s, each computed by $\land$'s of edges, a \textbf{\textit{crude-circuit}} for CLIQUE($n, k)$.
+\end{trailer}
+
 
 
 Notation: $CC\left(S_1, \ldots, S_{\binom{n}{k}}\right)$ is the crude circuit computing the $\lor$ of all subgraphs $S_1 \ldots S_{n\choose k }$. In general, we shall use different subgraphs: $CC\left(x_1, \ldots, x_m\right)$ for $x_i \subseteq V$ not necessarily of size $k$.
@@ -97,21 +97,25 @@ The following theorem shows this naive monotone circuit cannot be improved much:
 \begin{figure}
     \centering
     \includegraphics[width=0.25\linewidth]{images/RAZBOROV_Alexander.jpeg}
-    \caption{Enter Caption}
+    \caption{Alexander Razborov}
     \label{fig:enter-label}
 \end{figure}
 
-
-\begin{theorem}
-    [Razborov] Let $k=\sqrt[4]{n}$. Then every monotone circuit computing CLIQUE$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
+\begin{svgraybox}
+\begin{theorem}\label{thm:razborov}
+    [Razborov] Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing CLIQUE$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
 \end{theorem}
+\end{svgraybox}
 That is, exists a constant $c$ s.t. for large enough $n \in \mathbb{N}$, if $C_n$ computes CLIQUE$(n,k)$ then $\left|C_n\right| \geqslant 2^{c \cdot \sqrt[8]{n}}$.
 
 
 %Recall: a crude circuit is a big OR of cliques, each computed as a big AND.
 
+
+
 \paragraph{Approximation Method}
 
+Here we provide an overview of the approach we take to prove \Cref{thm:razborov} which is called \emph{the approximation method}. Our exposition is taken from Papadimitriou's textbook \cite{Pap94}.
 We shall describe a way of approximating any \textbf{monotone} circuit for $\operatorname{CLIQUE}({n}, {k})$ by a crude circuit, namely a big OR of cliques:
 
 \begin{enumerate}
@@ -125,7 +129,7 @@ We shall describe a way of approximating any \textbf{monotone} circuit for $\ope
 \end{enumerate}
 
 
-The \textbf{approximation}(i.e., construction of a crude circuit for CLIQUE(${n},{k})$ given the circuit $C$) will proceed in steps, one step for each gate of the monotone circuit:
+The \textbf{approximation} (i.e., construction of a crude circuit for CLIQUE(${n},{k})$ given the circuit $C$) will proceed in steps, one step for each gate of the monotone circuit:
 
 \begin{enumerate}
     
@@ -135,11 +139,9 @@ The \textbf{approximation}(i.e., construction of a crude circuit for CLIQUE(${n}
 \end{enumerate}
 
 
-\subsection{Proof of monotone circuit lower bounds}
+\section{Proof of monotone circuit lower bounds}
 
-Parameters \& notation
-
-
+\begin{trailer}{Parameters \& notation}
 
 Recall we want to compute CLIQUE$(n, k)$
 with $n$ the number of nodes in the graph and $k$ the size of a clique within the graph. 
@@ -148,8 +150,8 @@ $$
 k=\sqrt[4]{n}.
 $$
 
-
-Goal: Show that every monotone circuit computing $\operatorname{CLIquE}(n,k)$ has size at least $2^{c \sqrt[8]{n}}$ for some constant $c$ (for sufficiently large $n$).
+\begin{svgraybox}\textbf{Goal}: Show that every monotone circuit computing $\operatorname{CLIQUE}(n,k)$ has size at least $2^{c \sqrt[8]{n}}$ for some constant $c$ (for sufficiently large $n$).
+\end{svgraybox}
 
 $$
 \begin{aligned}
@@ -168,3 +170,47 @@ C C\left(x_1, \ldots, x_m\right)
 $$
 
 for $m \leqslant M$ and $\left|X_i\right| \leqslant l, \forall i \in[m]$.
+
+\end{trailer}
+
+\bigskip 
+
+
+
+
+
+- The approximation of the monotone circuit $C$ that computes $\operatorname{CLIQUE}(n, k)$ is done by induction on the size of $C$, ie., number of $\lor, \wedge$ gates in $C$.
+
+
+- Comment: Such induction is also called ``Induction on the structure of $C$''.
+
+- Such induction proceeds as follows: 
+
+
+\para{Base Case} $|C|=1$, ie., $C$ consists of only a single input gate $g_{ij}$. Recall $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
+That is, if there is an edge between $i$ and $j$ in the input graph $G$.
+
+This is an easy case: We need to show a crude cat $\operatorname{CC}\left(X_1, \ldots, X_m\right) \mathrm{w} /$ $m \leqslant M$ and $\left|X_i\right| \leqslant l \quad \forall i \in[m]$ that
+approximates $g_{i i}$ (without introducing too many errors; We shall count precisely the number of potential errors later).
+But the circuit $C C(\{i, j\})=g_{i j}$ by definition. (Hence, no errors here!)
+
+
+\para{Induction Step}
+Given two crude circuits
+$\operatorname{CC}(\mathcal X)$ and 
+$\operatorname{CC}(\mathcal Y) 
+$, with $\mathcal{X}=\{x_1, \ldots, x_m\}$, 
+$\mathcal{Y}=\{y_1, \ldots, y_{m^{\prime}}\}$, $m\le M$, and $\left|x_i\right| \leq \ell $, for all $i$, $m'\le M $ and $\left|y_i\right| \leq \ell$, for all $i$.
+
+
+We wish to construct another crude circuit  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
+\operatorname{CC}(\mathcal Y)$.
+
+\case{1}
+$\lor$-gate.
+
+Naive attempt: $\operatorname{CC}(\mathcal X)
+\lor \operatorname{CC}(\mathcal Y)$ is approximated by $\operatorname{CC}(\mathcal X \cup \mathcal Y)$. That is, $\operatorname{CC}\left(x_1, \ldots, x_m, y_1, \ldots, y_m\right)$. At first glance this is a good solution because it does not introduce any errors (why?). But there is a problem: what if $m+m^{\prime}>M$?
+
+
+Solution: We need to cleverly \emph{reduce} the number of sets $x_1, \ldots, x_m, y_1, \ldots, y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma.

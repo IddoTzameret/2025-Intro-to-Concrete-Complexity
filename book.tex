@@ -18,7 +18,6 @@
 %\usepackage{courier}
 %
 \usepackage{type1cm}         
-
 \usepackage{makeidx}         % allows index generation
 \usepackage{graphicx}        % standard LaTeX graphics tool
                              % when including figure files
@@ -29,10 +28,9 @@
 \usepackage{newtxmath}       % selects Times Roman as basic font
 
 
-
+\usepackage{style/basicmathmacros}
 \usepackage[sanserif ,full]{style/complexity}
-
-
+\usepackage{cleveref}
 % see the list of further useful packages
 % in the Reference Guide
 
@@ -44,9 +42,12 @@
 
 \usepackage{float} % force image locations
 \graphicspath{{./}{images/}}
+\usepackage{color}
+\usepackage[normalem]{ulem}
 
+%%%%%%%%%%%%%%%%%%%%
 \begin{document}
-
+%%%%%%%%%%%%%%%%%%%%
 \author{Iddo Tzameret}
 \title{Introduction to Concrete Complexity}
 \subtitle{Lecture Notes \\ 
@@ -80,6 +81,9 @@
 %\printindex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\bibliographystyle{plain}
+%\bibliography{PrfCmplx-Bakoma}
 
 \end{document}
 

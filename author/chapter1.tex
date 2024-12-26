@@ -19,7 +19,7 @@
 
 Computational complexity: the study of which problems can be efficiently computed and which cannot.
 
-Efficiency: we understand efficiency as Polynomial Time computability. A Boolean function $f:\{0,1\}^n\to\{0,1\}$ is said to be efficiently computable if there is a polynomial-time Turing Machine M that, on input $x$ in ${0,1}^n$ outputs $f(x)$ and runs in time $n^c$ for some constant $c$. Note that $n^c$ is a polynomial in the input length $n$ (the exponent $c$ does not depend on the input length $n$). 
+Efficiency: we understand efficiency as Polynomial Time computability. A Boolean function $f:\{0,1\}^n\to\{0,1\}$ is said to be efficiently computable if there is a polynomial-time Turing Machine M that, on input $x$ in $\bits^n$ outputs $f(x)$ and runs in time $n^c$ for some constant $c$. Note that $n^c$ is a polynomial in the input length $n$ (the exponent $c$ does not depend on the input length $n$). 
 
 The arguably main question of the theory of computation, the one that subsumes in some sense many problems in other parts of computing, once is the \P~vs~\NP~question: Can we separate \P~from \NP, namely, is there a language in \NP~ that is not in \P? In other words, can we prove that SAT (Boolean satisfiability problem) cannot be solved in polynomial time? And yet again, roughly, can problems whose solutions once given can be verified efficiently, can be solved efficiently? 
 
@@ -108,24 +108,101 @@ can be simulated by a tree of $d-1 $ nodes:
 
 Let $\mathbb{N}$ denote the set of natural numbers starting from $1$.
 
-\begin{definition}
-Let $T:\mathbb{N}\rightarrow \mathbb{N}$. 
-A \emph{$T(n)$-sized circuit family} is a sequence $\left\{C_n\right\}_{n \in \mathbb{N}}$ of Boolean circuits, where $C_n$ has $n$ input-gates (i.e., $n$ inputs-bits) and a single output-bit such that  $\left|C_n\right| \leq T(n), \forall n \in \mathbb{N}$.\footnote{We can also define a circuit-family where some input lengths $n\in\mathbb{N}$ are \emph{skipped} in the sequence, e.g., if the length of every input should be even. We shall not use this subtlety here.}
-\end{definition}
 
-A language $L\subseteq\{0,1\}^*$ is said to be in $\operatorname{\SIZE} (T(n))$ if there is a $T(n)$-size circuit family $\left\{C_n\right\}_{n \in \mathbb{N}}$ s.t. (such that) 
-$$\forall n \in \mathbb{N} \forall x \in\{0,1\}^n: x \in L \Leftrightarrow C_n(x)=1.$$
-Similarly, a function $f:\{0,1\}^n \rightarrow\{0,1\}, f \in \operatorname{\SIZE}(T(n))$ if $\exists T(n)$-size circuit family $\left\{C_n\right\}_{n \in \mathbb{N}}$ s.t., $\forall n \in \mathbb{N} \quad \forall x \in\{0,1\}^n, f(x)=1 \Leftrightarrow C_n(x)=1$.
+%\newcommand{\bits}{\ensuremath{\{0,1\}}}
+%\newcommand{\demph}[1]{\textbf{\emph{#1}}}
+
+A \emph{language} is a set of (finite) strings. Note that the language can contain infinite many strings, only that each string is finite. A \emph{string} is an ordered sequence of symbols from a fixed constant size alphabet. We shall use mainly strings over the alphabet consisting of two symbols $\bits$.
+Hence, a language is simply a set $L\subseteq\bits^*$ (recall, that $\bits^*$ is the set of all finite 0-1 strings, including the empty string). 
+ 
 
 \begin{svgraybox}
-\textbf{Terminology} (Function family):
- Let $f:\{0,1\}^*\to\{0,1\}$ be a Boolean function.
-We can consider the \emph{slice} of size $n$ of $f$ to be the function $f_n:\{0,1\}^n\to\{0,1\}$, which is $f$ restricted to inputs of length only $n$. 
-Similarly, consider $\left\{f_{n}\right\}_{n\in\mathbb{N}}$, to be the \textit{family} of Boolean functions $f_n:\{0,1\}^n\to \{0,1\}$, 
-for all $n$ at least 1 (so, this is a family of all slices of $f$ ).
+\begin{definition}
+Let $T:\mathbb{N}\rightarrow \mathbb{N}$ be a function. 
+A \emph{$T(n)$-\textbf{sized circuit family}} is a sequence $\left\{C_n\right\}_{n \in \mathbb{N}}$ of Boolean circuits, where $C_n$ has $n$ input-gates (i.e., $n$ inputs-bits) and a single output-bit such that  $\left|C_n\right| \leq T(n), \forall n \in \mathbb{N}$.\footnote{We can also define a circuit-family where some input lengths $n\in\mathbb{N}$ are \emph{skipped} in the sequence, e.g., if the length of every input should be even. We shall not use this subtlety here.}
+\end{definition}
 \end{svgraybox}
 
-\begin{definition}[\Ppoly] The class \Ppoly~is the class of languages that are decidable by polynomial-size circuit families.
+A language $L\subseteq\{0,1\}^*$ is said to be \emph{in} $\operatorname{\SIZE} (T(n))$, namely, $$L\in\operatorname{\SIZE} (T(n)),$$ if there is a $T(n)$-size circuit family $\left\{C_n\right\}_{n \in \mathbb{N}}$ s.t. (such that) 
+$$\forall n \in \mathbb{N~} \forall x \in\{0,1\}^n: x \in L \Leftrightarrow C_n(x)=1.$$
+In this case, we say that 
+the family $\left\{C_n\right\}_{n \in \mathbb{N}}$ \demph{decides} the language $L$.
+
+
+Similarly, for a \emph{function} $f:\{0,1\}^* \rightarrow\{0,1\}, f \in \operatorname{\SIZE}(T(n))$ if there exists $ T(n)$-size circuit family $\left\{C_n\right\}_{n \in \mathbb{N}}$ such that  $\forall n \in \mathbb{N} \quad \forall x \in\{0,1\}^n, f(x)=1 \Leftrightarrow C_n(x)=1$.
+In this case, we say that 
+the family $\left\{C_n\right\}_{n \in \mathbb{N}}$ \demph{computes} the function $f$.
+
+
+
+\begin{svgraybox}
+\textbf{Slice of function}. 
+ Let $f:\{0,1\}^*\to\{0,1\}$ be a Boolean function.
+We can consider the \emph{slice} \emph{of size} $n$ of $f$ to be the function $f_n:\{0,1\}^n\to\{0,1\}$, which is $f$ restricted to inputs of length precisely $n$. 
+\end{svgraybox}
+
+Similarly, we can consider $\left\{f_{n}\right\}_{n\in\mathbb{N}}$ to be the \textit{family} of Boolean functions $f_n:\{0,1\}^n\to \{0,1\}$, 
+for all $n$ at least 1 (so, this is a family of all slices of $f$). In other words, the family $\left\{f_{n}\right\}_{n\in\mathbb{N}}$ is the sane as $f:\bits^*\to\bits$. 
+
+\textcolor{green}{STOPPED polish Here
+}
+
+
+
+
+
+
+\section{Quick recap:\ growth functions, $O$-notation and run-times}
+
+Be sure to recall the following basic definitions of (though we are not going to use them concretely in this course).
+
+- Time bounds for Turing Machines (TMs)
+
+- The class P (aka PTIME)
+
+- The class NP, verifiers, short certificates
+
+- SAT is NP complete: Cook-Levin theorem
+
+
+
+\paragraph{Time Complexity}
+We mainly consider the worst-case time for a problem to be solved by a given TM.
+
+\begin{definition}
+    Let $M$ be a $T M$ that halts on every input. Let $f: \mathbb{N} \rightarrow \mathbb{N}$ be a function, s.t., $f(n)$ is the max number  of steps it takes $M$ to halt on inputs of length $n$. We say $f$ is the running time of $M$. And that $M$ runs in time $f(n)$.
+\end{definition}
+
+\begin{trailer}{$O$-Notation}
+    We usually use $n$ for the length of inputs
+
+
+Recall:
+\begin{enumerate}
+    \item 
+ $f(n)=O(g(n))$ if $\exists$ constant $c$ and $n_0 \in \mathbb{N}$ st. $\forall n \geqslant n_0 \quad f(n) \leqslant c g(n) $ (for two functions  $f, g: \mathbb{N} \rightarrow \mathbb{R}^{+}$).
+
+\item $f(n)=o(g(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$
+\end{enumerate}
+\end{trailer}
+
+\begin{trailer}{Basic Growth Rates}
+\begin{enumerate}
+    \item When $f=O\left(\log n\right)$ the base $b$ of $\log _b n$ is irrelevant.
+    
+    \item $2^{O(n)}$ means $\leqslant 2^{c n}$ for some $c$, const.
+
+    \item \emph{Polynomial growth rate} means $n^{O(1)}=2^{O\left(\log n\right)}=n^c$, for some constant $c$, namely $c$ is independent of $n$ (while $n$ grows, $c$ stays fixed).
+    \item \emph{Exponential growth rate} (similarly, \emph{exponential bound})  means for us $2^{n^\delta}$, for a real constant $\delta>0$. (Some texts insist that ``exponential growth'' should only refer to $2^{cn}$, for a constant $c>0$. Note the difference between this and our definition!)
+\end{enumerate}
+\end{trailer}
+
+
+
+
+
+
+\begin{definition}[\Ppoly; polynomial-size circuits] The class \Ppoly~is the class of languages that are decidable by polynomial-size circuit families.
 That is, $\Ppoly=\bigcup_{c \in \mathbb{N}} \operatorname{\SIZE}\left(n^c\right)$.
 \end{definition}
 
@@ -136,13 +213,14 @@ $\P \subseteq \Ppoly$.
 
 \begin{proof}
 Assignment/tutorial.
-[See for a sketch in Arora-Barak'10, Sec. 6.1.1. page 110].
+[See for a sketch in Arora-Barak'10, Sec. 6.1.1. page 110; \cite{AB09}]. 
 \end{proof}
 
+\section{Our main focus: lower bounds}
 
 \begin{svgraybox}
-\textbf{Terminology} (Lower bounds, hard functions):
-We say that we have a \textit{super-polynomial lower bound against \Ppoly}, namely a super-polynomial lower bound against (polynomial-size) Boolean circuits, if the following occurs: there exists a Boolean function $f:\{0,1\}^n\to \{0,1\}$ such that no polynomial-size circuit family $\left\{C_n\right\}_n$ computes $f$. In other words, $f$ is not in $\Ppoly$. If we show that $f\not\in\operatorname{\SIZE}(T(n))$, we say that we have \textit{proven a $T(n)$-lower bound for $f$} (against Boolean circuits). We say that this $f$ is \emph{hard} for $\operatorname{\SIZE}(T(n))$.
+\textbf{Lower bounds, hard functions}.
+We say that we have a \textit{super-polynomial lower bound against \Ppoly}, namely a super-polynomial lower bound against (polynomial-size) Boolean circuits, if the following occurs: there exists a Boolean function $f:\{0,1\}^*\to \{0,1\}$ such that no polynomial-size circuit family $\left\{C_n\right\}_n$ computes $f$. In other words, $f$ is not in $\Ppoly$. If we show that $f\not\in\operatorname{\SIZE}(T(n))$, we say that we have \textit{proven a $T(n)$-lower bound for $f$} (against Boolean circuits). We say that this $f$ is \emph{hard} for $\operatorname{\SIZE}(T(n))$.
 \end{svgraybox}
 
 
@@ -227,46 +305,3 @@ Note: the reason we need to lower bound $2^n/10n$ circuits (and not $2^n/c$), is
 
 
 
-\section{Background recap: Run-times, and the class
- $\operatorname{TIME}(f(n))$}
-
-- Time bounds for Turing Machines (TMs)
-
-- The class P (aka PTIME)
-
-- The class NP, verifiers, short certificates
-
-- SAT is NP complete: Cook-Levin theorem
-
-
-
-\paragraph{Time Complexity}
-We mainly consider the worst-case time for a problem to be solved by a given TM.
-
-\begin{definition}
-    Let $M$ be a $T M$ that halts on every input. Let $f: \mathbb{N} \rightarrow \mathbb{N}$ be a function, s.t., $f(n)$ is the max \# of steps it takes $M$ to halt on inputs of length $n$. We say $f$ is the running time of $M$. And that $M$ runs in time $f(n)$.
-\end{definition}
-
-\begin{trailer}{Notation}
-    We usually use $n$ for the length of inputs
-
-
-Recall:
-\begin{enumerate}
-    \item 
- $f(n)=O(g(n))$ if $\exists$ constant $c$ and $n_0 \in \mathbb{N}$ st. $\forall n \geqslant n_0 \quad f(n) \leqslant c g(n) $ (for two functions  $f, g: \mathbb{N} \rightarrow \mathbb{R}^{+}$).
-
-\item $f(n)=o(g(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$
-\end{enumerate}
-\end{trailer}
-
-
-\paragraph{Some Basic Growth Rates}
-\begin{enumerate}
-    \item When $f=O\left(\log n\right)$ the base $b$ of $\log _b n$ is irrelevant.
-    
-    \item $2^{O(n)}$ means $\leqslant 2^{c n}$ for some $c$, const.
-
-    \item \emph{Polynomial growth rate} means $n^{O(1)}=2^{O\left(\log n\right)}=n^c$, for some constant $c$.
-    \item \emph{Exponential growth rate} (similarly, \emph{exponential bound})  means for us $2^{n^\delta}$, for a real constant $\delta>0$. (Some texts insist that ``exponential growth'' should only refer to $2^{cn}$, for a constant $c>0$. Note the difference between this and our definition!)
-\end{enumerate}

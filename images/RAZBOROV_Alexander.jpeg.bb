@@ -1,1 +1,1 @@
-%%BoundingBox: 0 0 192 192
+%%BoundingBox: 0 0 216 144

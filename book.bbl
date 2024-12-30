@@ -1,3 +1,15 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{AB09}
+Sanjeev Arora and Boaz Barak.
+\newblock {\em Computational Complexity: A Modern Approach}.
+\newblock Cambridge University Press, New York, NY, USA, 2009.
+
+\bibitem{Razb85}
+Alexander~A. Razborov.
+\newblock Lower bounds on the monotone complexity of some {B}oolean functions.
+\newblock {\em Dokl. Akad. Nauk SSSR}, 281(4):798--801, 1985.
+\newblock In Russian. English translation in \textit{Soviet Math. Doklady},
+  31:354-357, 1985.
 
 \end{thebibliography}

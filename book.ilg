@@ -1,6 +1,4 @@
 This is C:\BaKoMa.TeX\bin\Win32\makeindex.exe, version 2.15 [20-Nov-2007] (BaKoMa TNS + Thai support).
-Scanning input file book.idx....done (5 entries accepted, 0 rejected).
-Sorting entries....done (14 comparisons).
-Generating output file book.ind....done (11 lines written, 0 warnings).
-Output written in book.ind.
+Scanning input file book.idx...done (0 entries accepted, 0 rejected).
+Nothing written in book.ind.
 Transcript written in book.ilg.

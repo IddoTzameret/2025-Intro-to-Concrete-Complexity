@@ -1,0 +1,26 @@
+This is e-TeX, Version 3.14159265-2.6 (BaKoMa TNS 9.0) (preloaded format=elatex 2024.12.25)  25 DEC 2024 22:13
+entering extended mode
+**&elatex basicmathmacros.sty
+SRCINFO: open 1:"basicmathmacros.sty"
+(basicmathmacros.sty
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
+! Undefined control sequence.
+l.53 \DeclareMathOperator
+                         *{\argmax}{arg\,max}
+? 
+! Emergency stop.
+l.53 \DeclareMathOperator
+                         *{\argmax}{arg\,max}
+End of file on the terminal!
+
+ 
+Here is how much of TeX's memory you used:
+ 31 strings out of 73860
+ 191 string characters out of 917700
+ 54606 words of memory out of 1400001
+ 3561 multiletter control sequences out of 10000+60000
+ 3640 words of font info for 14 fonts, out of 800000 for 1000
+ 1141 hyphenation exceptions out of 10000
+ 7i,0n,6p,149b,8s stack positions out of 1300i,100n,1500p,30000b,4000s
+No pages of output.

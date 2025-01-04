@@ -31,6 +31,8 @@
 \usepackage{style/basicmathmacros}
 \usepackage[sanserif,full]{style/complexity}
 \usepackage{cleveref}
+  
+
 % see the list of further useful packages
 % in the Reference Guide
 
@@ -44,11 +46,21 @@
 \graphicspath{{./}{images/}}
 \usepackage{color}
 \usepackage[normalem]{ulem}
+ 
+\usepackage{draftwatermark}
+
+% Set initial watermark properties
+\SetWatermarkText{} % No watermark initially
+\SetWatermarkScale{0.7} % Adjust size
+\SetWatermarkLightness{0.89} % Adjust lightness
+\SetWatermarkAngle{45} % Set angle of the watermark
 
 %%%%%%%%%%%%%%%%%%%%
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%
+
+
 \author{Iddo Tzameret}
 \title{Introduction to Concrete Complexity}
 \subtitle{Lecture Notes \\ 
@@ -85,6 +97,11 @@
 %\printindex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+% Disable watermark again at this point
+\SetWatermarkText{}
 
 \bibliographystyle{plain}
 \bibliography{PrfCmplx-Bakoma}

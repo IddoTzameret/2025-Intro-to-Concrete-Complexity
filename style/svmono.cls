@@ -1882,13 +1882,23 @@ to\z@{\kern0.55\wd0\vrule\@height0.45\ht0\hss}\box0}}}}
     \vskip 1.5em               % Vertical space after date.
   \fi
  \vfill
- %Iddo 2024 Dec comment: {\Large Springer Nature\par}
+%Iddo 2024 Dec comment: {\Large Springer Nature\par}
 %\vskip 5\p@
 %\large
 %  Berlin\enspace Heidelberg\enspace New\kern0.1em York\\
 %  Hong\thinspace Kong\enspace London\\
 %  Milan\enspace Paris\enspace Tokyo\par
+%\endgroup}
+
+(C)  2025  Iddo Tzameret.
+\vskip 5\p@
+\small Copyright: Creative Commons (e.g., CC BY-NC-SA): Allows sharing and adaptation with non-commercial restrictions.
+{\Large \par}
 \endgroup}
+
+
+
+
 
 % Useful environments
 \newenvironment{acknowledgement}{\par\addvspace{17\p@}\small\rm

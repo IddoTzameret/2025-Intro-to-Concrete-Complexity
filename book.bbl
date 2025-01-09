@@ -5,6 +5,11 @@ Sanjeev Arora and Boaz Barak.
 \newblock {\em Computational Complexity: A Modern Approach}.
 \newblock Cambridge University Press, New York, NY, USA, 2009.
 
+\bibitem{Pap94}
+Christos~H. Papadimitriou.
+\newblock {\em Computational Complexity}.
+\newblock Addison-Wesley, Reading, Massachusetts, 1994.
+
 \bibitem{Razb85}
 Alexander~A. Razborov.
 \newblock Lower bounds on the monotone complexity of some {B}oolean functions.

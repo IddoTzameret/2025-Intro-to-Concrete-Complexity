@@ -276,7 +276,7 @@ Notice that by the \emph{time hierarchy theorem} $\EXP\not\subseteq \P$ (that is
 \begin{figure}
     \centering
     \includegraphics[width=0.25\linewidth]{images/Shannon.jpg}
-    \caption{C.E.~Shannon. Source: By Unknown author - Tekniska Museet, CC BY 2.0, \url{https://commons.wikimedia.org/w/index.php?curid=144716444}}
+    \caption{\scriptsize C.E.~Shannon. Source: By Unknown author - Tekniska Museet, CC BY 2.0, \url{https://commons.wikimedia.org/w/index.php?curid=144716444}}
     \label{Claude Shannon}
 \end{figure}
 
@@ -289,50 +289,76 @@ Notice that by the \emph{time hierarchy theorem} $\EXP\not\subseteq \P$ (that is
     For every $n>1$ there exists a function $f:\{0,1\}^n \rightarrow\{0,1\}$ that cannot be computed by a circuit of size  $\le \nicefrac{2^n}{10 n}$.
 \end{theorem}
 
-\begin{proof}[by counting method.]
-\mbox{}\\
+
+To prove this theorem, we are going to use a \emph{counting argument}. 
+\begin{svgraybox}
+\textbf{Counting argument}. The counting argument at its core is a use of the \emph{pigeonhole principle}, which states that we cannot place $n$ pigeons in $n-1$ pigeonholes, given that each hole can fit at most a single pigeon. Or dually, that we cannot cover $n$ holes with $n-1$ pigeons. 
+\end{svgraybox}
+
+\begin{proof}
+We are going to count the number of distinct possible circuits of size at most $\nicefrac{2^n}{10 n}$, and conclude that this number is smaller than the number of possible distinct Boolean functions $f:\bits^n\to\bits$. Hence, we cannot cover all possible Boolean functions with $n$ variables with the set of circuits of size at most $\nicefrac{2^n}{10 n}$. Namely, there is a Boolean function that cannot be computed by any circuit of size at most $\nicefrac{2^n}{10 n}$. 
+
+\renewenvironment{claim}{%
+    \vspace{6pt} 
+    \noindent\textit{Claim:} % Code at the beginning
+    \itshape % Italicize the text inside the environment
+}{%
+    \par % Code at the end (e.g., end with a paragraph break)
+}
+
+\newenvironment{proofclaim}{%
+    \vspace{6pt} 
+    \noindent\textit{Proof:} % Code at the beginning
+}{%
+    \hfill$\Box_{\rm claim}$\par\vspace{10pt} % Code at the end (e.g., end with a paragraph break)
+}
+
+
 
 \begin{claim}
-We can encode a boolean circuit of size $S$ with $9\cdot S \log S$ bits.
+We can encode a boolean circuit of size $S$ with at most $5\cdot S \log S$ bits.
 \end{claim}
 
-\begin{proof}[Claim]
-Using adjacency List:
+\begin{proofclaim}
+Using adjacency list to encode a circuit of size at most $S$.   Note that since $S$ is the upper bound of the size of the circuit, we can label the gates of the circuit by numbers from $\{0,1,2,\dots,S-1\}$. Thus, every gate $i$ can be encoded by $\lceil \log S \rceil$ bits.  Each entry $i$ in the list contains at most two numbers $j,k<i\le S-1$ designating that the gates $j,k$ have both an incoming edge into the gate $i$ (if the gate $i$ is ``$\neg$'' it has fan-in one, and we need only one number). This amounts to $\le 2\cd \lceil\log S\rceil$ bits. We also need to encode the gate type ($\lor,\land,\neg$) and for this we need only two extra bits. So all in all, each cell in the list uses only $2+2\cd\lceil\log S\rceil$ many bits.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.1\linewidth]{images/shannon_table.png}
-    \caption{Enter Caption}
+    \caption{The encoding scheme for a Boolean circuit of size $S$.}
     \label{fig:enter-label}
 \end{figure}
 
 
-
-
 We have:
 $$
-S \cdot(2+2 \log S) \leq 9 S \log S
-.$$
-(Actually, we have: 
-$ 2S(\log S+1) = 2S(2 \log S) \leq 4 S \log S.
-$)
-\end{proof}
+S \cdot(2+2 \lceil \log S \rceil) = 
+2S +2S \lceil \log S \rceil \leq  4 S \ceil {\log S}\le 5S\log S.$$
+\end{proofclaim}
 
-We now show that the number of circuits of size $\leq 2^n / 10 n$ is smaller than that of possible Boolean functions w/ $n$ inputs.
-Thus, by the Pigeonhole Principle, there exists a Boolean function that cannot be computed by a circuit of size $\leq 2^n / 10 n$.
+We now show that the number of circuits of size $\leq 2^n / 10 n$ is smaller than that of possible Boolean functions with $n$ inputs.
+Thus,  there exists a Boolean function that cannot be computed by a circuit of size $\leq 2^n / 10 n$.
 
 The number of circuits of size $S$ is bounded from above by the number of distinct codes of circuits of size $S$, which is
 $$
 \begin{aligned}
-& \leq 2^{9 \cdot S \log S} \\
-& =2^{\left(9 \cdot 2^{n / 10 n} \cdot \log \left(2^n / 10 n\right)\right)}=2^{\left(9 \cdot 2^n / 10 n \cdot(n-\log 10 n)\right)} \\
-& \leq 2^{\frac{9 n}{10 n} \cdot 2^n}=2^{\frac{9}{10} \cdot 2^n} . 
+& \leq 2^{5 \cdot S \log S} \\
+& =2^{\left(5 \cdot \frac{2^{n}}{10n} \cdot \log \left(\frac{2^n}{10n}\right)\right)}=
+2^{\left(5 \cdot \frac{2^n}{10 n} \cdot(n-\log 10 n)\right)} \\
+& \leq 2^{\frac{5 n}{10 n} \cdot 2^n}=2^{2^{n-1}} . 
 \end{aligned}
 $$
+% $$
+% \begin{aligned}
+% & \leq 2^{9 \cdot S \log S} \\
+% & =2^{\left(9 \cdot 2^{n / 10 n} \cdot \log \left(2^n / 10 n\right)\right)}=2^{\left(9 \cdot 2^n / 10 n \cdot(n-\log 10 n)\right)} \\
+% & \leq 2^{\frac{9 n}{10 n} \cdot 2^n}=2^{\frac{9}{10} \cdot 2^n} . 
+% \end{aligned}
+% $$
 But this is 
 less than $2^{2^n}$ the number of distinct Boolean functions $f:\{0,1\}^n\to\{0,1\}$. 
 \end{proof}
 
-Note: the reason we need to lower bound $2^n/10n$ circuits (and not $2^n/c$), is that encoding a circuit is super linear (i.e., $\Omega (\log n)$).
+\noindent \textbf{Note}:  the reason we need to lower bound $2^n/10n$ circuits (and not $2^n/c$, for some constant $c$), is that encoding a circuit is \emph{super linear} (i.e., $\Omega (\log n)$).
 
 
 

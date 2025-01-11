@@ -99,13 +99,11 @@ can be simulated by a tree of $d-1 $ nodes:
     \label{fig:enter-label}
 \end{figure}
 \end{question}
+See the answer at the  end of the chapter (page \pageref{trailer:xor-circuit}).
 
-\begin{trailer}{Answer}
-     PARITY on 4 input bits. It outputs 1 if the number of 1's in the input is odd. I.e., it computes the XOR of $x_1, \ldots, x_4$. In other words, it computes the function $x_1+x_2+x_3+x_4$ mod 2. (Understand why that is. Hint: recall that ${\neg x_1}\lor x_2$ is logically equivalent to $x_1\to x_2$. And notice that this structure repeats throughout the circuit.)
-\end{trailer}
-%\eject
 
-\section{Circuit families, language recognition, and function computation}
+
+\section{Basic concepts: circuit families, language recognition, and function computation}
 
 Let $\mathbb{N}$ denote the set of natural numbers starting from $1$.
 
@@ -139,31 +137,46 @@ the family $\left\{C_n\right\}_{n \in \mathbb{N}}$ \demph{computes} the function
 \begin{svgraybox}
 \textbf{Slice of function}. 
  Let $f:\{0,1\}^*\to\{0,1\}$ be a Boolean function.
-We can consider the \emph{slice} \emph{of size} $n$ of $f$ to be the function $f_n:\{0,1\}^n\to\{0,1\}$, which is $f$ restricted to inputs of length precisely $n$. 
+We can consider the \emph{slice} \emph{of size} $n$ of $f$ to be the function $f_n:\{0,1\}^n\to\{0,1\}$, which is $f$ restricted to \emph{inputs of length precisely} $n$. 
 \end{svgraybox}
 
 Similarly, we can consider $\left\{f_{n}\right\}_{n\in\mathbb{N}}$ to be the \textit{family} of Boolean functions $f_n:\{0,1\}^n\to \{0,1\}$, 
-for all $n$ at least 1 (so, this is a family of all slices of $f$). In other words, the family $\left\{f_{n}\right\}_{n\in\mathbb{N}}$ is the sane as $f:\bits^*\to\bits$. 
-
-\textcolor{green}{STOPPED polish Here
-}
+for all $n$ at least 1 (so, this is a family of all slices of $f$). In other words, the family of functions $f_n$, for each input length $n$, denoted  $\left\{f_{n}\right\}_{n\in\mathbb{N}}$, is simply another way of writing the single function $f:\bits^*\to\bits$. 
 
 
 
 
 
-
+% _____________________________________________________
 \section{Quick recap:\ growth functions, $O$-notation and run-times}
+%_____________________________________________________
 
-Be sure to recall the following basic definitions of (though we are not going to use them concretely in this course).
 
-- Time bounds for Turing Machines (TMs)
 
-- The class P (aka PTIME)
+\begin{trailer}{$O$-Notation}
+    We usually use $n$ for the length of inputs. Namely, if the input is $x\in\bits^*$, then we use $n$ to denote $|x|$, i.e., $n=|x|$. In complexity we have to distinguish between a \emph{constant} and a \emph{growing number}. We wish to consider how a given function behaves asymptotically, namely, when its input length $n$ grows to infinity: while $n$ grows, we shall say that $c$ is \emph{a constant} if $c$ is independent of $n$ (namely, while $n$ grows, $c$ is fixed).  
 
-- The class NP, verifiers, short certificates
 
-- SAT is NP complete: Cook-Levin theorem
+Recall the following notation.
+\begin{enumerate}
+    \item 
+ $f(n)=O(g(n))$ if there exist a constant $c$ (independent of $n$) and $n_0 \in \mathbb{N}$, such that  $\forall n \geq n_0 \quad f(n) \leq c g(n) $ (for two functions  $f, g: \mathbb{N} \rightarrow \mathbb{R}^{+}$, where $\mathbb R ^+$ are the positive reals).
+
+\item $f(n)=o(g(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$. That is, there is no constant $c$ such that $f(n)\ge cg(n)$, for sufficiently large $n$.
+\end{enumerate}
+\end{trailer}
+
+\begin{trailer}{Basic Growth Rates}
+\begin{enumerate}
+    \item When $f=O\left(\log n\right)$ the base $b$ of $\log _b n$ is immaterial (why?).
+    
+    \item $2^{O(n)}$ means $\leq 2^{c n}$ for some constant $c$ independent of $n$.
+
+    \item \emph{Polynomial growth rate} means $n^{O(1)}=2^{O\left(\log n\right)}=n^c$, for some constant $c$, namely $c$ is independent of $n$.
+    \item \emph{Exponential growth rate} (similarly, \emph{exponential bound})  means for us $2^{n^\delta}$, for a real constant $\delta>0$. (Some texts insist that ``exponential growth'' should only refer to $2^{cn}$, for a constant $c>0$. Note the difference between this and our definition!)
+\end{enumerate}
+\end{trailer}
+
 
 
 
@@ -174,41 +187,34 @@ We mainly consider the worst-case time for a problem to be solved by a given TM.
     Let $M$ be a $T M$ that halts on every input. Let $f: \mathbb{N} \rightarrow \mathbb{N}$ be a function, s.t., $f(n)$ is the max number  of steps it takes $M$ to halt on inputs of length $n$. We say $f$ is the running time of $M$. And that $M$ runs in time $f(n)$.
 \end{definition}
 
-\begin{trailer}{$O$-Notation}
-    We usually use $n$ for the length of inputs
 
 
-Recall:
-\begin{enumerate}
-    \item 
- $f(n)=O(g(n))$ if $\exists$ constant $c$ and $n_0 \in \mathbb{N}$ st. $\forall n \geqslant n_0 \quad f(n) \leqslant c g(n) $ (for two functions  $f, g: \mathbb{N} \rightarrow \mathbb{R}^{+}$).
 
-\item $f(n)=o(g(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$
-\end{enumerate}
-\end{trailer}
+Be sure to recall the following basic concepts   (though we are not going to use them concretely in this course; see e.g., \cite{AB09}).
 
-\begin{trailer}{Basic Growth Rates}
-\begin{enumerate}
-    \item When $f=O\left(\log n\right)$ the base $b$ of $\log _b n$ is irrelevant.
-    
-    \item $2^{O(n)}$ means $\leqslant 2^{c n}$ for some $c$, const.
+\begin{description}
+\item[Time bounds for Turing Machines (TMs):] counts the maximal number of steps a specific Turing Machine $M$ is doing when input with a string of  size $n$. 
 
-    \item \emph{Polynomial growth rate} means $n^{O(1)}=2^{O\left(\log n\right)}=n^c$, for some constant $c$, namely $c$ is independent of $n$ (while $n$ grows, $c$ stays fixed).
-    \item \emph{Exponential growth rate} (similarly, \emph{exponential bound})  means for us $2^{n^\delta}$, for a real constant $\delta>0$. (Some texts insist that ``exponential growth'' should only refer to $2^{cn}$, for a constant $c>0$. Note the difference between this and our definition!)
-\end{enumerate}
-\end{trailer}
+\item[The class \P:]  Polynomial time computation (also denoted  PTIME, or polytime, or p-time).
+
+\item[The class \NP, verifiers, short certificates:] Nondeterministic Polynomial-time computation. Namely, the class of languages that can be decided by a nondeterministic Turing Machine in time bounded by a polynomial in the input length.  That is, if the input is of size $n$ the running time of the nondeterministic Turing machine should not exceed $n^c$, for some constant $n$ independent of $n$ (e.g.,  $c=40$). 
+
+\item[SAT:] the Boolean Satisfiability problem:\ given a propositional formula determine if there exists a boolean (i.e., 0-1) assignment that satisfies the formula. 
+
+\item[SAT is \NP-complete (Cook-Levin theorem)] See e.g., \cite{AB09,Pap94}.
+\end{description}
 
 
 
 
 
 
-\begin{definition}[\Ppoly; polynomial-size circuits] The class \Ppoly~is the class of languages that are decidable by polynomial-size circuit families.
+\begin{definition}[polynomial-size circuits; \Ppoly] The class \Ppoly~is the class of languages that are decidable by polynomial-size circuit families.
 That is, $\Ppoly=\bigcup_{c \in \mathbb{N}} \operatorname{\SIZE}\left(n^c\right)$.
 \end{definition}
 
 
-\begin{theorem}
+\begin{theorem} Every language determined by a (deterministic) polynomial-time Turing Machine can be computed by a polynomial-size circuit  family, and in symbols: 
 $\P \subseteq \Ppoly$.
 \end{theorem}
 
@@ -299,10 +305,16 @@ But this is
 less than $2^{2^n}$ the number of distinct Boolean functions $f:\{0,1\}^n\to\{0,1\}$. 
 \end{proof}
 
-
-
-
 Note: the reason we need to lower bound $2^n/10n$ circuits (and not $2^n/c$), is that encoding a circuit is super linear (i.e., $\Omega (\log n)$).
+
+
+
+\subsection{Answers}
+
+\begin{trailer}{Answer}\label{trailer:xor-circuit}
+     PARITY on 4 input bits. It outputs 1 if the number of 1's in the input is odd. I.e., it computes the XOR of $x_1, \ldots, x_4$. In other words, it computes the function $x_1+x_2+x_3+x_4$ mod 2. (Understand why that is. Hint: recall that ${\neg x_1}\lor x_2$ is logically equivalent to $x_1\to x_2$. And notice that this structure repeats throughout the circuit.)
+\end{trailer}
+%\eject
 
 
 

@@ -90,15 +90,32 @@ can be simulated by a tree of $d-1 $ nodes:
 
 
 \newpage 
+ 
 
-\begin{question}{What is the function computed by the circuit below?}
+% Define a question counter
+\newcounter{questcounter}
+\renewcommand{\thequestcounter}{\arabic{questcounter}} 
+ 
+% Define the numbered question environment
+\newenvironment{myquestion}{%
+    \refstepcounter{questcounter} % Increment counter for referencing
+    \begin{svgraybox}
+    \noindent\textbf{Question~\thequestcounter:} % Code at the beginning
+    \end{svgraybox}}{%
+    \par % Code at the end (e.g., end with a paragraph break)
+}
+ 
+ 
+\begin{myquestion}{What is the function computed by the circuit below?}
+\label{quest:1}
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{images/parity-circuit-question.png}
     \caption{Question}
     \label{fig:enter-label}
 \end{figure}
-\end{question}
+\end{myquestion}
+ 
 See the answer at the  end of the chapter (page \pageref{trailer:xor-circuit}).
 
 
@@ -183,7 +200,7 @@ Recall the following notation.
 \paragraph{Time Complexity}
 We mainly consider the worst-case time for a problem to be solved by a given TM.
 
-\begin{definition}
+\begin{definition}[Running time of Turing Machines]
     Let $M$ be a $T M$ that halts on every input. Let $f: \mathbb{N} \rightarrow \mathbb{N}$ be a function, s.t., $f(n)$ is the max number  of steps it takes $M$ to halt on inputs of length $n$. We say $f$ is the running time of $M$. And that $M$ runs in time $f(n)$.
 \end{definition}
 
@@ -193,15 +210,15 @@ We mainly consider the worst-case time for a problem to be solved by a given TM.
 Be sure to recall the following basic concepts   (though we are not going to use them concretely in this course; see e.g., \cite{AB09}).
 
 \begin{description}
-\item[Time bounds for Turing Machines (TMs):] counts the maximal number of steps a specific Turing Machine $M$ is doing when input with a string of  size $n$. 
+\item[\textit{Time bounds for Turing Machines (TMs)}:] counts the maximal number of steps a specific Turing Machine $M$ is doing when input with a string of  size $n$. 
 
-\item[The class \P:]  Polynomial time computation (also denoted  PTIME, or polytime, or p-time).
+\item[\textit{The class \P}:]  Polynomial time computation (also denoted  PTIME, or polytime, or p-time).
 
-\item[The class \NP, verifiers, short certificates:] Nondeterministic Polynomial-time computation. Namely, the class of languages that can be decided by a nondeterministic Turing Machine in time bounded by a polynomial in the input length.  That is, if the input is of size $n$ the running time of the nondeterministic Turing machine should not exceed $n^c$, for some constant $n$ independent of $n$ (e.g.,  $c=40$). 
+\item[\textit{The class \NP, verifiers, short certificates}:] Nondeterministic Polynomial-time computation. Namely, the class of languages that can be decided by a nondeterministic Turing Machine in time bounded by a polynomial in the input length.  That is, if the input is of size $n$ the running time of the nondeterministic Turing machine should not exceed $n^c$, for some constant $n$ independent of $n$ (e.g.,  $c=40$). 
 
 \item[SAT:] the Boolean Satisfiability problem:\ given a propositional formula determine if there exists a boolean (i.e., 0-1) assignment that satisfies the formula. 
 
-\item[SAT is \NP-complete (Cook-Levin theorem)] See e.g., \cite{AB09,Pap94}.
+\item[\textit{SAT is \NP-complete (Cook-Levin theorem)}:] See e.g., \cite{AB09,Pap94}.
 \end{description}
 
 
@@ -214,7 +231,7 @@ That is, $\Ppoly=\bigcup_{c \in \mathbb{N}} \operatorname{\SIZE}\left(n^c\right)
 \end{definition}
 
 
-\begin{theorem} Every language determined by a (deterministic) polynomial-time Turing Machine can be computed by a polynomial-size circuit  family, and in symbols: 
+\begin{theorem}[Small circuits simulate polytime Turing Machines] Every language determined by a (deterministic) polynomial-time Turing Machine can be computed by a polynomial-size circuit  family, and in symbols: 
 $\P \subseteq \Ppoly$.
 \end{theorem}
 
@@ -232,13 +249,27 @@ We say that we have a \textit{super-polynomial lower bound against \Ppoly}, name
 
 
 
-\paragraph{Motivation for Circuit Complexity}
+\paragraph{Discussion:\ Motivation for Circuit Complexity}
 
-1)  Non-uniformity: maybe for every $l \in \mathbb{N}$ there's a small circuit for SAT that can solve it in quadratic time?
-(Karp-Lipton: PH doesn't collapse $\Rightarrow N P \subseteq P /$ poly).
+\begin{enumerate}
+\item  Non-uniformity: Notice that for every fixed input length $n_0$ in a circuit family $\{C_n\}_n$, the circuit $C_{n_0}$ can behave very differently from the other circuits in the family. Namely, each circuit $C_n$ may compute correctly the $n$th slice $f_n$ of a Boolean function $f:\bits^*\to\bits$, while for each different $n$ the circuit looks very different from the other circuits. This means that the family is \emph{non-uniform}, which  formally means that there is no Turing Machine that given an input size $n$ as its input, outputs a description of the circuit $C_n$ (for that input size). 
 
-2) Mathematically \textit{cleaner} than Turing Machines; so might have better hope for lower bounds.
+Therefore, we may want to discover whether there is a non-uniform circuit family that solves SAT. This still would not mean that there is a polytime Turing Machine solving SAT. In other words, perhaps for each input length $n$, $C_n$ is a circuit of quadratic size $O(n^2)$ that solves SAT?
 
+%Note that Karp-Lipton showed that the Polynomial Time Hierarchy denoted PH does not collapse 
+%$\Rightarrow \NP \subseteq \P/\poly$.
+
+\item The notion of a Boolean circuit is mathematically ``\textit{cleaner}'' than Turing Machines; so we might have better hope to prove lower bounds against this model, instead of directly against Turing Machines run-time. 
+
+\item 
+Note the following curious \emph{open} problem: $\quad \NEXP\stackrel{?}{\subseteq}\P/\poly$.
+
+Notice that by the \emph{time hierarchy theorem} $\EXP\not\subseteq \P$ (that is, exponential time \EXP\ is properly a bigger class than \P). Hence, clearly, $\NEXP\not\subseteq\P$. But when we consider the non-uniform version of \P, namely, \P/\poly, we already do not know if every  language in \NEXP\ is also in \P/\poly. (We do know that there are languages in $\P/\poly$ that are not in \NEXP, because \P/\poly\ is not a uniform class, hence even undecidable languages are in \P/\poly, but not in the uniform class \NEXP.)  
+
+
+
+
+\end{enumerate}
 
 \subsection{Most functions are hard: Shannon lower bound}
 
@@ -254,12 +285,8 @@ We say that we have a \textit{super-polynomial lower bound against \Ppoly}, name
 
 
 
-Open: $\quad \mathrm{NEXP}\stackrel{?}{\subseteq}P/poly$ (note that by the time hierarchy theorem $\mathrm{EXP}\subsetneq P$; but in ``$\mathrm{NEXP}\stackrel{?}{\subseteq}P/poly$'' we consider NEXP which is \emph{uniform}, and P/poly which is \textit{non}-uniform).
-
-
-\begin{theorem}
-    [Shannon lower bound]
-    For every $n>1$ exists a function $f:\{0,1\}^n \rightarrow\{0,1\}$ that cannot be computed by a circuit of size  $\le 2^n / 10 n$.
+\begin{theorem}[Shannon lower bound]
+    For every $n>1$ there exists a function $f:\{0,1\}^n \rightarrow\{0,1\}$ that cannot be computed by a circuit of size  $\le \nicefrac{2^n}{10 n}$.
 \end{theorem}
 
 \begin{proof}[by counting method.]
@@ -311,7 +338,14 @@ Note: the reason we need to lower bound $2^n/10n$ circuits (and not $2^n/c$), is
 
 \subsection{Answers}
 
-\begin{trailer}{Answer}\label{trailer:xor-circuit}
+
+
+
+
+
+
+
+\begin{trailer}{Answer to Question \ref{quest:1}}\label{trailer:xor-circuit}
      PARITY on 4 input bits. It outputs 1 if the number of 1's in the input is odd. I.e., it computes the XOR of $x_1, \ldots, x_4$. In other words, it computes the function $x_1+x_2+x_3+x_4$ mod 2. (Understand why that is. Hint: recall that ${\neg x_1}\lor x_2$ is logically equivalent to $x_1\to x_2$. And notice that this structure repeats throughout the circuit.)
 \end{trailer}
 %\eject

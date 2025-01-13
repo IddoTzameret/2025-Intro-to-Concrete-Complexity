@@ -296,7 +296,9 @@ To prove this theorem, we are going to use a \emph{counting argument}.
 \end{svgraybox}
 
 \begin{proof}
-We are going to count the number of distinct possible circuits of size at most $\nicefrac{2^n}{10 n}$, and conclude that this number is smaller than the number of possible distinct Boolean functions $f:\bits^n\to\bits$. Hence, we cannot cover all possible Boolean functions with $n$ variables with the set of circuits of size at most $\nicefrac{2^n}{10 n}$. Namely, there is a Boolean function that cannot be computed by any circuit of size at most $\nicefrac{2^n}{10 n}$. 
+We are going to count the number of distinct possible circuits of size at most $\nicefrac{2^n}{10 n}$, and conclude that this number is smaller than the number of possible distinct Boolean functions $f:\bits^n\to\bits$. Hence, we cannot cover all possible Boolean functions with $n$ variables with the set of circuits of size at most $\nicefrac{2^n}{10 n}$. Namely, there is a Boolean function that cannot be computed by any circuit of size at most $\nicefrac{2^n}{10 n}$.
+
+ 
 
 \renewenvironment{claim}{%
     \vspace{6pt} 
@@ -335,7 +337,7 @@ S \cdot(2+2 \lceil \log S \rceil) =
 2S +2S \lceil \log S \rceil \leq  4 S \ceil {\log S}\le 5S\log S.$$
 \end{proofclaim}
 
-We now show that the number of circuits of size $\leq 2^n / 10 n$ is smaller than that of possible Boolean functions with $n$ inputs.
+We now show that the number of circuits of size $\leq 2^n / 10 n$ is smaller than the number of possible Boolean functions with $n$ inputs.
 Thus,  there exists a Boolean function that cannot be computed by a circuit of size $\leq 2^n / 10 n$.
 
 The number of circuits of size $S$ is bounded from above by the number of distinct codes of circuits of size $S$, which is
@@ -358,7 +360,11 @@ But this is
 less than $2^{2^n}$ the number of distinct Boolean functions $f:\{0,1\}^n\to\{0,1\}$. 
 \end{proof}
 
-\noindent \textbf{Note}:  the reason we need to lower bound $2^n/10n$ circuits (and not $2^n/c$, for some constant $c$), is that encoding a circuit is \emph{super linear} (i.e., $\Omega (\log n)$).
+\noindent \textbf{Note}:  The reason our size lower bound is $2^n/10n$, instead for example  $2^n/c$, for some constant $c$, is that encoding a circuit is \emph{super linear} (i.e., $\Omega (n\cd\log n)$). 
+Note indeed that  if we denote by $code(S)$ the maximal length needed to encode circuits of size $S$, then $2^{code(S)}$ is the number of different codes, which bounds the number of different functions computed by size $S$ circuits. In the proof we need to show that $2^{code(S)}<2^{2^n}$. Thus, as $code(S)$ is smaller as a function of $S$, namely the encoding of circuits is more efficient, we get a better lower bound: we get that the inequality $2^{code(S)}<2^{2^n}$ holds for \emph{bigger} $S$.  
+
+
+ 
 
 
 

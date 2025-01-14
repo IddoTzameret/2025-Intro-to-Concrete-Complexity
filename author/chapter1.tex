@@ -135,17 +135,20 @@ Hence, a language is simply a set $L\subseteq\bits^*$ (recall, that $\bits^*$ is
 \begin{svgraybox}
 \begin{definition}
 Let $T:\mathbb{N}\rightarrow \mathbb{N}$ be a function. 
-A \emph{$T(n)$-\textbf{sized circuit family}} is a sequence $\left\{C_n\right\}_{n \in \mathbb{N}}$ of Boolean circuits, where $C_n$ has $n$ input-gates (i.e., $n$ inputs-bits) and a single output-bit such that  $\left|C_n\right| \leq T(n), \forall n \in \mathbb{N}$.\footnote{We can also define a circuit-family where some input lengths $n\in\mathbb{N}$ are \emph{skipped} in the sequence, e.g., if the length of every input should be even. We shall not use this subtlety here.}
+A \emph{$T(n)$-\textbf{sized circuit family}} is a sequence $\left\{C_n\right\}_{n \in \mathbb{N}}$ of Boolean circuits, where $C_n$ has $n$ input-gates (i.e., $n$ inputs-bits) and a single output-bit such that  $\left|C_n\right| \leq T(n), \forall n \in \mathbb{N}$.
 \end{definition}
 \end{svgraybox}
 
-A language $L\subseteq\{0,1\}^*$ is said to be \emph{in} $\operatorname{\SIZE} (T(n))$, namely, $$L\in\operatorname{\SIZE} (T(n)),$$ if there is a $T(n)$-size circuit family $\left\{C_n\right\}_{n \in \mathbb{N}}$ s.t. (such that) 
+\begin{remark}We can also define a circuit-family where some input lengths $n\in\mathbb{N}$ are \emph{skipped} in the sequence, e.g.,  the length of every input should be even. We shall not use this subtlety here.
+\end{remark}
+
+A language $L\subseteq\{0,1\}^*$ is said to be \emph{in} $\operatorname{\SIZE} (T(n))$, namely, $$L\in\operatorname{\SIZE} (T(n)),$$ if there is a $T(n)$-size circuit family $\left\{C_n\right\}_{n \in \mathbb{N}}$ such that 
 $$\forall n \in \mathbb{N~} \forall x \in\{0,1\}^n: x \in L \Leftrightarrow C_n(x)=1.$$
 In this case, we say that 
 the family $\left\{C_n\right\}_{n \in \mathbb{N}}$ \demph{decides} the language $L$.
 
 
-Similarly, for a \emph{function} $f:\{0,1\}^* \rightarrow\{0,1\}, f \in \operatorname{\SIZE}(T(n))$ if there exists $ T(n)$-size circuit family $\left\{C_n\right\}_{n \in \mathbb{N}}$ such that  $\forall n \in \mathbb{N} \quad \forall x \in\{0,1\}^n, f(x)=1 \Leftrightarrow C_n(x)=1$.
+Similarly, for a Boolean (single-output) \emph{function} $f:\{0,1\}^* \rightarrow\{0,1\}, f \in \operatorname{\SIZE}(T(n))$ if there exists $ T(n)$-size circuit family $\left\{C_n\right\}_{n \in \mathbb{N}}$ such that  $\forall n \in \mathbb{N} \quad \forall x \in\{0,1\}^n, f(x)=1 \Leftrightarrow C_n(x)=1$.
 In this case, we say that 
 the family $\left\{C_n\right\}_{n \in \mathbb{N}}$ \demph{computes} the function $f$.
 
@@ -158,7 +161,7 @@ We can consider the \emph{slice} \emph{of size} $n$ of $f$ to be the function $f
 \end{svgraybox}
 
 Similarly, we can consider $\left\{f_{n}\right\}_{n\in\mathbb{N}}$ to be the \textit{family} of Boolean functions $f_n:\{0,1\}^n\to \{0,1\}$, 
-for all $n$ at least 1 (so, this is a family of all slices of $f$). In other words, the family of functions $f_n$, for each input length $n$, denoted  $\left\{f_{n}\right\}_{n\in\mathbb{N}}$, is simply another way of writing the single function $f:\bits^*\to\bits$. 
+for all $n$ at least 1 (so, this is a family of all slices of $f$). Hence, the family of functions $f_n$, for each input length $n$, denoted  $\left\{f_{n}\right\}_{n\in\mathbb{N}}$, is simply another way of writing the single function $f:\bits^*\to\bits$. 
 
 
 
@@ -177,9 +180,9 @@ for all $n$ at least 1 (so, this is a family of all slices of $f$). In other wor
 Recall the following notation.
 \begin{enumerate}
     \item 
- $f(n)=O(g(n))$ if there exist a constant $c$ (independent of $n$) and $n_0 \in \mathbb{N}$, such that  $\forall n \geq n_0 \quad f(n) \leq c g(n) $ (for two functions  $f, g: \mathbb{N} \rightarrow \mathbb{R}^{+}$, where $\mathbb R ^+$ are the positive reals).
+ $f(n)=O(g(n))$ if there exist a constant $c$ (independent of $n$) and $n_0 \in \mathbb{N}$, such that  $\forall n \geq n_0 \quad f(n) \leq c g(n) $ (for two functions  $f, g: \mathbb{N} \rightarrow \mathbb{N}$).
 
-\item $f(n)=o(g(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$. That is, there is no constant $c$ such that $f(n)\ge cg(n)$, for sufficiently large $n$.
+\item $f(n)=o(g(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$. That is, there is \emph{no} constant $c$ and no $n_0\in\N$ such that $f(n)\ge cg(n)$, for all $n\ge n_0$.
 \end{enumerate}
 \end{trailer}
 
@@ -187,9 +190,10 @@ Recall the following notation.
 \begin{enumerate}
     \item When $f=O\left(\log n\right)$ the base $b$ of $\log _b n$ is immaterial (why?).
     
-    \item $2^{O(n)}$ means $\leq 2^{c n}$ for some constant $c$ independent of $n$.
-
     \item \emph{Polynomial growth rate} means $n^{O(1)}=2^{O\left(\log n\right)}=n^c$, for some constant $c$, namely $c$ is independent of $n$.
+    
+      \item $2^{O(n)}$ means $\leq 2^{c n}$ for some constant $c$ independent of $n$.
+    
     \item \emph{Exponential growth rate} (similarly, \emph{exponential bound})  means for us $2^{n^\delta}$, for a real constant $\delta>0$. (Some texts insist that ``exponential growth'' should only refer to $2^{cn}$, for a constant $c>0$. Note the difference between this and our definition!)
 \end{enumerate}
 \end{trailer}
@@ -360,8 +364,8 @@ But this is
 less than $2^{2^n}$ the number of distinct Boolean functions $f:\{0,1\}^n\to\{0,1\}$. 
 \end{proof}
 
-\noindent \textbf{Note}:  The reason our size lower bound is $2^n/10n$, instead for example  $2^n/c$, for some constant $c$, is that encoding a circuit is \emph{super linear} (i.e., $\Omega (n\cd\log n)$). 
-Note indeed that  if we denote by $code(S)$ the maximal length needed to encode circuits of size $S$, then $2^{code(S)}$ is the number of different codes, which bounds the number of different functions computed by size $S$ circuits. In the proof we need to show that $2^{code(S)}<2^{2^n}$. Thus, as $code(S)$ is smaller as a function of $S$, namely the encoding of circuits is more efficient, we get a better lower bound: we get that the inequality $2^{code(S)}<2^{2^n}$ holds for \emph{bigger} $S$.  
+\noindent \textbf{Note}:  The reason our size lower bound is $2^n/10n$, instead for example a stronger lower bound of $2^n/c$, for some constant $c$, is that encoding a circuit is \emph{super linear} (i.e., $\Omega (n\cd\log n)$). 
+Note indeed that using smaller codes for circuits amounts to stronger (i.e., bigger) lower bounds:  if we denote by $code(S)$ the maximal length needed to encode circuits of size $S$, then $2^{code(S)}$ is the number of different codes, which bounds the number of different functions computed by size $S$ circuits. In the proof we need to show that $2^{code(S)}<2^{2^n}$. Thus, as $code(S)$ gets smaller as a function of $S$, namely the encoding of circuits is more efficient, we get a better lower bound: we get that the inequality $2^{code(S)}<2^{2^n}$ holds for \emph{bigger} $S$.  
 
 
  
@@ -378,7 +382,7 @@ Note indeed that  if we denote by $code(S)$ the maximal length needed to encode 
 
 
 \begin{trailer}{Answer to Question \ref{quest:1}}\label{trailer:xor-circuit}
-     PARITY on 4 input bits. It outputs 1 if the number of 1's in the input is odd. I.e., it computes the XOR of $x_1, \ldots, x_4$. In other words, it computes the function $x_1+x_2+x_3+x_4$ mod 2. (Understand why that is. Hint: recall that ${\neg x_1}\lor x_2$ is logically equivalent to $x_1\to x_2$. And notice that this structure repeats throughout the circuit.)
+     PARITY on 4 input bits. It outputs 1 iff the number of 1's in the input is odd. I.e., it computes the XOR of $x_1, \ldots, x_4$. In other words, it computes the function $x_1+x_2+x_3+x_4 \mod 2$, where $x_i\in\bits$, for $i\in[4]$. (Understand why that is. Hint: recall that ${\neg A}\lor B$ is logically equivalent to $A\to B$. So $\neg (A\to B) \land \neg(B\to A)$ computes the XOR of $A, B$. Now, notice that this structure repeats throughout the circuit.)
 \end{trailer}
 %\eject
 

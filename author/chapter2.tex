@@ -23,20 +23,18 @@
 % use \sectionmark{}
 % to alter or adjust the section heading in the running head
 
-We've seen that proving that SAT is not in \Ppoly, i.e., can't be solved by polynomial-size circuits, implies that $\P \neq \NP$.
-Due to the notorious difficulty of these questions, we are interested in proving \emph{weaker} lower bounds, namely, some lower bounds against restricted classes of circuits. 
-Here, we study such a restricted circuit class: A boolean circuit without negation gates, i.e., monotone circuits.
+We have  seen that proving that SAT is not in \Ppoly, i.e., cannot  be solved by polynomial-size circuits, implies that $\P \neq \NP$.
+Due to the notorious difficulty of this and related questions, we are also interested in proving \emph{weaker} lower bounds, namely, lower bounds against \emph{restricted} classes of circuits. Although this does not settle the main lower bound questions, it is still considered an important step towards the bigger questions, at least from the methodological perspective. 
+Here, we study such a restricted circuit class and prove a lower bound against it: Boolean circuits without negation gates, which are also called \emph{ monotone circuits}.
 
 \begin{definition}[Monotone circuit]
-A Monotone circuit is a Boolean circuit that contains fan-in two gates AND and OR, but has \emph{no} NOT gates.
+A \emph{monotone circuit} is a Boolean circuit that contains fan-in two gates AND and OR, but has \emph{no} NOT gates.
 \end{definition}
 
-This means in particular that monotone circuits can compute only monotone functions: a Boolean function is said to be monotone if increasing the number of ones in the input cannot flip the value of the function from 1 to 0. 
-
-More precisely, for $\bar{x}, \bar{y} \in\{0,1\}^n$, write $\bar{x} \geqslant \bar{y}$ iff $ \forall i \in [n], x_i \geqslant y_i$, where $[n]$ denotes $\{1,\dots,n\}$. (Here, $x_i\ge y_i$ for Boolean $x_i,y_i$ means simply that $1\ge 0$ and $0\ge 0$, $1\ge 1$, while $0\not\ge 1$.)
+Note in particular that monotone circuits can compute only monotone functions: a Boolean function is said to be monotone if \emph{increasing the number of ones} in the input cannot flip the value of the function from 1 to 0. More precisely, for $\bar{x}, \bar{y} \in\{0,1\}^n$, write $\bar{x} \geq \bar{y}$ iff $ \forall i \in [n], x_i \geq y_i$, where $[n]$ denotes $\{1,\dots,n\}$. (Here, $x_i\ge y_i$ for Boolean $x_i,y_i$ means simply that $1\ge 0$ and $0\ge 0$, $1\ge 1$, while $0\not\ge 1$.)
 
 \begin{definition}[Monotone function]
-A Boolean function $f:\{0,1\}^n \rightarrow\{0,1\}$ is said to be  \emph{monotone} if $\forall \bar{x} \geq \bar{y}, f(\bar{x}) \geqslant f(y)$.
+A Boolean function $f:\{0,1\}^n \rightarrow\{0,1\}$ is said to be  \emph{monotone} if $\forall \bar{x} \geq \bar{y}, f(\bar{x}) \geq f(y)$.
 \end{definition}
 
 
@@ -112,7 +110,7 @@ Copyright: The University of Chicago}
 Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing CLIQUE$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
 \end{theorem}
 \end{svgraybox}
-That is, exists a constant $c$ s.t. for large enough $n \in \mathbb{N}$, if $C_n$ computes CLIQUE$(n,k)$ then $\left|C_n\right| \geqslant 2^{c \cdot \sqrt[8]{n}}$.
+That is, exists a constant $c$ s.t. for large enough $n \in \mathbb{N}$, if $C_n$ computes CLIQUE$(n,k)$ then $\left|C_n\right| \geq 2^{c \cdot \sqrt[8]{n}}$.
 
 
 The rest of this chapter aims to prove this theorem. \textbf{Our exposition is taken from Papadimitriou's textbook} \cite{Pap94}.
@@ -267,7 +265,7 @@ By induction on $\ell$.
 
 \induction $\ell>1$. Consider a family $D \subseteq Z$ of pairwise disjoint sets that is maximal in the sense that if we add any new set in $Z$ to the family $D$, the sets in $D$ are not pairwise disjoint anymore. That is, every set in $Z \backslash D$ intersects some set in $D$.
 
-\case 1 If $D$ contains $\geqslant p$ sets then $D$ is a sunflower with empty core, and we are done.
+\case 1 If $D$ contains $\geq p$ sets then $D$ is a sunflower with empty core, and we are done.
 
 \case 2 Otherwise, let $E$ be the \emph{union} of all sets in $D$.
 Since $|D|<p$, i.e., $D$ contains less than $p$ sets, and each set in $D$ has size $\le \ell$, we know that $|E| \leqslant(p-1)\cd\ell$.
@@ -279,7 +277,7 @@ Since $Z$ has more than $M$ sets by assumption, and each set intersects some ele
 
 
 \begin{remark}
-If a set $E$ intersect all sets in a family of sets $X_1, . ., X_M$ then there is an element in $E$ that appears in $\geqslant \frac{M}{|E|}$ sets $X_i$.
+If a set $E$ intersect all sets in a family of sets $X_1, . ., X_M$ then there is an element in $E$ that appears in $\geq \frac{M}{|E|}$ sets $X_i$.
 Otherwise, each element in $E$ appears in $<\frac{M}{|E|}$ sets $X_i$. Thus, $E$ intersects $<|E| \cdot \frac{M}{|E|}=M$ sets $X_i$, which is a contradiction to the assumption.
 \end{remark}
 
@@ -300,7 +298,7 @@ This concludes the Sunflower Lemma's proof.
 
 
 Approximating $O R$ and AND using Plucking
-- By the Sunflower Lemma, every family of $\geqslant M$ nonempty sets, each of cardinality $\leqslant l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
+- By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leqslant l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
 - Plucking a sunflower: replacing all petals by their core. 4 sets
 
 Corollary: If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cant apply plucking. anymore we know by the Sunflower Lemma that the number of sets is $\leqslant M$ ).
@@ -423,12 +421,12 @@ Thus, the number of false negatives introduced is the total of all possible posi
 Thus,
 
 $$
-|C| \geqslant \frac{\binom{n}{k}}{\operatorname{lemmax}^2\binom{n-l-1}{k-l-1}} \geqslant \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geqslant n^{c \sqrt[8]{n}},
+|C| \geq \frac{\binom{n}{k}}{\operatorname{lemmax}^2\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}},
 $$
 
 
 Case $2: \operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ false positives (half of $(k-1)$-colourings).
-By Lemma 2: $|c| \geqslant \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
+By Lemma 2: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
 
 
 
@@ -516,7 +514,7 @@ Probability of repetition of colours is increased if we doit restrict ourselves 
 Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $\mathrm{p}-1$, and there are no more than 2 M sets when we start), the lemma holds for the OR approximation step: because e
 
 $$
-M^2 \cdot \frac{(k-1)^n}{2^p} \geqslant \frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p}
+M^2 \cdot \frac{(k-1)^n}{2^p} \geq \frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p}
 $$
 
 

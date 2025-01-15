@@ -62,12 +62,12 @@ The computational problem \textbf{CLIQUE$(k, n)$}:
 \end{svgraybox}
 
 
- Note that $\operatorname{CLIQUE}(k, n)$ is a monotone function: If we add 1's to the input, we only \emph{increase} the chance it has a $k$-clique!
+ 
  
 It is known that CLIQUE$(k,n)$ is NP-complete (see standard complexity textbooks; e.g., Papadimitriou 1994).
 
 
-Since CLIQUE$(n, k)$ is a monotone (Boolean)
+Note that $\operatorname{CLIQUE}(k, n)$ is a monotone function: if we add 1's to the input, we only \emph{increase} the chance it has a $k$-clique. Since CLIQUE$(n, k)$ is a monotone (Boolean)
 function we can compute it by a monotone Boolean circuit.
 
 \begin{trailer}{Example of a monotone circuit computing CLIQUE$(n, k)$}
@@ -81,21 +81,26 @@ function we can compute it by a monotone Boolean circuit.
 
 $S_1, S_2, \ldots, S_{\binom{n}{k}}$ are the $\binom{n}{k}$ subgraphs in $G$ each of size $k$.
 Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.
-
 \end{trailer}
 
+A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of an OR gate $\bigvee$ of many  $S_i$'s, each of size $k$ and where each $S_i$ is an AND of the edge variables in $S_i$, as in the example above, is called a \textit{crude-circuit} for CLIQUE($n, k)$. More formally, we have the following. 
 
 \begin{svgraybox}
 \textbf{Crude-circuits $CC\left(X_1, \ldots, X_m\right)$ for CLIQUE}.
-A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of a big $\lor$ of all $S_i$'s, each computed by $\land$'s of edges, as in the example above, is called a \textbf{\textit{crude-circuit}} for CLIQUE($n, k)$.
-
-We denote by $CC\left(S_1, \ldots, S_{\binom{n}{k}}\right)$  the crude circuit computing the $\lor$ of all subgraphs $S_1 \ldots S_{n\choose k }$. In general, we can use different subgraphs of different size $X_i$ in a crude-circuit: $CC\left(X_1, \ldots, X_m\right)$ for $X_i \subseteq V$, where the $X_i$'s have different size, possibly different from $k$.
+Let $V$ be a set of nodes and let $X_1,\dots,X_n\in V$ be a collection of subsets of nodes. The \emph{crude-circuit} $CC\left(X_1, \ldots, X_m\right)$ is defined to be 
+$\bigvee_{r=1}^m\bigwedge_{i<j \in X_r} x_{ij}$.
+Note that the $X_i$'s may have different sizes (and specifically their sizes may be different from $k$).
 \end{svgraybox}
 
-\begin{note} When $k=w(\log n)$, $CC\left(S_1, \ldots, S_{\left(k_k\right)}\right)$ is of exponential size.
+Note that $CC\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\choose 2}$, precisely when in the graph $G$ over the nodes $V$ described by the assignment $\alpha$, at least one of the $X_i$ subgraphs is a clique. 
+
+% We denote by $CC\left(S_1, \ldots, S_{\binom{n}{k}}\right)$ the crude circuit computing the $\bigvee$ of all subgraphs $S_1, \ldots, S_{n\choose k }$.
+
+\begin{note} 
+When $k=\omega(\log n)$, $CC\left(S_1, \ldots, S_{n\choose k}\right)$, where $S_1,\dots,S_{n\choose k}$ are all possible subsets of sizer $k$ from the set of $n$ nodes $V$, is of \emph{exponential size}.
 \end{note}
 
-The following theorem shows this naive monotone circuit cannot be improved much:
+The following theorem shows this naive monotone circuit cannot be improved much.
 
 \begin{figure}
     \centering
@@ -106,11 +111,10 @@ Copyright: The University of Chicago}
 \end{figure}
 
 \begin{svgraybox}
-\begin{theorem}[Razborov \cite{Razb85}]\label{thm:razborov} 
-Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing CLIQUE$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
+\begin{theorem}[Razborov \cite{Razb85}]\label{thm:razborov} Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing CLIQUE$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
 \end{theorem}
 \end{svgraybox}
-That is, exists a constant $c$ s.t. for large enough $n \in \mathbb{N}$, if $C_n$ computes CLIQUE$(n,k)$ then $\left|C_n\right| \geq 2^{c \cdot \sqrt[8]{n}}$.
+That is, there exists a constant $c$ such that  for large enough $n \in \mathbb{N}$, if $C_n$ computes CLIQUE$(n,k)$ then $\left|C_n\right| \geq 2^{c \cdot \sqrt[8]{n}}$.
 
 
 The rest of this chapter aims to prove this theorem. \textbf{Our exposition is taken from Papadimitriou's textbook} \cite{Pap94}.

@@ -38,23 +38,21 @@ A Boolean function $f:\{0,1\}^n \rightarrow\{0,1\}$ is said to be  \emph{monoton
 \end{definition}
 
 
-Many NP problems are monotone, like CLIQUE:
-
-Given an undirected graph $G=(V, E)$ with $n$ nodes, a $k$-clique in $G$ is a set $U\subseteq V$ of size $k$, st. every pair of nodes $u_1, u_2 \in U$ is connected by an edge (in $E$):
-
+Many \NP-complete problems are monotone. One example of an \NP-complete decision problem is  CLIQUE we describe now. 
+Given an undirected graph $G=(V, E)$ with $n$ nodes, a \emph{$k$-clique} in $G$ is a set $U\subseteq V$ of size $k$, such that  every pair of nodes $u_1, u_2 \in U$ is connected by an edge (in $E$), and in symbols:
 $$
- \forall u_1 \in u \forall u_2 \in u ( u \neq u_2\Rightarrow (u_1, u_2)\in E).
+ \forall u_1 \in U~\forall u_2 \in U~ ( u_1 \neq u_2\Rightarrow (u_1, u_2)\in E).
 $$
 
 
-Recall that a computational (decision) problem is a \emph{language}, namely an infinite set of finite strings over a finite alphabet (usually the alphabet $\{0,1\}$). Here, our language consists of all the strings that encode (in some natural way) an accepted graph, i.e., a $k$-clique with $n$ nodes.
+Recall that a computational decision problem is a language over a finite alphabet (usually \bits). Here, our language consists of all the strings that encode (in some natural way) an accepted graph, i.e., a graph with $n$ nodes that contains a $k$-clique.
 The natural way to encode a graph in our case is this: a graph  $G=(V, E) $ with $n$ nodes, is encoded by $\binom{n}{2}$ input variables  $x_{ij}$, where the semantic of the encoding is: $x_{i j}=1$ iff $(i, j) \in E$. In other words, if the input variable $x_{ij}=1$,   our input graph contains the edge $(i,j)$, and otherwise it does not. 
 
-We are interested in CLIQUE$(k, n)$ for a fixed $k$, as the following Boolean function: 
+We are interested in CLIQUE$(k, n)$ for a \emph{fixed} $k$, considered as the following Boolean function: 
 \begin{svgraybox}
 The computational problem \textbf{CLIQUE$(k, n)$}: 
 
-\textit{Input}: Undirected graph $G=(V,E)$ with $n$ nodes, and a number $k$ (given in unary, i.e., $1^k$).
+\textit{Input}: Undirected graph $G=(V,E)$ with $n$ nodes (encoded as above), and a number $k$ (given in unary, i.e., $1^k$).
 
 \textit{Accept}: if the graph $G$ contains a $k$-clique. 
 
@@ -65,13 +63,11 @@ The computational problem \textbf{CLIQUE$(k, n)$}:
  
  
 It is known that CLIQUE$(k,n)$ is NP-complete (see standard complexity textbooks; e.g., Papadimitriou 1994).
-
-
 Note that $\operatorname{CLIQUE}(k, n)$ is a monotone function: if we add 1's to the input, we only \emph{increase} the chance it has a $k$-clique. Since CLIQUE$(n, k)$ is a monotone (Boolean)
-function we can compute it by a monotone Boolean circuit.
+function we can compute it by a monotone Boolean circuit. But the question remains whether we can compute CLIQUE$(n, k)$ with small monotone circuit. 
 
 \begin{trailer}{Example of a monotone circuit computing CLIQUE$(n, k)$}
- ``Run" over all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one of those is a clique:
+Consider  all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one of those is a clique:
 
 \begin{figure}
     \centering
@@ -85,12 +81,13 @@ Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.
 
 A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of an OR gate $\bigvee$ of many  $S_i$'s, each of size $k$ and where each $S_i$ is an AND of the edge variables in $S_i$, as in the example above, is called a \textit{crude-circuit} for CLIQUE($n, k)$. More formally, we have the following. 
 
-\begin{svgraybox}
+
+\begin{tcolorbox}[float=t, colframe=white, colback=red!5, boxrule=0mm, sharp corners]
 \textbf{Crude-circuits $CC\left(X_1, \ldots, X_m\right)$ for CLIQUE}.
 Let $V$ be a set of nodes and let $X_1,\dots,X_n\in V$ be a collection of subsets of nodes. The \emph{crude-circuit} $CC\left(X_1, \ldots, X_m\right)$ is defined to be 
 $\bigvee_{r=1}^m\bigwedge_{i<j \in X_r} x_{ij}$.
 Note that the $X_i$'s may have different sizes (and specifically their sizes may be different from $k$).
-\end{svgraybox}
+\end{tcolorbox}
 
 Note that $CC\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\choose 2}$, precisely when in the graph $G$ over the nodes $V$ described by the assignment $\alpha$, at least one of the $X_i$ subgraphs is a clique. 
 
@@ -110,10 +107,11 @@ Copyright: The University of Chicago}
     \label{fig:enter-label}
 \end{figure}
 
-\begin{svgraybox}
-\begin{theorem}[Razborov \cite{Razb85}]\label{thm:razborov} Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing CLIQUE$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
+
+\begin{tcolorbox}[float=t, colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
+\begin{theorem}[Razborov \cite{Razb85}]\label{thm:razborov} Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing {\rm CLIQUE}$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
 \end{theorem}
-\end{svgraybox}
+\end{tcolorbox}
 That is, there exists a constant $c$ such that  for large enough $n \in \mathbb{N}$, if $C_n$ computes CLIQUE$(n,k)$ then $\left|C_n\right| \geq 2^{c \cdot \sqrt[8]{n}}$.
 
 
@@ -129,14 +127,15 @@ The rest of this chapter aims to prove this theorem. \textbf{Our exposition is t
 We first provide an overview of the approach we take to prove \Cref{thm:razborov} which is called \emph{the approximation method}. 
 We shall describe a way of approximating any \textbf{monotone} circuit for $\operatorname{CLIQUE}({n}, {k})$ by a crude circuit, namely a big OR of cliques, as follows.
 
+The upshot is the following: \emph{by a way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be approximated by a small crude circuit. Then, the output gate is also approximated by a small crude circuit. Now, use an auxiliary argument to show that there is no small crude circuit approximating $\operatorname{CLIQUE}({n}, {k})$.
+
+More precisely we have:  
 \begin{enumerate}
-    
-\item  Given a monotone circuit C , we shall construct a crude circuit ${CC}({X} 1, \ldots, {Xm})$ for some m and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, all ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
+\item  Given a monotone circuit $C$, we shall construct a crude circuit ${CC}({X_1, \ldots, {X_m})$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
 
-\item I.e., if the precision is not good, namely the crude circuit ${CC}({X} 1, \ldots, {Xm})$ for CLIQUE (n,k) we end up with makes \textit{many errors} on the CLIQUE ( $n, k$ ) function (i.e., says "NO" on an input that has a k-clique, and "YES" on an input that has no k-clique), it means that the circuit $C$ has \textit{many gates}, and vice versa.\label{it:approximation-b}
+\item That is, if the number of gates in $C$ is small the precision is  good, namely the crude circuit ${CC}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  "NO" on an input that has a $k$-clique, or "YES" on an input that has no $k$-clique).\label{it:approximation-b}
 
-\item We show that every crude circuit ${CC}({X}_1, \ldots, {X_m})$ ($|{X}_i| \leq l$ for some $l$, for all $i=1, \ldots, m$ ), ought to make \textit{exponentially many errors} on the function $\operatorname{CLIQUE}(n, k)$. From \ref{it:approximation-b} above we conclude that the number of gates in C was exponential.
-
+\item We show that every crude circuit ${CC}({X}_1, \ldots, {X_m})$ ($|{X}_i| \leq l$ for some $l$, for all $i=1, \ldots, m$ ), ought to make \textit{exponentially many errors} on the function $\operatorname{CLIQUE}(n, k)$. From \ref{it:approximation-b} above we conclude that there exists no circuit $C$ with a small number of gates. 
 \end{enumerate}
 
 
@@ -150,7 +149,12 @@ The \textbf{approximation} (i.e., construction of a crude circuit for CLIQUE(${n
 \end{enumerate}
 
 
-\section{Proof of monotone circuit lower bounds}
+\section{Proof of monotone circuit lower bounds \Cref{thm:razborov}}
+
+ \begin{tcolorbox}[float=h, colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
+\textbf{Goal}: Show that every monotone circuit computing $\operatorname{CLIQUE}(n,k)$ has size at least $2^{c \sqrt[8]{n}}$ for some constant $c$ (for sufficiently large $n$).
+\end{tcolorbox}
+
 
 \begin{trailer}{Parameters \& notation}
 
@@ -161,8 +165,6 @@ $$
 k=\sqrt[4]{n}.
 $$
 
-\begin{svgraybox}\textbf{Goal}: Show that every monotone circuit computing $\operatorname{CLIQUE}(n,k)$ has size at least $2^{c \sqrt[8]{n}}$ for some constant $c$ (for sufficiently large $n$).
-\end{svgraybox}
 
 $$
 \begin{aligned}
@@ -177,62 +179,50 @@ $$
 Each crude-circuit we use in the approximation is:
 
 $$
-C C\left(x_1, \ldots, x_m\right)
+C C\left(X_1, \ldots, X_m\right)
 $$
 
-for $m \leqslant M$ and $\left|X_i\right| \leqslant l, \forall i \in[m]$.
-
+for $m \leq M$ and $\left|X_i\right| \leq l, \forall i \in[m]$.
 \end{trailer}
 
 \bigskip 
 
-\newpage
- 
 
 % Enable watermark from this point onward
-\SetWatermarkText{DRAFT}
+%\SetWatermarkText{DRAFT}
 
-- The approximation of the monotone circuit $C$ that computes $\operatorname{CLIQUE}(n, k)$ is done by induction on the size of $C$, ie., number of $\lor, \wedge$ gates in $C$.
+The approximation of the monotone circuit $C$ that computes $\operatorname{CLIQUE}(n, k)$ is done by induction on the size of $C$, i.e., number of $\lor, \wedge$ gates in $C$.
 
+\begin{note} Such an induction is usually called \emph{induction on the structure of $C$}, since we are going to induce on subcircuits of $C$, assuming the induction hypothesis holds for them, and using the structure of the circuit, conclude that the induction hypothesis also holds for the gate that connects those two subcircuits.
+\end{note}
 
-- Comment: Such induction is also called ``Induction on the structure of $C$''.
+This structural induction proceeds as follows. 
 
-- Such induction proceeds as follows: 
-
-
-\para{Base Case} $|C|=1$, ie., $C$ consists of only a single input gate $g_{ij}$. Recall $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
+\para{Base Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.
 
-This is an easy case: We need to show a crude cat $\operatorname{CC}\left(X_1, \ldots, X_m\right)$ with $m \leqslant M$ and $\left|X_i\right| \leqslant l \quad \forall i \in[m]$ that
-approximates $g_{i i}$ (without introducing too many errors; We shall count precisely the number of potential errors later).
-But the circuit $C C(\{i, j\})=g_{i j}$ by definition. (Hence, no errors here!)
+This is an easy case: We need to show a crude circuit $\operatorname{CC}\left(X_1, \ldots, X_\right)$ with $m \leq M$ and $\left|X_i\right| \leqslant l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
+But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors here!)
 
 
-\para{Induction Step}
+\subsubsection{Induction Step of the proof}
 Given two crude circuits
 $\operatorname{CC}(\mathcal X)$ and 
 $\operatorname{CC}(\mathcal Y) 
 $, with $\mathcal{X}=\{X_1, \ldots, X_m\}$, 
-$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i$.
-
-
-We wish to construct another crude circuit  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
-\operatorname{CC}(\mathcal Y)$.
+$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i$, we wish to construct another crude circuits  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
+\operatorname{CC}(\mathcal Y)$, respectively.
 
 \case{1}
 $\lor$-gate.
 
-\textit{Naive attempt}: $\operatorname{CC}(\mathcal X)
+\textit{Naive (wrong) attempt}: $\operatorname{CC}(\mathcal X)
 \lor \operatorname{CC}(\mathcal Y)$ is approximated by $\operatorname{CC}(\mathcal X \cup \mathcal Y)$. That is, $\operatorname{CC}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_m\right)$. At first glance this is a good solution because it does not introduce any errors (why?). But there is a \textit{problem}: what if $m+m^{\prime}>M$?
 
 
 \textit{Solution}: We need to cleverly \emph{reduce} the number of sets $X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma.
 
-
-
-
-
-\section{The Sunflower Lemma}
+\subsection{The Sunflower Lemma}
 
 \begin{figure}
     \centering
@@ -301,7 +291,7 @@ This concludes the Sunflower Lemma's proof.
 
 
 
-Approximating $O R$ and AND using Plucking
+\subsection{Approximating OR and AND using Plucking}
 - By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leqslant l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
 - Plucking a sunflower: replacing all petals by their core. 4 sets
 

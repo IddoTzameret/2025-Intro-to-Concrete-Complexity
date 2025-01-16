@@ -132,12 +132,12 @@ A \emph{language} is a set of (finite) strings. Note that the language can conta
 Hence, a language is simply a set $L\subseteq\bits^*$ (recall, that $\bits^*$ is the set of all finite 0-1 strings, including the empty string). 
  
 
-\begin{svgraybox}
+\begin{tcolorbox}[float=t, colframe=white, colback=red!5, boxrule=0mm, sharp corners]
 \begin{definition}
 Let $T:\mathbb{N}\rightarrow \mathbb{N}$ be a function. 
 A \emph{$T(n)$-\textbf{sized circuit family}} is a sequence $\left\{C_n\right\}_{n \in \mathbb{N}}$ of Boolean circuits, where $C_n$ has $n$ input-gates (i.e., $n$ inputs-bits) and a single output-bit such that  $\left|C_n\right| \leq T(n), \forall n \in \mathbb{N}$.
 \end{definition}
-\end{svgraybox}
+\end{tcolorbox}
 
 \begin{remark}We can also define a circuit-family where some input lengths $n\in\mathbb{N}$ are \emph{skipped} in the sequence, e.g.,  the length of every input should be even. We shall not use this subtlety here.
 \end{remark}
@@ -154,11 +154,12 @@ the family $\left\{C_n\right\}_{n \in \mathbb{N}}$ \demph{computes} the function
 
 
 
-\begin{svgraybox}
-\textbf{Slice of function}. 
+
+\begin{tcolorbox}[float=t, colframe=white, colback=red!5, boxrule=0mm, sharp corners]
+\textbf{Slice of function}\footnote{Not to be confused with \emph{The Slice Function}.}. 
  Let $f:\{0,1\}^*\to\{0,1\}$ be a Boolean function.
 We can consider the \emph{slice} \emph{of size} $n$ of $f$ to be the function $f_n:\{0,1\}^n\to\{0,1\}$, which is $f$ restricted to \emph{inputs of length precisely} $n$. 
-\end{svgraybox}
+\end{tcolorbox}
 
 Similarly, we can consider $\left\{f_{n}\right\}_{n\in\mathbb{N}}$ to be the \textit{family} of Boolean functions $f_n:\{0,1\}^n\to \{0,1\}$, 
 for all $n$ at least 1 (so, this is a family of all slices of $f$). Hence, the family of functions $f_n$, for each input length $n$, denoted  $\left\{f_{n}\right\}_{n\in\mathbb{N}}$, is simply another way of writing the single function $f:\bits^*\to\bits$. 
@@ -177,13 +178,17 @@ for all $n$ at least 1 (so, this is a family of all slices of $f$). Hence, the f
     We usually use $n$ for the length of inputs. Namely, if the input is $x\in\bits^*$, then we use $n$ to denote $|x|$, i.e., $n=|x|$. In complexity we have to distinguish between a \emph{constant} and a \emph{growing number}. We wish to consider how a given function behaves asymptotically, namely, when its input length $n$ grows to infinity: while $n$ grows, we shall say that $c$ is \emph{a constant} if $c$ is independent of $n$ (namely, while $n$ grows, $c$ is fixed).  
 
 
-Recall the following notation.
+Recall the following notation for ``asymptotic less than'':
 \begin{enumerate}
     \item 
- $f(n)=O(g(n))$ if there exist a constant $c$ (independent of $n$) and $n_0 \in \mathbb{N}$, such that  $\forall n \geq n_0 \quad f(n) \leq c g(n) $ (for two functions  $f, g: \mathbb{N} \rightarrow \mathbb{N}$).
+ $f(n)=O(g(n))$ if there exist a positive constant $c$ (independent of $n$) and $n_0 \in \mathbb{N}$, such that  $\forall n \geq n_0 \quad f(n) \leq c g(n) $ (for two functions  $f, g: \mathbb{N} \rightarrow \mathbb{N}$).
 
-\item $f(n)=o(g(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$. That is, there is \emph{no} constant $c$ and no $n_0\in\N$ such that $f(n)\ge cg(n)$, for all $n\ge n_0$.
+\item $f(n)=o(g(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$. That is, there is \emph{no} positive constant $c$ and no $n_0\in\N$ such that $f(n)\ge cg(n)$, for all $n\ge n_0$.
 \end{enumerate}
+And here are the dual notation for ``asymptotic greater than'' symbols:
+\begin{enumerate}[resume]
+\item $g(n)=\Omega(f(n))$, if there exist a positive constant $c$ and $n_0\in\N$, such that $\forall n \ge n_0$, $g(n)\ge cf(n)$. Hence, $g(n)=\Omega(f(n))$ iff $f(n)=O(g(n))$.
+\item $g(n)=\omega(f(n))$ if $\lim _{n \rightarrow \infty} \frac{f(n)}{g(n)}=0$. That is, there is \emph{no} positive constant $c$ and no $n_0\in\N$ such that $f(n)\ge cg(n)$, for all $n\ge n_0$. Hence, $g(n)=\omega(f(n))$ iff $f(n)=o(g(n))$. \end{enumerate}
 \end{trailer}
 
 \begin{trailer}{Basic Growth Rates}

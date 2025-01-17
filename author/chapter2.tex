@@ -27,6 +27,8 @@ We have  seen that proving that SAT is not in \Ppoly, i.e., cannot  be solved by
 Due to the notorious difficulty of this and related questions, we are also interested in proving \emph{weaker} lower bounds, namely, lower bounds against \emph{restricted} classes of circuits. Although this does not settle the main lower bound questions, it is still considered an important step towards the bigger questions, at least from the methodological perspective. 
 Here, we study such a restricted circuit class and prove a lower bound against it: Boolean circuits without negation gates, which are also called \emph{ monotone circuits}.
 
+\para{Monotone Circuits}
+
 \begin{definition}[Monotone circuit]
 A \emph{monotone circuit} is a Boolean circuit that contains fan-in two gates AND and OR, but has \emph{no} NOT gates.
 \end{definition}
@@ -37,7 +39,7 @@ Note in particular that monotone circuits can compute only monotone functions: a
 A Boolean function $f:\{0,1\}^n \rightarrow\{0,1\}$ is said to be  \emph{monotone} if $\forall \bar{x} \geq \bar{y}, f(\bar{x}) \geq f(y)$.
 \end{definition}
 
-
+\section{The CLIQUE Problem}
 Many \NP-complete problems are monotone. One example of an \NP-complete decision problem is  CLIQUE we describe now. 
 Given an undirected graph $G=(V, E)$ with $n$ nodes, a \emph{$k$-clique} in $G$ is a set $U\subseteq V$ of size $k$, such that  every pair of nodes $u_1, u_2 \in U$ is connected by an edge (in $E$), and in symbols:
 $$
@@ -52,7 +54,7 @@ We are interested in CLIQUE$(k, n)$ for a \emph{fixed} $k$, considered as the fo
 \begin{svgraybox}
 The computational problem \textbf{CLIQUE$(k, n)$}: 
 
-\textit{Input}: Undirected graph $G=(V,E)$ with $n$ nodes (encoded as above), and a number $k$ (given in unary, i.e., $1^k$).
+\textit{Input}: Undirected graph $G=(V,E)$ with $n$ nodes encoded as a length $n\choose 2$ binary string (each bit represents an  edge  $x_{ij}$, $i<j\in[n]$), and a number $k$ (given in unary, i.e., $1^k$).
 
 \textit{Accept}: if the graph $G$ contains a $k$-clique. 
 
@@ -72,24 +74,30 @@ Consider  all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one o
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{images/k-clique-simple-circuit.png}
-    \label{fig:enter-label}
+    \label{fig:clique-naive}
+    \caption{Naive way to compute CLIQUE}
 \end{figure}
 
 $S_1, S_2, \ldots, S_{\binom{n}{k}}$ are the $\binom{n}{k}$ subgraphs in $G$ each of size $k$.
 Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.
 \end{trailer}
 
+\subsection{Crude Circuits for CLIQUE}
+
 A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of an OR gate $\bigvee$ of many  $S_i$'s, each of size $k$ and where each $S_i$ is an AND of the edge variables in $S_i$, as in the example above, is called a \textit{crude-circuit} for CLIQUE($n, k)$. More formally, we have the following. 
 
+% *Do not* use the \begin{tcolorbox}[float=..] %option, unless you wish it to float around; namely %not appear sequentially as you put in in the %text. 
 
-\begin{tcolorbox}[float=t, colframe=white, colback=red!5, boxrule=0mm, sharp corners]
+\begin{tcolorbox}[colframe=white, colback=red!5, boxrule=0mm, sharp corners]
 \textbf{Crude-circuits $CC\left(X_1, \ldots, X_m\right)$ for CLIQUE}.
 Let $V$ be a set of nodes and let $X_1,\dots,X_n\in V$ be a collection of subsets of nodes. The \emph{crude-circuit} $CC\left(X_1, \ldots, X_m\right)$ is defined to be 
 $\bigvee_{r=1}^m\bigwedge_{i<j \in X_r} x_{ij}$.
 Note that the $X_i$'s may have different sizes (and specifically their sizes may be different from $k$).
 \end{tcolorbox}
-
+ 
 Note that $CC\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\choose 2}$, precisely when in the graph $G$ over the nodes $V$ described by the assignment $\alpha$, at least one of the $X_i$ subgraphs is a clique. 
+
+We shall also use the abbreviated notation $CC(\mathcal X)$ for $CC(X_1,\dots,X_m)$ when $\mathcal X = \{X_1,\dots,X_m\}$.
 
 % We denote by $CC\left(S_1, \ldots, S_{\binom{n}{k}}\right)$ the crude circuit computing the $\bigvee$ of all subgraphs $S_1, \ldots, S_{n\choose k }$.
 
@@ -97,7 +105,9 @@ Note that $CC\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\ch
 When $k=\omega(\log n)$, $CC\left(S_1, \ldots, S_{n\choose k}\right)$, where $S_1,\dots,S_{n\choose k}$ are all possible subsets of sizer $k$ from the set of $n$ nodes $V$, is of \emph{exponential size}.
 \end{note}
 
-The following theorem shows this naive monotone circuit cannot be improved much.
+
+\section{Clique is hard for monotone circuits }
+The following theorem shows the naive (brute-force) way of computing the CLIQUE function with a monotone circuit shown in Figure \ref{fig:clique-naive}    cannot be improved much.
 
 \begin{figure}
     \centering
@@ -108,30 +118,39 @@ Copyright: The University of Chicago}
 \end{figure}
 
 
-\begin{tcolorbox}[float=t, colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
+\begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \begin{theorem}[Razborov \cite{Razb85}]\label{thm:razborov} Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing {\rm CLIQUE}$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
 \end{theorem}
 \end{tcolorbox}
 That is, there exists a constant $c$ such that  for large enough $n \in \mathbb{N}$, if $C_n$ computes CLIQUE$(n,k)$ then $\left|C_n\right| \geq 2^{c \cdot \sqrt[8]{n}}$.
 
 
-The rest of this chapter aims to prove this theorem. \textbf{Our exposition is taken from Papadimitriou's textbook} \cite{Pap94}.
+The rest of this chapter aims to prove this theorem. \textit{Our exposition is taken from Papadimitriou's textbook} \cite{Pap94}.
 
 
 %Recall: a crude circuit is a big OR of cliques, each computed as a big AND.
 
 
 
-\paragraph{Approximation Method}
+
+\section{Proof of monotone circuit lower bounds \Cref{thm:razborov} using the Approximation Method}
+
+
+\paragraph{Approximation Method Overview}
 
 We first provide an overview of the approach we take to prove \Cref{thm:razborov} which is called \emph{the approximation method}. 
 We shall describe a way of approximating any \textbf{monotone} circuit for $\operatorname{CLIQUE}({n}, {k})$ by a crude circuit, namely a big OR of cliques, as follows.
 
-The upshot is the following: \emph{by a way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be approximated by a small crude circuit. Then, the output gate is also approximated by a small crude circuit. Now, use an auxiliary argument to show that there is no small crude circuit approximating $\operatorname{CLIQUE}({n}, {k})$.
+
+\begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
+\textbf{Approximation Method}:
+The upshot of the method is the following: \emph{by  way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be well approximated by a small crude circuit. Then, if the number of nodes in the circuit is small. the output gate is also well approximated by a small crude circuit. Now, use an auxiliary argument to show that there is no small crude circuit approximating well  $\operatorname{CLIQUE}({n}, {k})$.
+\end{tcolorbox}
 
 More precisely we have:  
 \begin{enumerate}
-\item  Given a monotone circuit $C$, we shall construct a crude circuit ${CC}({X_1, \ldots, {X_m})$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
+\item  Given a monotone circuit $C$, we shall construct a crude circuit 
+$CC(X_1, \ldots, X_m)$ for some $m$ and $|{X}_{i}| \leq l$ (for some $l$, and for $i=1, \ldots, m$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
 
 \item That is, if the number of gates in $C$ is small the precision is  good, namely the crude circuit ${CC}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  "NO" on an input that has a $k$-clique, or "YES" on an input that has no $k$-clique).\label{it:approximation-b}
 
@@ -147,13 +166,6 @@ The \textbf{approximation} (i.e., construction of a crude circuit for CLIQUE(${n
 
 \item Each such approximation step introduces rather few errors (false positives and false negatives).
 \end{enumerate}
-
-
-\section{Proof of monotone circuit lower bounds \Cref{thm:razborov}}
-
- \begin{tcolorbox}[float=h, colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
-\textbf{Goal}: Show that every monotone circuit computing $\operatorname{CLIQUE}(n,k)$ has size at least $2^{c \sqrt[8]{n}}$ for some constant $c$ (for sufficiently large $n$).
-\end{tcolorbox}
 
 
 \begin{trailer}{Parameters \& notation}
@@ -185,32 +197,196 @@ $$
 for $m \leq M$ and $\left|X_i\right| \leq l, \forall i \in[m]$.
 \end{trailer}
 
-\bigskip 
+\newcommand{\cliquenk}{\ensuremath{\operatorname{CLIQUE}(n,k)}}
+
+%___________________________________________________________________
+\subsection{The Input Set: Extreme Graphs, False Positive and False Negatives}
+%___________________________________________________________________
+
+Here we consider the input graphs we are going to analyse. 
+The input set to the \cliquenk\ function are \emph{all possible} binary strings of length $n\choose 2$, namely, all possible (encodings) of undirected graphs with $n$ nodes. This set is easily divided into two groups:
+
+\begin{description}
+\item[Accept-instances:] 
+$G=(V, E)$ is a graph on $n$ modes that contains a $k$-clique.
+\item[Reject-instances:]
+$G=(V, E)$ is a graph on $n$ nodes that does not contain a $k$-clique.
+\end{description}
+
+
+ 
+
+
+
+A crucial point is that \emph{we are going to restrict attention only to a special \textbf{subset} of all possible input graphs}. We call these special input graphs \emph{extreme graphs}. 
+
+\para{Extreme Graphs}
+We  restrict attention to only a subsets of accept and reject instances. This is sufficient for the proof (and simplifies it). Thus, our focus is on ``extreme'' cases of inputs:
+
+\begin{description}
+\item[\textbf{Positive-inputs}:] 
+ $G=(V,E)$ has $n$ nodes and a $k$-clique (i.e., a set of $k$ nodes with all edges between them); while \emph{no} other edge exist in $G$ except for the $k$-clique.
+
+There are $\binom{x}{k}$ positive-inputs, each one is clearly an accept input to \cliquenk.
+For simplicity, we shall call these positive inputs \emph{$k$-\textbf{cliques}} (although these are special extreme cases of $k$-cliques, since we assume that all edges outside the clique are absent.) 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.5\linewidth]{images/clique1.png}
+    \caption{Example of a \emph{positive input}: a graph whose only edges are part of a (single) $k$-clique.}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\item[\textbf{Negative-inputs}:] 
+
+$G=\left(V,E\right)$ has $n$ nodes and a $(k-1)$-colouring. I.e., $k-1$ independent sets (each with its own distinct colour), namely sets of nodes, such that in each set there are no edges between nodes. Moreover,  \emph{all} edges between nodes in  different independent sets are present!
+For simplicity, we shall call these negative inputs \emph{$(k-1)$-\textbf{colouring}} (although these are special extreme cases of $k-1$-colourable graphs, since we assume that all edges between independent sets are present). 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=.6\linewidth]{images/clique2.png}
+    \caption{Example of a \emph{negative input}: a graph whose all and only edges are between distinct $(k-1)$-independent sets.}
+    \label{fig:enter-label}
+\end{figure}
+
+\end{description}
+
+\begin{note}\
+
+\begin{enumerate}
+\item There are $(k-1)^n$ negative -inputs. (We count twice two identical graphs with colours interchanged.
+
+\item 
+ A $(k-1)$-colouring is a negative-input for \cliquenk\ because a $k$-clique cannot be coloured by $k-1$ colours.
+\item
+ In fact, even a single edge added to a $(k-1)$-colouring will make the graph contain a k-clique!
+\end{enumerate}
+\end{note}
+
+\para{False Positive and False Negative Inputs}
+
+TBC (without pliucking here) 
 
 
 % Enable watermark from this point onward
 %\SetWatermarkText{DRAFT}
+%___________________________________________________________________
+\subsection{Approximating $\lor,\land$ Gates with Crude Circuits }
+%___________________________________________________________________
 
-The approximation of the monotone circuit $C$ that computes $\operatorname{CLIQUE}(n, k)$ is done by induction on the size of $C$, i.e., number of $\lor, \wedge$ gates in $C$.
 
-\begin{note} Such an induction is usually called \emph{induction on the structure of $C$}, since we are going to induce on subcircuits of $C$, assuming the induction hypothesis holds for them, and using the structure of the circuit, conclude that the induction hypothesis also holds for the gate that connects those two subcircuits.
+%For that purpose, we shall use the Approximation Method, and specifically we shall establish the following statement:
+
+
+Lemma 1: Each approximation step introduces at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
+
+Lemma 2: Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false negatives.
+
+
+
+\begin{tcolorbox}[colframe=white, colback=red!4, boxrule=0mm, sharp corners]
+\begin{lemma}[Approximating ]
+\label{lem:}
+
+\end{lemma}
+\end{tcolorbox}
+
+
+%___________________________________________________________________
+\subsection{Concluding the Lower Bound using Structural Induction on the Circuit   }
+%___________________________________________________________________
+
+
+
+Recall that our goal is:
+
+\begin{tcolorbox}[colframe=white, colback=blue!1, boxrule=0mm, sharp corners]
+\textbf{Goal}: Show that every monotone circuit computing $\operatorname{CLIQUE}(n,k)$ has size at least $2^{c \sqrt[8]{n}}$ for some constant $c$ (for sufficiently large $n$).
+\end{tcolorbox}
+
+
+
+The approximation of the \emph{output gate} of the monotone circuit $C$ that computes $\operatorname{CLIQUE}(n, k)$ is done by\emph{ induction on the size of $C$,} i.e., number of $\lor, \wedge$ gates in $C$.
+
+
+\begin{tcolorbox}[colframe=white, colback=blue!11, boxrule=0mm, sharp corners]
+\begin{note} Such an induction is usually called \emph{\textbf{induction on the structure of the circuit} $C$}, since we are going to induce on subcircuits of $C$, assuming the induction hypothesis holds for them. Using the structure of the circuit, we shall conclude that the induction hypothesis  holds for the gate that connects those two subcircuits. The base case is showing that the induction statement holds for circuits of size 1 (i.e., singled variable circuits). The induction step is showing that the induction statement holds for $A\lor B$ assuming the induction statement holds for both $A$ and $B$. And similarly for the case of $A\land B$.     
 \end{note}
+\end{tcolorbox}
 
 This structural induction proceeds as follows. 
+
+
+?
+
+?
+
+?
+
+?
+
+
+
+
+Proof of monotone Pkt lower bound from these lemmas. CLAIM: Every crude-ctt CC $\left(X_1, \ldots, x_m\right) w /$ $\left|x_i\right| \leq l$ and $m \leqslant M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the negative -instances.
+Proof: If $\operatorname{CC}\left(x_1 \ldots x_m\right) \neq 0$, then it accept's at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i$. The size of $X_i$ is $\leqslant l<k$, thus many graphs $G$ that are not $k$-cliques still have e-cliqnes
+
+
+
+cont.
+Let's count how many such graphs exist, using probability. Consider a graph $G=(V, E)$; assign randomly (and independently) from among $(k-1)$ colours to the modes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes.
+
+$$
+\operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1}
+$$
+
+
+Denote by $R\left(X_i\right)$ the evert that in the random colouring to $G$, there exists a pair of nodes with the same colour in $X_i$
+Then, $\operatorname{Pr}\left[R\left(x_i\right)\right] \leqslant \frac{\binom{x_i \mid}{ 2}}{k-1} \leqslant \frac{\binom{l}{2}}{k-1} \leqslant \frac{1}{2}$.
+there are $\binom{\mid x_i i}{2}$ pairs
+of nodes in $X_i$. We use
+the union bound.
+This means that out of all negative-instances to CLIQUE $(n, k)$ (namely, all ( $k-1)$-colouring of a graph w/ $n$ nodes), at least half of them are going to colour $X_i$ w/ different colours. Hence, for these negative -instance, there will be edges between all nodes in $X_i$, and thus $\left(C\left(x_1, \ldots, x_m\right)(G)=1\right.$ for each of these negative instances $G$.
+
+
+
+
+We are now ready to conclude the main result.
+Recall: $l=\sqrt[8]{n}$ and
+Let $p=\sqrt[8]{n} \cdot \log n$. Thus, $M_i=(p-1)^l \cdot l!<\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}$, for large
+- Let $C$ be a monotone cat computing CLQUE $(n, \sqrt[4]{n})$.
+- We apply the approximators at each gate of $C$ iteratively.
+- The output gate of $C$ thus is written as a $\operatorname{CC}\left(x_1, \ldots, x_m\right)$ for some $m \leqslant M$ and $\left|x_i\right| \leqslant l$.
+- Based on the above, we have two cases:
+
+Case 1: $\operatorname{cc}\left(x_1, \ldots, x_m\right) \equiv 0$.
+Thus, the number of false negatives introduced is the total of all possible positive-instance, namely all possible $k-c$ cliques: $\binom{n}{k}$.
+Thus,
+
+$$
+|C| \geq \frac{\binom{n}{k}}{\operatorname{lemmax}^2\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}},
+$$
+
+
+Case $2: \operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ false positives (half of $(k-1)$-colourings).
+By Lemma 2: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
+
 
 \para{Base Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.
 
-This is an easy case: We need to show a crude circuit $\operatorname{CC}\left(X_1, \ldots, X_\right)$ with $m \leq M$ and $\left|X_i\right| \leqslant l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
-But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors here!)
+This is an easy case: We need to show a crude circuit $\operatorname{CC}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leqslant l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
+But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors here.)
 
 
-\subsubsection{Induction Step of the proof}
+\subsection{Induction step of the proof}
 Given two crude circuits
 $\operatorname{CC}(\mathcal X)$ and 
 $\operatorname{CC}(\mathcal Y) 
 $, with $\mathcal{X}=\{X_1, \ldots, X_m\}$, 
-$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i$, we wish to construct another crude circuits  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
+$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$, we wish to construct the  crude circuits  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
 \operatorname{CC}(\mathcal Y)$, respectively.
 
 \case{1}
@@ -222,7 +398,7 @@ $\lor$-gate.
 
 \textit{Solution}: We need to cleverly \emph{reduce} the number of sets $X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma.
 
-\subsection{The Sunflower Lemma}
+\subsubsection{The Sunflower Lemma}
 
 \begin{figure}
     \centering
@@ -291,7 +467,7 @@ This concludes the Sunflower Lemma's proof.
 
 
 
-\subsection{Approximating OR and AND using Plucking}
+\subsubsection{Induction step continued: approximating OR and AND using Plucking}
 - By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leqslant l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
 - Plucking a sunflower: replacing all petals by their core. 4 sets
 
@@ -301,48 +477,6 @@ Definition (Approximate OR and AND): foxily of sets The approximate $-V$ of two 
 
 The approximate $-\Lambda$ of $C C(x)$ and $C C(Y)$ is: $\operatorname{cc}\left(\right.$ pluck $\left\{X_i \cup Y_j:\left|X_i \cup Y_j\right| \leqslant l\right.$ and $\left.\left.X_i \in \chi, Y_j \in Y\right\}\right)$
 
-
-
-
-
-False Positives \& False Negatives
-
-We shall now show that $V$ and $\Lambda$-approximators are good, in the sense that they introduce few errors!
-
-Out of all possible inputs to a cat computing Clique ( $n, k$ ) (for $k=\sqrt[4]{n})$, the ne are:
-Accept-instances: $G=(V, E)$ is a graph on $n$ modes that contains a $k$-clique.
-Reject-instances: $G=(V, E)$ is a graph on $n$ nodes that does not contain a $k$-clique.
-We shall restrict attention $t_0$ only subsets of Accept and Rejed instances. This will be sufficient for the proof (it's more convenient that way). Thus, our focus is on "extreme" cases of inputs:
-
-
-
-- Positive-lnputs: $G=(v, E)$ has $x$ nodes and a $k$-clique ( $k$ nodes $w /$ all edges between them); while no other edge exist in $G$.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.5\linewidth]{images/clique1.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
-\end{figure}
-
-
-There are $\binom{x}{k}$ positive-inputs, each one is dearly an accept input to $\operatorname{CUQ} \cup E(n, k)$.
-- Negative Inputs: $G=\left(v_1 E\right)$ has $n$ nodes and $(k-1)$-colouring (independent sets). In other words, nodes $V$ are coloured by some $k-1$ colours (one colour for each independent set [ie., set of nodes w/ no edge between them]). And all edges between notes w/ different colours.
-
-
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=.6\linewidth]{images/clique2.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
-\end{figure}
-
-
-
-Note: 1) There are $(k-1)^n$ negative -inputs. (We count twice two identical graphs w/ colours interchanged.)
-2) A $(k-1)$-colouring is a negative-input for $\operatorname{CUQUE}(n, k)$ because a $k$-clique cannot be coloured by $k-1$ colours.
-3) In fact, even a single edge added to a $(k-1)$-colouring will make the graph contain a k-clique!
 
 
 
@@ -374,53 +508,6 @@ $$
 \left.c c\left(p l u c k\left\{x_i \cup Y_j:\left|x_i \cup y_0\right| \leq l, x_i \in \chi, y_i \in\right\}\right\}\right)=1
 $$
 
-
-Lemma 1: Each approximation step introduces at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
-
-Lemma 2: Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false negatives.
-
-Proof of monotone Pkt lower bound from these lemmas. CLAIM: Every crude-ctt CC $\left(X_1, \ldots, x_m\right) w /$ $\left|x_i\right| \leq l$ and $m \leqslant M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the negative -instances.
-Proof: If $\operatorname{CC}\left(x_1 \ldots x_m\right) \neq 0$, then it accept's at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i$. The size of $X_i$ is $\leqslant l<k$, thus many graphs $G$ that are not $k$-cliques still have e-cliqnes
-
-
-
-cont.
-Let's count how many such graphs exist, using probability. Consider a graph $G=(V, E)$; assign randomly (and independently) from among $(k-1)$ colours to the modes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes.
-
-$$
-\operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1}
-$$
-
-
-Denote by $R\left(X_i\right)$ the evert that in the random colouring to $G$, there exists a pair of nodes with the same colour in $X_i$
-Then, $\operatorname{Pr}\left[R\left(x_i\right)\right] \leqslant \frac{\binom{x_i \mid}{ 2}}{k-1} \leqslant \frac{\binom{l}{2}}{k-1} \leqslant \frac{1}{2}$.
-there are $\binom{\mid x_i i}{2}$ pairs
-of nodes in $X_i$. We use
-the union bound.
-This means that out of all negative-instances to CLIQUE $(n, k)$ (namely, all ( $k-1)$-colouring of a graph w/ $n$ nodes), at least half of them are going to colour $X_i$ w/ different colours. Hence, for these negative -instance, there will be edges between all nodes in $X_i$, and thus $\left(C\left(x_1, \ldots, x_m\right)(G)=1\right.$ for each of these negative instances $G$.
-
-
-
-
-We are now ready to conclude the main result.
-Recall: $l=\sqrt[8]{n}$ and
-Let $p=\sqrt[8]{n} \cdot \log n$. Thus, $M_i=(p-1)^l \cdot l!<\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}$, for large
-- Let $C$ be a monotone cat computing CLQUE $(n, \sqrt[4]{n})$.
-- We apply the approximators at each gate of $C$ iteratively.
-- The output gate of $C$ thus is written as a $\operatorname{CC}\left(x_1, \ldots, x_m\right)$ for some $m \leqslant M$ and $\left|x_i\right| \leqslant l$.
-- Based on the above, we have two cases:
-
-Case 1: $\operatorname{cc}\left(x_1, \ldots, x_m\right) \equiv 0$.
-Thus, the number of false negatives introduced is the total of all possible positive-instance, namely all possible $k-c$ cliques: $\binom{n}{k}$.
-Thus,
-
-$$
-|C| \geq \frac{\binom{n}{k}}{\operatorname{lemmax}^2\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}},
-$$
-
-
-Case $2: \operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ false positives (half of $(k-1)$-colourings).
-By Lemma 2: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
 
 
 

@@ -140,17 +140,24 @@ The rest of this chapter aims to prove this theorem. \textit{Our exposition is t
 
 We first provide an overview of the approach we take to prove \Cref{thm:razborov} which is called \emph{the approximation method}. 
 We shall describe a way of approximating any \textbf{monotone} circuit for $\operatorname{CLIQUE}({n}, {k})$ by a crude circuit, namely a big OR of cliques, as follows.
-
+ 
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \textbf{Approximation Method}:
 The upshot of the method is the following: \emph{by  way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be well approximated by a small crude circuit. Then, if the number of nodes in the circuit is small. the output gate is also well approximated by a small crude circuit. Now, use an auxiliary argument to show that there is no small crude circuit approximating well  $\operatorname{CLIQUE}({n}, {k})$.
 \end{tcolorbox}
+% =======
+% The upshot is the following: \emph{by way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be approximated by a small crude circuit. Then, the output gate is also approximated by a small crude circuit. Now, use an auxiliary argument to show that there is no small crude circuit approximating $\operatorname{CLIQUE}({n}, {k})$.
+% >>>>>>> f39d2195a6351cafba5750ac78532621d361fb0c
 
-More precisely we have:  
+More precisely, we have:  
 \begin{enumerate}
+ 
 \item  Given a monotone circuit $C$, we shall construct a crude circuit 
 $CC(X_1, \ldots, X_m)$ for some $m$ and $|{X}_{i}| \leq l$ (for some $l$, and for $i=1, \ldots, m$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
+% =======
+% \item  Given a monotone circuit $C$, we shall construct a crude circuit ${CC}({X_1, \ldots, {X_m})}$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
+% >>>>>>> f39d2195a6351cafba5750ac78532621d361fb0c
 
 \item That is, if the number of gates in $C$ is small the precision is  good, namely the crude circuit ${CC}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  "NO" on an input that has a $k$-clique, or "YES" on an input that has no $k$-clique).\label{it:approximation-b}
 

@@ -82,15 +82,15 @@ $S_1, S_2, \ldots, S_{\binom{n}{k}}$ are the $\binom{n}{k}$ subgraphs in $G$ eac
 Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.
 \end{trailer}
 
-\subsection{Crude Circuits for CLIQUE}
+\subsection{Approximators}
 
-A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of an OR gate $\bigvee$ of many  $S_i$'s, each of size $k$ and where each $S_i$ is an AND of the edge variables in $S_i$, as in the example above, is called a \textit{crude-circuit} for CLIQUE($n, k)$. More formally, we have the following. 
+A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of an OR gate $\bigvee$ of many  $S_i$'s, each of size $k$ and where each $S_i$ is an AND of the edge variables in $S_i$, as in the example above, is called an \textit{approximator} for CLIQUE($n, k)$. More formally, we have the following. 
 
 % *Do not* use the \begin{tcolorbox}[float=..] %option, unless you wish it to float around; namely %not appear sequentially as you put in in the %text. 
 
 \begin{tcolorbox}[colframe=white, colback=red!5, boxrule=0mm, sharp corners]
-\textbf{Crude-circuits $CC\left(X_1, \ldots, X_m\right)$ for CLIQUE}.
-Let $V$ be a set of nodes and let $X_1,\dots,X_n\in V$ be a collection of subsets of nodes. The \emph{crude-circuit} $CC\left(X_1, \ldots, X_m\right)$ is defined to be 
+\textbf{Approximators $CC\left(X_1, \ldots, X_m\right)$ for CLIQUE}.
+Let $V$ be a set of nodes and let $X_1,\dots,X_n\in V$ be a collection of subsets of nodes. The \emph{approximator} $CC\left(X_1, \ldots, X_m\right)$ is defined to be 
 $\bigvee_{r=1}^m\bigwedge_{i<j \in X_r} x_{ij}$.
 Note that the $X_i$'s may have different sizes (and specifically their sizes may be different from $k$).
 \end{tcolorbox}
@@ -99,7 +99,7 @@ Note that $CC\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\ch
 
 We shall also use the abbreviated notation $CC(\mathcal X)$ for $CC(X_1,\dots,X_m)$ when $\mathcal X = \{X_1,\dots,X_m\}$.
 
-% We denote by $CC\left(S_1, \ldots, S_{\binom{n}{k}}\right)$ the crude circuit computing the $\bigvee$ of all subgraphs $S_1, \ldots, S_{n\choose k }$.
+% We denote by $CC\left(S_1, \ldots, S_{\binom{n}{k}}\right)$ the approximator computing the $\bigvee$ of all subgraphs $S_1, \ldots, S_{n\choose k }$.
 
 \begin{trailer}{Example of simple useful asymptotic computations}
 %\begin{note} 
@@ -286,7 +286,7 @@ That is, there exists a constant $c$ such that  for large enough $n \in \mathbb{
 The rest of this chapter aims to prove this theorem. \textit{Our exposition is taken from Papadimitriou's textbook} \cite{Pap94}.
 
 
-%Recall: a crude circuit is a big OR of cliques, each computed as a big AND.
+%Recall: a approximator is a big OR of cliques, each computed as a big AND.
 
 
 
@@ -297,40 +297,40 @@ The rest of this chapter aims to prove this theorem. \textit{Our exposition is t
 \paragraph{Approximation Method Overview}
 
 We first provide an overview of the approach we take to prove \Cref{thm:razborov} which is called \emph{the approximation method}. 
-We shall describe a way of approximating any \textbf{monotone} circuit for $\operatorname{CLIQUE}({n}, {k})$ by a crude circuit, namely a big OR of cliques, as follows.
+We shall describe a way of approximating any \textbf{monotone} circuit for $\operatorname{CLIQUE}({n}, {k})$ by a approximator, namely a big OR of cliques, as follows.
  
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \textbf{Approximation Method}:
-The upshot of the method is the following: \emph{by  way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be well approximated by a small crude circuit. Then, if the number of nodes in the circuit is small the output gate is also well approximated by a small crude circuit. Now, use an auxiliary argument to show that there is no small crude circuit approximating well  $\operatorname{CLIQUE}({n}, {k})$.
+The upshot of the method is the following: \emph{by  way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be well approximated by a small approximator. Then, if the number of nodes in the circuit is small the output gate is also well approximated by a small approximator. Now, use an auxiliary argument to show that there is no small approximator approximating well  $\operatorname{CLIQUE}({n}, {k})$.
 \end{tcolorbox}
 % =======
-% The upshot is the following: \emph{by way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be approximated by a small crude circuit. Then, the output gate is also approximated by a small crude circuit. Now, use an auxiliary argument to show that there is no small crude circuit approximating $\operatorname{CLIQUE}({n}, {k})$.
+% The upshot is the following: \emph{by way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be approximated by a small approximator. Then, the output gate is also approximated by a small approximator. Now, use an auxiliary argument to show that there is no small approximator approximating $\operatorname{CLIQUE}({n}, {k})$.
 % >>>>>>> f39d2195a6351cafba5750ac78532621d361fb0c
 
 More precisely, we have:  
 \begin{enumerate}
  
-\item  Given a monotone circuit $C$, we shall construct a crude circuit 
+\item  Given a monotone circuit $C$, we shall construct a approximator 
 $CC(X_1, \ldots, X_m)$ for some $m$ and $|{X}_{i}| \leq l$ (for some $l$, and for $i=1, \ldots, m$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
 % =======
-% \item  Given a monotone circuit $C$, we shall construct a crude circuit ${CC}({X_1, \ldots, {X_m})}$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
+% \item  Given a monotone circuit $C$, we shall construct a approximator ${CC}({X_1, \ldots, {X_m})}$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
 % >>>>>>> f39d2195a6351cafba5750ac78532621d361fb0c
 
-\item That is, if the number of gates in $C$ is small the precision is  good, namely the crude circuit ${CC}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  "NO" on an input that has a $k$-clique, or "YES" on an input that has no $k$-clique).\label{it:approximation-b}
+\item That is, if the number of gates in $C$ is small the precision is  good, namely the approximator ${CC}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  "NO" on an input that has a $k$-clique, or "YES" on an input that has no $k$-clique).\label{it:approximation-b}
 
-The \textbf{approximation} (i.e., construction of a crude circuit for CLIQUE(${n},{k})$ given the circuit $C$) will proceed in steps, one step for each gate of the monotone circuit:
+The \textbf{approximation} (i.e., construction of an approximator for CLIQUE(${n},{k})$ given the circuit $C$) will proceed in steps, one step for each gate of the monotone circuit:
 
 \begin{enumerate}
     
-\item If $C$ is a monotone circuit computing $\operatorname{CLIQUE}({n}, {k})$ we can \textit{approximate} any gate OR or AND in $C$ with a crude circuit.
+\item If $C$ is a monotone circuit computing $\operatorname{CLIQUE}({n}, {k})$ we can \textit{approximate} any gate OR or AND in $C$ with an approximator.
 
 \item Each such approximation step introduces rather few errors (false positives and false negatives).
 \end{enumerate}
 
 
 
-\item We show that every crude circuit ${CC}({X}_1, \ldots, {X_m})$ ($|{X}_i| \leq l$ for some $l$, for all $i=1, \ldots, m$ ), ought to make \textit{exponentially many errors} on the function $\operatorname{CLIQUE}(n, k)$. From \ref{it:approximation-b} above we conclude that there exists no circuit $C$ with a small number of gates. 
+\item We show that every approximator ${CC}({X}_1, \ldots, {X_m})$ ($|{X}_i| \leq l$ for some $l$, for all $i=1, \ldots, m$ ), ought to make \textit{exponentially many errors} on the function $\operatorname{CLIQUE}(n, k)$. From \ref{it:approximation-b} above we conclude that there exists no circuit $C$ with a small number of gates. 
 \end{enumerate}
 
 
@@ -357,7 +357,7 @@ $$
 $$
 
 
-Each (hypothetical) crude-circuit we use in the approximation is:
+Each (hypothetical) approximator we use in the approximation is:
 
 $$
 C C\left(X_1, \ldots, X_m\right)
@@ -369,7 +369,7 @@ for $m \leq M$ and $\left|X_i\right| \leq l, \forall i \in[m]$.
 \newcommand{\cliquenk}{\ensuremath{\operatorname{CLIQUE}(n,k)}}
 
 %___________________________________________________________________
-\subsection{The Input Set: Extreme Graphs, False Positive and False Negatives}
+\subsection{The Input Set: Extreme Graphs, False Positive and  Negatives}
 %___________________________________________________________________
 
 Here we consider the input graphs we are going to analyse. 
@@ -441,11 +441,11 @@ For simplicity, we shall call these negative inputs \emph{$(k-1)$-\textbf{colour
 
 \para{False Positive and False Negative Inputs}
 
-Let $V$ be a set of $n$ nodes, and  $CC(\mathcal X)$ be a   crude circuit, with  $\mathcal X$ a collection $X_1\dots,X_m\subseteq V$ of subsets of nodes. We say that  a graph $G(V,E)$ (with $n$ nodes) is a \textbf{false positive} if $CC(\mathcal X)(G)=1$ while $G$ is  a $(k-1)$-colouring (and hence, not a $k$-clique). Similarly, a graph $G$ with $n$ nodes $V$ is said to be a \textbf{false negative} if $CC(\mathcal X)(G)=0$ while $G$ \emph{is} a $k$-clique.
+Let $V$ be a set of $n$ nodes, and  $CC(\mathcal X)$ be an   approximator, with  $\mathcal X$ a collection $X_1\dots,X_m\subseteq V$ of subsets of nodes. We say that  a graph $G(V,E)$ (with $n$ nodes) is a \textbf{false positive} if $CC(\mathcal X)(G)=1$ while $G$ is  a $(k-1)$-colouring (and hence, not a $k$-clique). Similarly, a graph $G$ with $n$ nodes $V$ is said to be a \textbf{false negative} if $CC(\mathcal X)(G)=0$ while $G$ \emph{is} a $k$-clique.
 
 
 %___________________________________________________________________
-%\subsection{Approximating $\lor,\land$ Gates with Crude Circuits %}
+%\subsection{Approximating $\lor,\land$ Gates with approximators %}
 %___________________________________________________________________
 
 
@@ -461,7 +461,7 @@ Let $V$ be a set of $n$ nodes, and  $CC(\mathcal X)$ be a   crude circuit, with 
 
 
 %___________________________________________________________________
-\subsection{Concluding the Lower Bound using Structural Induction on the Circuit   }
+\subsection{Concluding the Lower Bound using Structural Induction    }
 %___________________________________________________________________
 
 
@@ -474,7 +474,7 @@ Let $V$ be a set of $n$ nodes, and  $CC(\mathcal X)$ be a   crude circuit, with 
 
 
 
-What does it mean that a crude circuit C(X) \emph{approximates} the monotone circuit C? It means that ``on most'' extreme input graphs $G$, $C(G) = CC(X)(G)$, namely the crude circuit agrees with the actual circuit on most $G$'s. 
+What does it mean that an approximator C(X) \emph{approximates} the monotone circuit C? It means that ``on most'' extreme input graphs $G$, $C(G) = CC(X)(G)$, namely the approximator agrees with the actual circuit on most $G$'s. 
 
 The approximation of the  monotone circuit $C$ that computes $\operatorname{CLIQUE}(n, k)$ is constructed  by\emph{ induction on the size of $C$,} i.e., number of $\lor, \wedge$ gates in $C$.
 
@@ -486,7 +486,7 @@ The approximation of the  monotone circuit $C$ that computes $\operatorname{CLIQ
 
  
 
-Now, assume that $C$ is a monotone circuit we wish to build an approximation for. We are going to build the crude circuit for the output gate $C$ gradually, from the input gates of $C$  through the internal gates, up to the output gate, so that the approximator of the output gate will be the approximator of the circuit $C$. The skeleton of this construction is done as follows, following a standard structural induction scheme:
+Now, assume that $C$ is a monotone circuit we wish to build an approximation for. We are going to build the approximator for the output gate $C$ gradually, from the input gates of $C$  through the internal gates, up to the output gate, so that the approximator of the output gate will be the approximator of the circuit $C$. The skeleton of this construction is done as follows, following a standard structural induction scheme:
 
 \begin{trailer}
 {Approximation of the output gate of $C$ via structural induction}
@@ -545,50 +545,69 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 
 
 
-\begin{proof}[Proof of monotone circuit lower bound from \Cref{lem:new-false-positives} and \Cref{lem:new-false-negatives}]
+\begin{proof}[Proof of \Cref{thm:razborov} monotone circuit lower bound from \Cref{lem:new-false-positives} and \Cref{lem:new-false-negatives}]
 \
 
 \begin{claim}\label{cla:}
- Every crude-ctt CC $\left(X_1, \ldots, x_m\right) w /$ $\left|x_i\right| \leq l$ and $m \leqslant M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the negative -instances.
+ Every approximator  CC$\left(X_1, \ldots, X_m\right)$ with 
+  $\left|X_i\right| \leq l$ and $m \leq M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the (extreme) negative instances.
 \end{claim}
 \begin{proof}
-If $\operatorname{CC}\left(x_1 \ldots x_m\right) \neq 0$, then it accept's at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i$. The size of $X_i$ is $\leqslant l<k$, thus many graphs $G$ that are not $k$-cliques still have e-cliqnes
+If $\operatorname{CC}\left(X_1 \ldots X_m\right)$ is not identically 0 (namely, not the OR of \emph{zero} ANDs, i.e., not the formula $0$), then it accepts at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i\in[m]$. The size of $X_i$ is at most $ l<k$, thus many graphs $G$ that are not $k$-cliques still have $l$-cliques (because the approximator evaluates to 1 when there is a $|X_i|$-clique on the nodes in $X_i$).
 
-Let's count how many such graphs exist, using probability. Consider a graph $G=(V, E)$; assign randomly (and independently) from among $(k-1)$ colours to the modes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes.
-
+Let us  count how many such graphs exist, using \emph{probability}, for simplicity. Consider a graph $G=(V, E)$; assign randomly (and independently) from among $k-1$ colours to the nodes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes, then we clearly have
 $$
-\operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1}
+\operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1}.
 $$
 
 
-Denote by $R\left(X_i\right)$ the evert that in the random colouring to $G$, there exists a pair of nodes with the same colour in $X_i$
-Then, $\operatorname{Pr}\left[R\left(x_i\right)\right] \leqslant \frac{\binom{x_i \mid}{ 2}}{k-1} \leqslant \frac{\binom{l}{2}}{k-1} \leqslant \frac{1}{2}$.
-there are $\binom{\mid x_i i}{2}$ pairs
-of nodes in $X_i$. We use
+Denote by $R\left(X_i\right)$ the event that in the random colouring of $G$, there exists a pair of nodes with the same colour in $X_i$.
+Then, 
+$$
+\operatorname{Pr}\left[R\left(x_i\right)\right] \leq \frac{\binom{|x_i |}{2}}{k-1} \leq \frac{\binom{l}{2}}{k-1} \leq \frac{1}{2}.
+$$
+The first inequality from the left holds because there are $\binom{\mid x_i |}{2}$ pairs
+of nodes in $X_i$, and we use
 the union bound.
-This means that out of all negative-instances to CLIQUE $(n, k)$ (namely, all ( $k-1)$-colouring of a graph w/ $n$ nodes), at least half of them are going to colour $X_i$ w/ different colours. Hence, for these negative -instance, there will be edges between all nodes in $X_i$, and thus $\left(C\left(x_1, \ldots, x_m\right)(G)=1\right.$ for each of these negative instances $G$.
+The rightmost inequality holds because 
+$ \frac{\binom{\sqrt[8]{n}}{2}}{\sqrt[4]{n}-1}
+= \frac{\frac{\sqrt[8]{n} \cdot(\sqrt[8]{n}-1)}{2}}{\sqrt[4]{n}-1} \le \frac{\sqrt[4]{n}}{2\sqrt[4]{n}}=\frac{1}{2}.
+$
+
+
+This means that out of all \emph{negative-instances} to CLIQUE $(n, k)$ (namely, all $(k-1)$-colouring of a graph with $n$ nodes), at least half of them are going to colour $X_i$ w/ different colours. Hence, for these negative -instance, there will be edges between all nodes in $X_i$, and thus $\left(C\left(x_1, \ldots, x_m\right)(G)=1\right.$ for each of these negative instances $G$.
 \end{proof}
 
 
-We are now ready to conclude the main result.
+We are now ready to conclude the proof of \Cref{thm:razborov}.
+
 Recall: $l=\sqrt[8]{n}$ and
-Let $p=\sqrt[8]{n} \cdot \log n$. Thus, $M_i=(p-1)^l \cdot l!<\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}$, for large
-- Let $C$ be a monotone cat computing CLIQUE $(n, \sqrt[4]{n})$.
-- We apply the approximators at each gate of $C$ iteratively.
-- The output gate of $C$ thus is written as a $\operatorname{CC}\left(x_1, \ldots, x_m\right)$ for some $m \leqslant M$ and $\left|x_i\right| \leqslant l$.
+let $p=\sqrt[8]{n} \cdot \log n$. 
+Thus, $M=(p-1)^l \cdot l!<\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}$, for large enough $n$.~\footnote{\includegraphics{image001.png}}
+
+
+
+- Let $C$ be a monotone circuit computing CLIQUE $(n, \sqrt[4]{n})$.
+
+- We apply the approximators at each gate of $C$ iteratively (using structural induction as above).
+
+- The output gate of $C$ thus is written as a $\operatorname{CC}\left(X_1, \ldots, X_m\right)$ for some $m \leqslant M$ and $\left|x_i\right| \leqslant l$.
+
 - Based on the above, we have two cases:
 
-Case 1: $\operatorname{cc}\left(x_1, \ldots, x_m\right) \equiv 0$.
-Thus, the number of false negatives introduced is the total of all possible positive-instance, namely all possible $k-c$ cliques: $\binom{n}{k}$.
+\case 1 $\operatorname{CC}\left(X_1, \ldots, X_m\right) \equiv 0$.
+Thus, the number of false negatives introduced is the total of all possible positive-instance, namely all possible $k$-cliques: $\binom{n}{k}$.
+
 Thus,
 
 $$
-|C| \geq \frac{\binom{n}{k}}{\operatorname{lemmax}^2\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}},
+|C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}}, \text{~~for $C=1/12$.}
 $$
 
 
-Case $2: \operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ false positives (half of $(k-1)$-colourings).
-By Lemma 2: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
+\case 2 $\operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ false positives (half of $(k-1)$-colourings).
+
+By Lemma XXX: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
 \end{proof}
 
 
@@ -603,7 +622,7 @@ By Lemma 2: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2
 \para{Base Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.
 
-This is an easy case: We need to show a crude circuit $\operatorname{CC}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leqslant l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
+This is an easy case: We need to show an approximator $\operatorname{CC}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leqslant l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
 But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors here.)
 
 
@@ -611,11 +630,11 @@ But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors he
 
 \para{Induction step }
 
-Given two crude circuits
+Given two approximators
 $\operatorname{CC}(\mathcal X)$ and 
 $\operatorname{CC}(\mathcal Y) 
 $, with $\mathcal{X}=\{X_1, \ldots, X_m\}$, 
-$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$, we wish to construct the  crude circuits  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
+$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$, we wish to construct the  approximators  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
 \operatorname{CC}(\mathcal Y)$, respectively.
 
 \case{1}
@@ -831,7 +850,7 @@ $$
 
 Cont. of proof of Lemma 1
 
-Consider now an AND approximation step of crude circuits $C C(x)$ and $C(y)$. It can be broken down in three phases: First, we form $C C(\{X \cup Y: X \in \chi, Y \in Y\})$; this introduces no false positives, because any graph in which $X U Y$ is a clique must have a clique in both and $Y$, and thus it was accepted by both constituent crude circuits. The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$ ), and can therefore introduce no false positives. The third phase entails a sequence of fewer than $\mathrm{M}^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-\mathrm{P}}(\mathrm{k}-1)^{\mathrm{n}}$ false positives are introduced. The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives
+Consider now an AND approximation step of approximators $C C(x)$ and $C(y)$. It can be broken down in three phases: First, we form $C C(\{X \cup Y: X \in \chi, Y \in Y\})$; this introduces no false positives, because any graph in which $X U Y$ is a clique must have a clique in both and $Y$, and thus it was accepted by both constituent approximators. The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$ ), and can therefore introduce no false positives. The third phase entails a sequence of fewer than $\mathrm{M}^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-\mathrm{P}}(\mathrm{k}-1)^{\mathrm{n}}$ false positives are introduced. The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives
 
 
 

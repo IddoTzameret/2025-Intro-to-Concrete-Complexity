@@ -421,7 +421,7 @@ For simplicity, we shall call these negative inputs \emph{$(k-1)$-\textbf{colour
 \begin{figure}[H]
     \centering
     \includegraphics[width=.6\linewidth]{images/clique2.png}
-    \caption{Example of a \emph{negative input}: a graph whose all and only edges are between distinct $(k-1)$-independent sets.}
+    \caption{Example of a \emph{negative input} (i.e., $k-1$-colouring): a graph whose all and only edges are between distinct $(k-1)$-independent sets.}
     \label{fig:enter-label}
 \end{figure}
 
@@ -511,12 +511,11 @@ $CC(g_1),CC(g_2)$ (again, we shall do this in the sequel).
  We call the two cases of the induction step above \emph{the approximator steps}. Namely, we have an approximator step for an OR gate and an AND gate, respectively. 
 
 
-\begin{tcolorbox}[colframe=white, colback=blue!11, boxrule=0mm, sharp corners]
-\textbf{Introducing new false positives and false negative.}
+\begin{definition}[Introducing new false positives and false negative]
 Let the graph $G$ be a false positive of $CC(g_1\lor g_2)$ (i.e., a $(k-1)$-colouring of which $CC(g_1\lor g_2)(G)=1$).
 We say the approximator step \emph{\textbf{introduced $G$ as a new false positive}} if $(CC(g_1)\lor CC(g_2))(G)=0$, namely, $G$ is \emph{not} a false positive of $(CC(g_1)\lor CC(g_2))$.
 Similarly, let the graph $G$ be a false positive of $CC(g_1\land g_2)$. We say the approximator step \textbf{\emph{introduced $G$ as a new false positive}} if $(CC(g_1)\land CC(g_2))(G)=0$.
-\end{tcolorbox}
+\end{definition}
 
 To prove the lower bound theorem, all we need to know are some properties of the approximator steps. In particular, the following two lemmas, proved in the next section, are sufficient to conclude the proof.   
 
@@ -545,29 +544,34 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 
 
 
-\begin{proof}[Proof of \Cref{thm:razborov} monotone circuit lower bound from \Cref{lem:new-false-positives} and \Cref{lem:new-false-negatives}]
+\begin{proof}[Proof of \Cref{thm:razborov}   from \Cref{lem:new-false-positives} and \Cref{lem:new-false-negatives}]
 \
+
+We use the following claim. 
 
 \begin{claim}\label{cla:}
  Every approximator  CC$\left(X_1, \ldots, X_m\right)$ with 
-  $\left|X_i\right| \leq l$ and $m \leq M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the (extreme) negative instances.
+  $\left|X_i\right| \leq l$ and $m \leq M$ is either identically 0 (and thus is wrong on all positive instances, namely all positive instances are false negatives in this case), or outputs 1 on at least half of the (extreme) negative instances (namely, at least half of the negative instances are false positives).
 \end{claim}
 \begin{proof}
 If $\operatorname{CC}\left(X_1 \ldots X_m\right)$ is not identically 0 (namely, not the OR of \emph{zero} ANDs, i.e., not the formula $0$), then it accepts at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i\in[m]$. The size of $X_i$ is at most $ l<k$, thus many graphs $G$ that are not $k$-cliques still have $l$-cliques (because the approximator evaluates to 1 when there is a $|X_i|$-clique on the nodes in $X_i$).
 
-Let us  count how many such graphs exist, using \emph{probability}, for simplicity. Consider a graph $G=(V, E)$; assign randomly (and independently) from among $k-1$ colours to the nodes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes, then we clearly have
+Let us  estimate  how many such extreme graphs exist. 
+Namely, we wish to show that there are many negative instances, i.e., $k-1$-colourings, that will nevertheless satisfy  
+$\operatorname{CC}\left(X_1 \ldots X_m\right)$.
+It is simple to count this  using \emph{probability}. Consider a graph $G=(V, E)$ and  assign randomly (and independently) from among $k-1$ colours to the nodes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes, then we  have
 $$
-\operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1}.
+\operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1},
 $$
-
+because regardless of the colour $v_1$ got, there is only one colour out of $k-1$ options for $v_2$ that will match the colour of $v_1$.
 
 Denote by $R\left(X_i\right)$ the event that in the random colouring of $G$, there exists a pair of nodes with the same colour in $X_i$.
 Then, 
 $$
-\operatorname{Pr}\left[R\left(x_i\right)\right] \leq \frac{\binom{|x_i |}{2}}{k-1} \leq \frac{\binom{l}{2}}{k-1} \leq \frac{1}{2}.
+\operatorname{Pr}\left[R\left(X_i\right)\right] \leq \frac{\binom{|X_i |}{2}}{k-1} \leq \frac{\binom{l}{2}}{k-1} \leq \frac{1}{2}.
 $$
-The first inequality from the left holds because there are $\binom{\mid x_i |}{2}$ pairs
-of nodes in $X_i$, and we use
+The first inequality from the left holds because there are $\binom{\mid X_i |}{2}$ pairs
+of nodes in $X_i$, and 
 the union bound.
 The rightmost inequality holds because 
 $ \frac{\binom{\sqrt[8]{n}}{2}}{\sqrt[4]{n}-1}
@@ -576,15 +580,15 @@ $
 
 
 
-This means that out of all \emph{negative-instances} to CLIQUE $(n, k)$ (namely, all $(k-1)$-colouring of a graph with $n$ nodes), at least half of them are going to colour $X_i$ w/ different colours. Hence, for these negative -instance, there will be edges between all nodes in $X_i$, and thus $\left(C\left(x_1, \ldots, x_m\right)(G)=1\right.$ for each of these negative instances $G$.
+This means that out of all negative instances to CLIQUE $(n, k)$ (namely, all $(k-1)$-colourings with $n$ nodes), at least half of them are going to colour $X_i$ with \emph{different} colours. Hence, for these negative instances, there will be edges between all nodes in $X_i$, and thus for each of these negative instances $G$ we have $CC\left(X_1, \ldots, X_m\right)(G)=1$.
 \end{proof}
 
 
 
 
-\begin{tcolorbox}[colframe=white, colback=blue!8, boxrule=0mm, sharp corners]
+\begin{tcolorbox}[colframe=white, colback=green!4, boxrule=0mm, sharp corners]
 \textbf{Union Bound}: if in a random experiment
-there are $m$ possible ``bad'' events, each with probability at most $\alpha$, then the probability that at least one of the ``bad'' events occurred is at most $\alpha$.
+there are $m$ possible ``bad'' events, each with probability at most $\alpha$, then the probability that at least one of the ``bad'' events occurred is at most $m\alpha$.
 
 \small
 \medskip 
@@ -620,35 +624,34 @@ Intuitively, the union bound tells us that the probability of at least one of th
 
 \end{tcolorbox}
 
-We are now ready to conclude the proof of \Cref{thm:razborov}.
+We are now ready to conclude the proof of \Cref{thm:razborov} (given the two lemmas \ref{lem:new-false-positives} and \ref{lem:new-false-negatives}).
 
 Recall: $l=\sqrt[8]{n}$ and
 let $p=\sqrt[8]{n} \cdot \log n$. 
 Thus, $M=(p-1)^l \cdot l!<\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}$, for large enough $n$.~\footnote{\includegraphics{image001.png}}
 
+Let $C$ be a monotone circuit computing CLIQUE $(n, \sqrt[4]{n})$.
+We apply the approximators at each gate of $C$ iteratively (using structural induction as above).
+The output gate of $C$ thus is written as  $\operatorname{CC}\left(X_1, \ldots, X_m\right)$ for some $m \leqslant M$ and $\left|X_i\right| \leqslant l$.
+Based on the above claim, we have two cases:
 
-
-- Let $C$ be a monotone circuit computing CLIQUE $(n, \sqrt[4]{n})$.
-
-- We apply the approximators at each gate of $C$ iteratively (using structural induction as above).
-
-- The output gate of $C$ thus is written as a $\operatorname{CC}\left(X_1, \ldots, X_m\right)$ for some $m \leqslant M$ and $\left|x_i\right| \leqslant l$.
-
-- Based on the above, we have two cases:
-
-\case 1 $\operatorname{CC}\left(X_1, \ldots, X_m\right) \equiv 0$.
-Thus, the number of false negatives introduced is the total of all possible positive-instance, namely all possible $k$-cliques: $\binom{n}{k}$.
-
-Thus,
+\case 1 $\operatorname{CC}\left(X_1, \ldots, X_m\right) $ is identically 0. 
+Thus, the number of \emph{false negatives} $\operatorname{CC}\left(X_1, \ldots, X_m\right)$ has in total is the number of all possible positive instance, namely all possible $k$-cliques, which is $\binom{n}{k}$.
+By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  we have:
 
 $$
 |C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}}, \text{~~for $C=1/12$.}
 $$
 
 
-\case 2 $\operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ false positives (half of $(k-1)$-colourings).
-
-By Lemma XXX: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
+\case 2 $\operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ \emph{false positives} (half of the total number of  $(k-1)$-colourings).
+By \Cref{lem:new-false-positives},
+each approximation step introduces at most $ M^2 \frac{(k-1)^n}{2^p}$
+ new false positives. Therefore,  we have:
+$$
+|C| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c\cdot \sqrt[8]{n}}, 
+\text{~~for~}c=\frac{1}{3}.
+$$
 \end{proof}
 
 

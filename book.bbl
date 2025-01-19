@@ -10,11 +10,4 @@ Christos~H. Papadimitriou.
 \newblock {\em Computational Complexity}.
 \newblock Addison-Wesley, Reading, Massachusetts, 1994.
 
-\bibitem{Razb85}
-Alexander~A. Razborov.
-\newblock Lower bounds on the monotone complexity of some {B}oolean functions.
-\newblock {\em Dokl. Akad. Nauk SSSR}, 281(4):798--801, 1985.
-\newblock In Russian. English translation in \textit{Soviet Math. Doklady},
-  31:354-357, 1985.
-
 \end{thebibliography}

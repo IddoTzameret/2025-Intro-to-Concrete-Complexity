@@ -10,9 +10,9 @@ The style file: plain.bst
 Database file #1: PrfCmplx-Bakoma.bib
 
 Here's how much of BibTeX's memory you used:
- Cites:                 2 out of 7500
- Fields:               35 out of 125000
- Hash table:        34852 out of 35000
- Strings:             511 out of 30000
- String pool:        4260 out of 750000
+ Cites:                 3 out of 7500
+ Fields:               58 out of 125000
+ Hash table:        34851 out of 35000
+ Strings:             520 out of 30000
+ String pool:        4480 out of 750000
  Wizard functions:   2118 out of 10000

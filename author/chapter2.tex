@@ -475,10 +475,11 @@ $CC(g_1),CC(g_2)$ (again, we shall this in the sequel).
 
  We call the two cases of the induction step above \emph{the approximator steps}. Namely, we have an approximator step for an OR gate and an AND gate, resp. 
 
-To prove the lower bound theorem, all we need to know are some properties of the approximator steps. In particular, let the graph $G$ be a false positive of $CC(g_1\lor g_2)$ (i.e., a $(k-1)$-colouring of which $CC(g_1\lor g_2)(G)=1$).
+Let the graph $G$ be a false positive of $CC(g_1\lor g_2)$ (i.e., a $(k-1)$-colouring of which $CC(g_1\lor g_2)(G)=1$).
 We say the approximator step \emph{introduced $G$ as a new false positive} if $(CC(g_1)\lor CC(g_2))(G)=0$, namely, $G$ is \emph{not} a false positive of $(CC(g_1)\lor CC(g_2))$.
 Similarly, let the graph $G$ be a false positive of $CC(g_1\land g_2)$. We say the approximator step \emph{introduced $G$ as a new false positive} if $(CC(g_1)\land CC(g_2))(G)=0$.
- 
+
+To prove the lower bound theorem, all we need to know are some properties of the approximator steps. In particular, the following two lemmas, proved in the next section, are sufficient to conclude the proof.   
 
 
 
@@ -502,11 +503,12 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 
 
 
-==============
 
 
 
-Proof of monotone Pkt lower bound from these lemmas. CLAIM: Every crude-ctt CC $\left(X_1, \ldots, x_m\right) w /$ $\left|x_i\right| \leq l$ and $m \leqslant M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the negative -instances.
+\textbf{Proof of monotone circuit lower bound from these lemmas}. 
+
+CLAIM: Every crude-ctt CC $\left(X_1, \ldots, x_m\right) w /$ $\left|x_i\right| \leq l$ and $m \leqslant M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the negative -instances.
 Proof: If $\operatorname{CC}\left(x_1 \ldots x_m\right) \neq 0$, then it accept's at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i$. The size of $X_i$ is $\leqslant l<k$, thus many graphs $G$ that are not $k$-cliques still have e-cliqnes
 
 
@@ -552,7 +554,7 @@ By Lemma 2: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2
 
 
 
-\subsection{Induction step of the proof}
+\subsection{Proofs of \cref{lem:new-false-positives} and \cref{lem:new-false-negatives}:  the approximator steps }
 \para{Base Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.
 
@@ -562,6 +564,7 @@ But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors he
 
 
 
+\para{Induction step }
 
 Given two crude circuits
 $\operatorname{CC}(\mathcal X)$ and 
@@ -648,7 +651,7 @@ This concludes the Sunflower Lemma's proof.
 
 
 
-\subsubsection{Induction step continued: approximating OR and AND using Plucking}
+\subsubsection{Induction step of approximator construction continued: approximating OR and AND using Plucking}
 - By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leqslant l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
 - Plucking a sunflower: replacing all petals by their core. 4 sets
 

@@ -444,8 +444,6 @@ For simplicity, we shall call these negative inputs \emph{$(k-1)$-\textbf{colour
 Let $V$ be a set of $n$ nodes, and  $CC(\mathcal X)$ be a   crude circuit, with  $\mathcal X$ a collection $X_1\dots,X_m\subseteq V$ of subsets of nodes. We say that  a graph $G(V,E)$ (with $n$ nodes) is a \textbf{false positive} if $CC(\mathcal X)(G)=1$ while $G$ is  a $(k-1)$-colouring (and hence, not a $k$-clique). Similarly, a graph $G$ with $n$ nodes $V$ is said to be a \textbf{false negative} if $CC(\mathcal X)(G)=0$ while $G$ \emph{is} a $k$-clique.
 
 
-% Enable watermark from this point onward
-%\SetWatermarkText{DRAFT}
 %___________________________________________________________________
 %\subsection{Approximating $\lor,\land$ Gates with Crude Circuits %}
 %___________________________________________________________________
@@ -481,7 +479,7 @@ What does it mean that a crude circuit C(X) \emph{approximates} the monotone cir
 The approximation of the  monotone circuit $C$ that computes $\operatorname{CLIQUE}(n, k)$ is constructed  by\emph{ induction on the size of $C$,} i.e., number of $\lor, \wedge$ gates in $C$.
 
 
-\begin{tcolorbox}[colframe=white, colback=blue!11, boxrule=0mm, sharp corners]
+\begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
 \begin{note} Such an induction is usually called \emph{\textbf{induction on the structure of the circuit} $C$} (or \emph{structural induction}), since we are going to induce on subcircuits of $C$, assuming the induction hypothesis holds for them. Using the structure of the circuit, we shall conclude that the induction hypothesis  holds for the gate that connects those two subcircuits. The base case is showing that the induction statement holds for circuits of size 1 (i.e., singled variable circuits). The induction step is showing that the induction statement holds for $A\lor B$ assuming the induction statement holds for both $A$ and $B$. And similarly for the case of $A\land B$.     
 \end{note}
 \end{tcolorbox}
@@ -493,25 +491,32 @@ Now, assume that $C$ is a monotone circuit we wish to build an approximation for
 \begin{trailer}
 {Approximation of the output gate of $C$ via structural induction}
 
-\textbf{Base step}: input nodes $x_{ij}$. Build an approximator $CC(x_{ij})$ (we shall see this in the next section).
+\begin{description}
+\item[\textbf{Base step}:] 
+Input nodes $x_{ij}$. Build an approximator $CC(x_{ij})$ (we shall see this in the next section).
 
+\item[\textbf{Induction step (the Approximator Step)}:]
+\
 
-\textbf{Induction step}: 
-
-\case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $CC(g_1),CC(g_2)$, respectively. We thus need to construct $CC(g_1\lor g_2)$ from $CC(g_1),CC(g_2)$ (we shall this in the sequel).
+\case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $CC(g_1),CC(g_2)$, respectively. We thus need to construct $CC(g_1\lor g_2)$ from $CC(g_1),CC(g_2)$ (we shall do this in the sequel).
 
 \case 2 AND gate $g_1\land g_2$. 
 By induction hypothesis we already built the approximators 
 of $g_1,g_2$, $CC(g_1),CC(g_2)$, respectively. 
 We thus need to construct $CC(g_1\land g_2)$ from 
-$CC(g_1),CC(g_2)$ (again, we shall this in the sequel).
+$CC(g_1),CC(g_2)$ (again, we shall do this in the sequel).
+\end{description} 
 \end{trailer}
 
- We call the two cases of the induction step above \emph{the approximator steps}. Namely, we have an approximator step for an OR gate and an AND gate, resp. 
+ We call the two cases of the induction step above \emph{the approximator steps}. Namely, we have an approximator step for an OR gate and an AND gate, respectively. 
 
+
+\begin{tcolorbox}[colframe=white, colback=blue!11, boxrule=0mm, sharp corners]
+\textbf{Introducing new false positives and false negative.}
 Let the graph $G$ be a false positive of $CC(g_1\lor g_2)$ (i.e., a $(k-1)$-colouring of which $CC(g_1\lor g_2)(G)=1$).
-We say the approximator step \emph{introduced $G$ as a new false positive} if $(CC(g_1)\lor CC(g_2))(G)=0$, namely, $G$ is \emph{not} a false positive of $(CC(g_1)\lor CC(g_2))$.
-Similarly, let the graph $G$ be a false positive of $CC(g_1\land g_2)$. We say the approximator step \emph{introduced $G$ as a new false positive} if $(CC(g_1)\land CC(g_2))(G)=0$.
+We say the approximator step \emph{\textbf{introduced $G$ as a new false positive}} if $(CC(g_1)\lor CC(g_2))(G)=0$, namely, $G$ is \emph{not} a false positive of $(CC(g_1)\lor CC(g_2))$.
+Similarly, let the graph $G$ be a false positive of $CC(g_1\land g_2)$. We say the approximator step \textbf{\emph{introduced $G$ as a new false positive}} if $(CC(g_1)\land CC(g_2))(G)=0$.
+\end{tcolorbox}
 
 To prove the lower bound theorem, all we need to know are some properties of the approximator steps. In particular, the following two lemmas, proved in the next section, are sufficient to conclude the proof.   
 
@@ -540,14 +545,15 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 
 
 
-\textbf{Proof of monotone circuit lower bound from these lemmas}. 
+\begin{proof}[Proof of monotone circuit lower bound from \Cref{lem:new-false-positives} and \Cref{lem:new-false-negatives}]
+\
 
-CLAIM: Every crude-ctt CC $\left(X_1, \ldots, x_m\right) w /$ $\left|x_i\right| \leq l$ and $m \leqslant M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the negative -instances.
-Proof: If $\operatorname{CC}\left(x_1 \ldots x_m\right) \neq 0$, then it accept's at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i$. The size of $X_i$ is $\leqslant l<k$, thus many graphs $G$ that are not $k$-cliques still have e-cliqnes
+\begin{claim}\label{cla:}
+ Every crude-ctt CC $\left(X_1, \ldots, x_m\right) w /$ $\left|x_i\right| \leq l$ and $m \leqslant M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the negative -instances.
+\end{claim}
+\begin{proof}
+If $\operatorname{CC}\left(x_1 \ldots x_m\right) \neq 0$, then it accept's at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i$. The size of $X_i$ is $\leqslant l<k$, thus many graphs $G$ that are not $k$-cliques still have e-cliqnes
 
-
-
-cont.
 Let's count how many such graphs exist, using probability. Consider a graph $G=(V, E)$; assign randomly (and independently) from among $(k-1)$ colours to the modes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes.
 
 $$
@@ -561,14 +567,13 @@ there are $\binom{\mid x_i i}{2}$ pairs
 of nodes in $X_i$. We use
 the union bound.
 This means that out of all negative-instances to CLIQUE $(n, k)$ (namely, all ( $k-1)$-colouring of a graph w/ $n$ nodes), at least half of them are going to colour $X_i$ w/ different colours. Hence, for these negative -instance, there will be edges between all nodes in $X_i$, and thus $\left(C\left(x_1, \ldots, x_m\right)(G)=1\right.$ for each of these negative instances $G$.
-
-
+\end{proof}
 
 
 We are now ready to conclude the main result.
 Recall: $l=\sqrt[8]{n}$ and
 Let $p=\sqrt[8]{n} \cdot \log n$. Thus, $M_i=(p-1)^l \cdot l!<\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}$, for large
-- Let $C$ be a monotone cat computing CLQUE $(n, \sqrt[4]{n})$.
+- Let $C$ be a monotone cat computing CLIQUE $(n, \sqrt[4]{n})$.
 - We apply the approximators at each gate of $C$ iteratively.
 - The output gate of $C$ thus is written as a $\operatorname{CC}\left(x_1, \ldots, x_m\right)$ for some $m \leqslant M$ and $\left|x_i\right| \leqslant l$.
 - Based on the above, we have two cases:
@@ -584,11 +589,17 @@ $$
 
 Case $2: \operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ false positives (half of $(k-1)$-colourings).
 By Lemma 2: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
+\end{proof}
 
 
 
+% Enable watermark from this point onward
+\newpage\SetWatermarkText{DRAFT}
 
-\subsection{Proofs of \cref{lem:new-false-positives} and \cref{lem:new-false-negatives}:  the approximator steps }
+
+% _____________________________________________________________________
+\subsection{Proofs of \cref{lem:new-false-positives} and \cref{lem:new-false-negatives}: the approximator steps}
+%_______________________________________________________________________
 \para{Base Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.
 
@@ -684,8 +695,9 @@ This concludes the Sunflower Lemma's proof.
 \end{proof}
 
 
-
+% _____________________________________________________________________
 \subsubsection{Induction step of approximator construction continued: approximating OR and AND using Plucking}
+% _____________________________________________________________________
 - By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leqslant l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
 - Plucking a sunflower: replacing all petals by their core. 4 sets
 
@@ -823,9 +835,10 @@ Consider now an AND approximation step of crude circuits $C C(x)$ and $C(y)$. It
 
 
 
+\para{Proof of Lemma XXX}
+We need to show that each approximation step introduces $\leqslant M^2\binom{n-l-1}{k-l-1}$ false negatives.
 
-Lemma 2: Each approximation step introduces $\leqslant M^2\binom{n-l-1}{k-l-1}$ false negatives.
-PRoOF:
+\begin{proof}[Proof of Lemma XXX]
 Case $V_{:}$a false negative:
 A $k$-clique $G=(v, E)$ st.: $(\operatorname{cc}(x) \vee \operatorname{ccc}(y))(G)=1$ (
 
@@ -853,3 +866,6 @@ All $k$-cliques $G$ that contain $Z$.
 We calculate an upper bound on these false negatives: There are precisely $\binom{n-|z|}{k-|z|}$ k-cliques er that contain $z$ (as part of the clique). Since, $|z|>l$, the upper bound on the false negatives introduced by each deletion is $\binom{n-l-1}{k-l-1}$.
 
 Since there are $\leqslant M^2$ deletions of sets, (because $|\chi|=|y|=M$ ), we get that the number of false negatives introduced by $a_n 1$-approximation step is $\leqslant M^2 \cdot\binom{n-t-1}{k-l-1}$.
+
+\end{proof}
+

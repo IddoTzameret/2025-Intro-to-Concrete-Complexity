@@ -575,9 +575,50 @@ $ \frac{\binom{\sqrt[8]{n}}{2}}{\sqrt[4]{n}-1}
 $
 
 
+
 This means that out of all \emph{negative-instances} to CLIQUE $(n, k)$ (namely, all $(k-1)$-colouring of a graph with $n$ nodes), at least half of them are going to colour $X_i$ w/ different colours. Hence, for these negative -instance, there will be edges between all nodes in $X_i$, and thus $\left(C\left(x_1, \ldots, x_m\right)(G)=1\right.$ for each of these negative instances $G$.
 \end{proof}
 
+
+
+
+\begin{tcolorbox}[colframe=white, colback=blue!8, boxrule=0mm, sharp corners]
+\textbf{Union Bound}: if in a random experiment
+there are $m$ possible ``bad'' events, each with probability at most $\alpha$, then the probability that at least one of the ``bad'' events occurred is at most $\alpha$.
+
+\small
+\medskip 
+---
+
+We recall some  basic notions from  discrete probability, and explain more formally the union bound in what follows.
+
+In discrete probability we consider a \emph{ Sample Space}
+$\Omega$ as a finite set of  all possible outcomes of a random experiment. The experiment is random in the sense that its outcomes are not deterministic rather hold  probabilities. 
+Each element $a$ in $\Omega$ is a possible outcome of the  random experiment, and is sometime called an \emph{atomic outcome}, and  holds a precise probability denoted $\Pr\left[a \right]$, such that:
+\begin{enumerate}
+\item $0\le \Pr\left[a\right]\le 1$, for all $a\in\Omega$.
+
+\item $\Sigma_{a\in\Omega}\Pr[a]=1$.
+\end{enumerate} 
+
+An \emph{event} is a set $E\subseteq\Omega$ of atomic outcomes. The probability of an event $E\subseteq\Omega$ is naturally defined as $\Sigma_{a\in E}\Pr[a]$. 
+
+
+\bigskip 
+The \emph{union bound} provides an upper bound on the probability of the union of multiple events. Formally, if \( E_1, E_2, \dots, E_n \) are events in a probability space, the union bound states:
+
+\[
+P\left(\bigcup_{i=1}^n E_i\right) \leq \sum_{i=1}^n P(E_i)
+\]
+
+Intuitively, the union bound tells us that the probability of at least one of the events \( E_1, E_2, \dots, E_n \) occurring is at most the sum of the probabilities of each individual event. This bound is useful because it is often \emph{much easier} to calculate or estimate the probabilities of \emph{individual} events than to calculate the exact probability of their union.
+
+ If some events are not disjoint, their combined probability is generally less than the sum of their probabilities, so the union bound is not tight in this case. The union bound is tight (exact) if and only if the events are disjoint. Otherwise, it overestimates the probability due to double-counting overlaps among the events.
+
+
+
+
+\end{tcolorbox}
 
 We are now ready to conclude the proof of \Cref{thm:razborov}.
 

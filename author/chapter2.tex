@@ -454,9 +454,6 @@ The approximation of the  monotone circuit $C$ that computes $\operatorname{CLIQ
 
  
 
-
-
-
 Now, assume that $C$ is a monotone circuit we wish to build an approximation for. We are going to build the crude circuit for the output gate $C$ gradually, from the input gates of $C$  through the internal gates, up to the output gate, so that the approximator of the output gate will be the approximator of the circuit $C$. The skeleton of this construction is done as follows, following a standard structural induction scheme:
 
 \begin{trailer}
@@ -502,7 +499,174 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 
 
 
- a false positive:
+
+
+
+==============
+
+
+
+Proof of monotone Pkt lower bound from these lemmas. CLAIM: Every crude-ctt CC $\left(X_1, \ldots, x_m\right) w /$ $\left|x_i\right| \leq l$ and $m \leqslant M$ is either identically 0 (and thus is wrong on all positive-instances), or outputs 1 on at least half of the negative -instances.
+Proof: If $\operatorname{CC}\left(x_1 \ldots x_m\right) \neq 0$, then it accept's at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i$. The size of $X_i$ is $\leqslant l<k$, thus many graphs $G$ that are not $k$-cliques still have e-cliqnes
+
+
+
+cont.
+Let's count how many such graphs exist, using probability. Consider a graph $G=(V, E)$; assign randomly (and independently) from among $(k-1)$ colours to the modes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes.
+
+$$
+\operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1}
+$$
+
+
+Denote by $R\left(X_i\right)$ the evert that in the random colouring to $G$, there exists a pair of nodes with the same colour in $X_i$
+Then, $\operatorname{Pr}\left[R\left(x_i\right)\right] \leqslant \frac{\binom{x_i \mid}{ 2}}{k-1} \leqslant \frac{\binom{l}{2}}{k-1} \leqslant \frac{1}{2}$.
+there are $\binom{\mid x_i i}{2}$ pairs
+of nodes in $X_i$. We use
+the union bound.
+This means that out of all negative-instances to CLIQUE $(n, k)$ (namely, all ( $k-1)$-colouring of a graph w/ $n$ nodes), at least half of them are going to colour $X_i$ w/ different colours. Hence, for these negative -instance, there will be edges between all nodes in $X_i$, and thus $\left(C\left(x_1, \ldots, x_m\right)(G)=1\right.$ for each of these negative instances $G$.
+
+
+
+
+We are now ready to conclude the main result.
+Recall: $l=\sqrt[8]{n}$ and
+Let $p=\sqrt[8]{n} \cdot \log n$. Thus, $M_i=(p-1)^l \cdot l!<\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}$, for large
+- Let $C$ be a monotone cat computing CLQUE $(n, \sqrt[4]{n})$.
+- We apply the approximators at each gate of $C$ iteratively.
+- The output gate of $C$ thus is written as a $\operatorname{CC}\left(x_1, \ldots, x_m\right)$ for some $m \leqslant M$ and $\left|x_i\right| \leqslant l$.
+- Based on the above, we have two cases:
+
+Case 1: $\operatorname{cc}\left(x_1, \ldots, x_m\right) \equiv 0$.
+Thus, the number of false negatives introduced is the total of all possible positive-instance, namely all possible $k-c$ cliques: $\binom{n}{k}$.
+Thus,
+
+$$
+|C| \geq \frac{\binom{n}{k}}{\operatorname{lemmax}^2\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}},
+$$
+
+
+Case $2: \operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ false positives (half of $(k-1)$-colourings).
+By Lemma 2: $|c| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c \cdot 8} n$, for $c=\frac{1}{3}$.
+
+
+
+
+\subsection{Induction step of the proof}
+\para{Base Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
+That is, if there is an edge between $i$ and $j$ in the input graph $G$.
+
+This is an easy case: We need to show a crude circuit $\operatorname{CC}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leqslant l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
+But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors here.)
+
+
+
+
+
+Given two crude circuits
+$\operatorname{CC}(\mathcal X)$ and 
+$\operatorname{CC}(\mathcal Y) 
+$, with $\mathcal{X}=\{X_1, \ldots, X_m\}$, 
+$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$, we wish to construct the  crude circuits  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
+\operatorname{CC}(\mathcal Y)$, respectively.
+
+\case{1}
+$\lor$-gate.
+
+\textit{Naive (wrong) attempt}: $\operatorname{CC}(\mathcal X)
+\lor \operatorname{CC}(\mathcal Y)$ is approximated by $\operatorname{CC}(\mathcal X \cup \mathcal Y)$. That is, $\operatorname{CC}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_m\right)$. At first glance this is a good solution because it does not introduce any errors (why?). But there is a \textit{problem}: what if $m+m^{\prime}>M$?
+
+
+\textit{Solution}: We need to cleverly \emph{reduce} the number of sets $X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma.
+
+\subsubsection{The Sunflower Lemma}
+
+\begin{figure}
+    \centering
+        \includegraphics[width=0.75\linewidth]{images/sunflower-lemma.png}
+    \caption{From https://theorydish.blog/2021/05/19/entropy-estimation-via-two-chains-streamlining-the-proof-of-the-sunflower-lemma/ by Lunjia Hu}
+    \label{fig:enter-label}
+\end{figure}
+
+
+
+%Let $U$ be some universe, namely a set of elements (e.g., nodes). Let $Z=\{Z_1,\dots,Z_M\}$ be a family of sets from the universe, i.e., $Z_i\subseteq U$, for each $i$, with $M$ some natural number. %We call the family $P$ a \emph{sunflower} if  $\left\{P_1, \ldots, P_p\right\}$ called \emph{petals}, each $\left|P_i\right| \leqslant \ell$ where $\ell=\sqrt[8]{n}$, such that all pairs $P_i \neq P_j$ in the family share the \emph{same} intersection, called the \emph{core} of the sunflower. In other words, there is a set  $ P_i\cap P_j = Core$
+
+\begin{svgraybox}
+\begin{definition}[Sunflower] Let $U$ be some universe, namely a set of elements (e.g., nodes). Let $P=\{P_1,\dots,P_p\}$ be a family of distinct sets from the universe, i.e., $P_i\subseteq U$, for each $i$, with $p$ some natural number. 
+We call the family $P$ a \emph{sunflower} if each all pairs $P_i \neq P_j$ in the family $P$ share the \emph{same} intersection, called the \emph{core} of the sunflower.
+In other words, there is a (possibly empty) set $\mathrm{core}\subseteq U$, such that for all $i\neq j$,  $ P_i\cap P_j = \mathrm{core}$.
+If $P$ is a sunflower we call the $P_i$'s the \emph{petals} of the sunflower $P$.
+\end{definition}
+\end{svgraybox}
+Note: It's okay if the core is the empty-set! This means all petals are (pairwise) disjoint.
+
+
+\begin{svgraybox}
+\textbf{Sunflower Lemma} (Erd\"os-Rado): For every $\ell, p$, let $Z$ be a family of more than $M=(p-1)^\ell \cdot \ell!$ non-empty sets each of size $\leqslant \ell$ (over some universe $U$). Then, $Z$ contains a sunflower of size $p$. In other words, $Z$ contains $p$ sets $\left\{P_1, \ldots, P_p\right\}$, each $P_i$ has size $\leqslant \ell$, and the intersection of every pair $P_i \neq P_j$ is fixed: $P_i \cap P_j=P_{i'} \cap P_{j'}$, for all $i \neq j \neq i' \neq j^{\prime}$.
+\end{svgraybox}
+
+
+
+\begin{proof}[Proof of the Sunflower Lemma]
+By induction on $\ell$.
+
+\Base  $\ell=1$. Thus the statement we need to show is that $p$ different singletons form a sunflower. Which is true (the core is $\varnothing$ ).
+
+
+\induction $\ell>1$. Consider a family $D \subseteq Z$ of pairwise disjoint sets that is maximal in the sense that if we add any new set in $Z$ to the family $D$, the sets in $D$ are not pairwise disjoint anymore. That is, every set in $Z \backslash D$ intersects some set in $D$.
+
+\case 1 If $D$ contains $\geq p$ sets then $D$ is a sunflower with empty core, and we are done.
+
+\case 2 Otherwise, let $E$ be the \emph{union} of all sets in $D$.
+Since $|D|<p$, i.e., $D$ contains less than $p$ sets, and each set in $D$ has size $\le \ell$, we know that $|E| \leqslant(p-1)\cd\ell$.
+
+\medskip 
+
+Moreover, $E$ intersects every set in $Z$ by assumption.
+Since $Z$ has more than $M$ sets by assumption, and each set intersects some element of $E$, there exists an element $d \in E$ that intersects $>\frac{M}{(p-1) l}=(p-1)^{l-1} \cdot(l-1)!$ sets in $Z$.
+
+
+\begin{remark}
+If a set $E$ intersect all sets in a family of sets $X_1, . ., X_M$ then there is an element in $E$ that appears in $\geq \frac{M}{|E|}$ sets $X_i$.
+Otherwise, each element in $E$ appears in $<\frac{M}{|E|}$ sets $X_i$. Thus, $E$ intersects $<|E| \cdot \frac{M}{|E|}=M$ sets $X_i$, which is a contradiction to the assumption.
+\end{remark}
+
+
+Consider
+
+$$
+Z^{\prime}:=\{z \backslash\{d\} \mid z \in Z \text { and } d \in z\} .
+$$
+
+
+We know that $Z^{\prime}$ contains more than $M^{\prime}=(p-1)^{l-1} \cdot(l-1)!$ sets.
+By \emph{induction hypothesis} (since $M^{\prime}$ is "$M$ with $\ell$ decreased by one"), $Z^{\prime}$ contains a sunflower denoted $\left\{P_1, \ldots, P_p\right\}$ with $\left|p_i\right| \leq \ell-1$, for all $i$.
+Hence, $\left\{P_1 \cup\{d\}, \ldots, P_p \cup\{d\}\right\}$ is a sunflower in $Z$.
+This concludes the Sunflower Lemma's proof.
+\end{proof}
+
+
+
+\subsubsection{Induction step continued: approximating OR and AND using Plucking}
+- By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leqslant l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
+- Plucking a sunflower: replacing all petals by their core. 4 sets
+
+Corollary: If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cant apply plucking. anymore we know by the Sunflower Lemma that the number of sets is $\leqslant M$ ).
+pluck (z): the result of repeated plucking of a family of sets $Z$, until $|Z| \leqslant M$.
+Definition (Approximate OR and AND): foxily of sets The approximate $-V$ of two crude -circuits $C C(x)$ and $\operatorname{cc}(y)$ is: $\operatorname{cc}($ pluck $(x \cup y))$.
+
+The approximate $-\Lambda$ of $C C(x)$ and $C C(Y)$ is: $\operatorname{cc}\left(\right.$ pluck $\left\{X_i \cup Y_j:\left|X_i \cup Y_j\right| \leqslant l\right.$ and $\left.\left.X_i \in \chi, Y_j \in Y\right\}\right)$
+
+
+
+
+
+$V$-approximator of $\operatorname{CC}(x) \vee \operatorname{CC}(y)$ introduces
+1) a false negative:
+
+A k-clique $G=(v, E)$ s.t.: $(\operatorname{cc}(x) \operatorname{vcc}(y))(G)=1$
+2) a false positive:
 $\operatorname{cedpluck}(x \cup y)(G)=0$
 $V$-aterosimator
 $A(k-1)$-coburing $G=(v, E)$ s.t.

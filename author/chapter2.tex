@@ -82,6 +82,11 @@ $S_1, S_2, \ldots, S_{\binom{n}{k}}$ are the $\binom{n}{k}$ subgraphs in $G$ eac
 Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.
 \end{trailer}
 
+
+\newcommand{\APPX}{\ensuremath{\mathrm{APX}}}
+
+
+
 \subsection{Approximators}
 
 A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of an OR gate $\bigvee$ of many  $S_i$'s, each of size $k$ and where each $S_i$ is an AND of the edge variables in $S_i$, as in the example above, is called an \textit{approximator} for CLIQUE($n, k)$. More formally, we have the following. 
@@ -89,21 +94,21 @@ A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of an OR ga
 % *Do not* use the \begin{tcolorbox}[float=..] %option, unless you wish it to float around; namely %not appear sequentially as you put in in the %text. 
 
 \begin{tcolorbox}[colframe=white, colback=red!5, boxrule=0mm, sharp corners]
-\textbf{Approximators $CC\left(X_1, \ldots, X_m\right)$ for CLIQUE}.
-Let $V$ be a set of nodes and let $X_1,\dots,X_n\in V$ be a collection of subsets of nodes. The \emph{approximator} $CC\left(X_1, \ldots, X_m\right)$ is defined to be 
+\textbf{Approximators $\APPX\left(X_1, \ldots, X_m\right)$ for CLIQUE}.
+Let $V$ be a set of nodes and let $X_1,\dots,X_n\in V$ be a collection of subsets of nodes. The \emph{approximator} $\APPX\left(X_1, \ldots, X_m\right)$ is defined to be 
 $\bigvee_{r=1}^m\bigwedge_{i<j \in X_r} x_{ij}$.
 Note that the $X_i$'s may have different sizes (and specifically their sizes may be different from $k$).
 \end{tcolorbox}
  
-Note that $CC\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\choose 2}$, precisely when in the graph $G$ over the nodes $V$ described by the assignment $\alpha$, at least one of the $X_i$ subgraphs is a clique. 
+Note that $\APPX\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\choose 2}$, precisely when in the graph $G$ over the nodes $V$ described by the assignment $\alpha$, at least one of the $X_i$ subgraphs is a clique. The ida behind the approximator is that it provides a good approximation for the CLIQUE function, in the sense that for many  input graphs it provides the correct answer.   
 
-We shall also use the abbreviated notation $CC(\mathcal X)$ for $CC(X_1,\dots,X_m)$ when $\mathcal X = \{X_1,\dots,X_m\}$.
+We shall also use the abbreviated notation $\APPX(\mathcal X)$ for $\APPX(X_1,\dots,X_m)$ when $\mathcal X = \{X_1,\dots,X_m\}$.
 
-% We denote by $CC\left(S_1, \ldots, S_{\binom{n}{k}}\right)$ the approximator computing the $\bigvee$ of all subgraphs $S_1, \ldots, S_{n\choose k }$.
+% We denote by $\APPX\left(S_1, \ldots, S_{\binom{n}{k}}\right)$ the approximator computing the $\bigvee$ of all subgraphs $S_1, \ldots, S_{n\choose k }$.
 
 \begin{trailer}{Example of simple useful asymptotic computations}
 %\begin{note} 
-Note that when $k\in(\Omega(\log n),O(n-\log n))$, $CC\left(S_1, \ldots, S_{n\choose k}\right)$, where $S_1,\dots,S_{n\choose k}$ are all possible subsets of size $k$ from the set of $n$ nodes $V$, is of \emph{super-polynomial size}, because $ n\choose k$ is super polynomial for $k$ in this range. For the sake of getting used to asymptotic estimates such as these, it is helpful to go over the computations in more detail, as follows.
+Note that when $k\in(\Omega(\log n),O(n-\log n))$, $\APPX\left(S_1, \ldots, S_{n\choose k}\right)$, where $S_1,\dots,S_{n\choose k}$ are all possible subsets of size $k$ from the set of $n$ nodes $V$, is of \emph{super-polynomial size}, because $ n\choose k$ is super polynomial for $k$ in this range. For the sake of getting used to asymptotic estimates such as these, it is helpful to go over the computations in more detail, as follows.
 
 We shall estimate the asymptotic behaviour of $\binom{n}{\log n} $, showing it is superpolynomial, namely, $\binom{n}{\log n} =
 n^{\Omega(\log n)}$. First, we observe that
@@ -312,12 +317,12 @@ More precisely, we have:
 \begin{enumerate}
  
 \item  Given a monotone circuit $C$, we shall construct a approximator 
-$CC(X_1, \ldots, X_m)$ for some $m$ and $|{X}_{i}| \leq l$ (for some $l$, and for $i=1, \ldots, m$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
+$\APPX(X_1, \ldots, X_m)$ for some $m$ and $|{X}_{i}| \leq l$ (for some $l$, and for $i=1, \ldots, m$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
 % =======
-% \item  Given a monotone circuit $C$, we shall construct a approximator ${CC}({X_1, \ldots, {X_m})}$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
+% \item  Given a monotone circuit $C$, we shall construct a approximator ${\APPX}({X_1, \ldots, {X_m})}$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
 % >>>>>>> f39d2195a6351cafba5750ac78532621d361fb0c
 
-\item That is, if the number of gates in $C$ is small the precision is  good, namely the approximator ${CC}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  "NO" on an input that has a $k$-clique, or "YES" on an input that has no $k$-clique).\label{it:approximation-b}
+\item That is, if the number of gates in $C$ is small the precision is  good, namely the approximator ${\APPX}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  "NO" on an input that has a $k$-clique, or "YES" on an input that has no $k$-clique).\label{it:approximation-b}
 
 The \textbf{approximation} (i.e., construction of an approximator for CLIQUE(${n},{k})$ given the circuit $C$) will proceed in steps, one step for each gate of the monotone circuit:
 
@@ -330,7 +335,7 @@ The \textbf{approximation} (i.e., construction of an approximator for CLIQUE(${n
 
 
 
-\item We show that every approximator ${CC}({X}_1, \ldots, {X_m})$ ($|{X}_i| \leq l$ for some $l$, for all $i=1, \ldots, m$ ), ought to make \textit{exponentially many errors} on the function $\operatorname{CLIQUE}(n, k)$. From \ref{it:approximation-b} above we conclude that there exists no circuit $C$ with a small number of gates. 
+\item We show that every approximator ${\APPX}({X}_1, \ldots, {X_m})$ ($|{X}_i| \leq l$ for some $l$, for all $i=1, \ldots, m$ ), ought to make \textit{exponentially many errors} on the function $\operatorname{CLIQUE}(n, k)$. From \ref{it:approximation-b} above we conclude that there exists no circuit $C$ with a small number of gates. 
 \end{enumerate}
 
 
@@ -341,7 +346,7 @@ The \textbf{approximation} (i.e., construction of an approximator for CLIQUE(${n
 
 Recall we want to compute CLIQUE$(n, k)$
 with $n$ the number of nodes in the graph and $k$ the size of a clique within the graph. 
-We set:
+Throughout the proof, from now on we set:
 $$
 k=\sqrt[4]{n}.
 $$
@@ -352,7 +357,7 @@ $$
 & l=\sqrt[8]{n} \\
 & p \approx \sqrt[8]{n} \\
 & M=(p-1)^l \cdot l! & \approx(\sqrt[8]{n}-1)^{\sqrt[8]{x}} \cdot(\sqrt[8]{n})! \\
-& & \leq(\sqrt[4]{n})^{\sqrt[8]{n}}
+& & \leq(\sqrt[4]{n})^{\sqrt[8]{n}}.
 \end{aligned}
 $$
 
@@ -360,7 +365,7 @@ $$
 Each (hypothetical) approximator we use in the approximation is:
 
 $$
-C C\left(X_1, \ldots, X_m\right)
+\APPX\left(X_1, \ldots, X_m\right)
 $$
 
 for $m \leq M$ and $\left|X_i\right| \leq l, \forall i \in[m]$.
@@ -441,7 +446,7 @@ For simplicity, we shall call these negative inputs \emph{$(k-1)$-\textbf{colour
 
 \para{False Positive and False Negative Inputs}
 
-Let $V$ be a set of $n$ nodes, and  $CC(\mathcal X)$ be an   approximator, with  $\mathcal X$ a collection $X_1\dots,X_m\subseteq V$ of subsets of nodes. We say that  a graph $G(V,E)$ (with $n$ nodes) is a \textbf{false positive} if $CC(\mathcal X)(G)=1$ while $G$ is  a $(k-1)$-colouring (and hence, not a $k$-clique). Similarly, a graph $G$ with $n$ nodes $V$ is said to be a \textbf{false negative} if $CC(\mathcal X)(G)=0$ while $G$ \emph{is} a $k$-clique.
+Let $V$ be a set of $n$ nodes, and  $\APPX(\mathcal X)$ be an   approximator, with  $\mathcal X$ a collection $X_1\dots,X_m\subseteq V$ of subsets of nodes. We say that  a graph $G(V,E)$ (with $n$ nodes) is a \textbf{false positive} if $\APPX(\mathcal X)(G)=1$ while $G$ is  a $(k-1)$-colouring (and hence, not a $k$-clique). Similarly, a graph $G$ with $n$ nodes $V$ is said to be a \textbf{false negative} if $\APPX(\mathcal X)(G)=0$ while $G$ \emph{is} a $k$-clique.
 
 
 %___________________________________________________________________
@@ -474,7 +479,7 @@ Let $V$ be a set of $n$ nodes, and  $CC(\mathcal X)$ be an   approximator, with 
 
 
 
-What does it mean that an approximator C(X) \emph{approximates} the monotone circuit C? It means that ``on most'' extreme input graphs $G$, $C(G) = CC(X)(G)$, namely the approximator agrees with the actual circuit on most $G$'s. 
+What does it mean that an approximator $\APPX(\mathcal X)$ \emph{approximates} the monotone circuit C? It means that ``on most'' extreme input graphs $G$, $C(G) = \APPX(\mathcal X)(G)$, namely the approximator agrees with the actual circuit on most $G$'s. 
 
 The approximation of the  monotone circuit $C$ that computes $\operatorname{CLIQUE}(n, k)$ is constructed  by\emph{ induction on the size of $C$,} i.e., number of $\lor, \wedge$ gates in $C$.
 
@@ -491,30 +496,37 @@ Now, assume that $C$ is a monotone circuit we wish to build an approximation for
 \begin{trailer}
 {Approximation of the output gate of $C$ via structural induction}
 
+Recall that $\APPX({\mathcal X})$ stands for an approximator with the parameters described above $ l=\sqrt[8]{n} , p \approx \sqrt[8]{n} , M=(p-1)^l \cdot l!$.
+
 \begin{description}
 \item[\textbf{Base step}:] 
-Input nodes $x_{ij}$. Build an approximator $CC(x_{ij})$ (we shall see this in the next section).
+Input nodes $x_{ij}$. Build an approximator $\APPX(x_{ij})$ (we shall see this in the next section).
 
 \item[\textbf{Induction step (the Approximator Step)}:]
 \
 
-\case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $CC(g_1),CC(g_2)$, respectively. We thus need to construct $CC(g_1\lor g_2)$ from $CC(g_1),CC(g_2)$ (we shall do this in the sequel).
+\case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $\APPX(g_1),\APPX(g_2)$, respectively. We thus need to construct $\APPX(g_1\lor g_2)$ from $\APPX(g_1),\APPX(g_2)$ (we shall do this in the sequel).
 
 \case 2 AND gate $g_1\land g_2$. 
 By induction hypothesis we already built the approximators 
-of $g_1,g_2$, $CC(g_1),CC(g_2)$, respectively. 
-We thus need to construct $CC(g_1\land g_2)$ from 
-$CC(g_1),CC(g_2)$ (again, we shall do this in the sequel).
+of $g_1,g_2$, $\APPX(g_1),\APPX(g_2)$, respectively. 
+We thus need to construct $\APPX(g_1\land g_2)$ from 
+$\APPX(g_1),\APPX(g_2)$ (again, we shall do this in the sequel).
 \end{description} 
 \end{trailer}
 
  We call the two cases of the induction step above \emph{the approximator steps}. Namely, we have an approximator step for an OR gate and an AND gate, respectively. 
 
 
-\begin{definition}[Introducing new false positives and false negative]
-Let the graph $G$ be a false positive of $CC(g_1\lor g_2)$ (i.e., a $(k-1)$-colouring of which $CC(g_1\lor g_2)(G)=1$).
-We say the approximator step \emph{\textbf{introduced $G$ as a new false positive}} if $(CC(g_1)\lor CC(g_2))(G)=0$, namely, $G$ is \emph{not} a false positive of $(CC(g_1)\lor CC(g_2))$.
-Similarly, let the graph $G$ be a false positive of $CC(g_1\land g_2)$. We say the approximator step \textbf{\emph{introduced $G$ as a new false positive}} if $(CC(g_1)\land CC(g_2))(G)=0$.
+\begin{definition}[Introducing new false positives and false negatives]
+Let $g_1\circ g_2$ be an $\lor$ or $\land$ gate with two incoming subcircuits $g_1$ and $g_2$, respectively (i.e., $\circ\in\{\lor,\land\}$). \begin{itemize}
+\item 
+Let the graph $G$ be a \emph{negative} input, i.e., a $(k-1)$-colouring. If $(\APPX(g_1)\circ \APPX(g_2))(G)=0$, namely, $\APPX(g_1)\circ \APPX(g_2)$ correctly identified $G$ as a negative input, 
+while $\APPX(g_1\circ g_2)(G)=1$, we say the approximator step \emph{\textbf{introduced $G$ as a new false positive}}. 
+\item Let the graph $G$ be a \emph{positive} input, i.e., a $k$-clique. If $(\APPX(g_1)\circ \APPX(g_2))(G)=1$, namely, $\APPX(g_1)\circ \APPX(g_2)$ correctly identified $G$ as a positive input, while 
+$\APPX(g_1\circ g_2)(G)=0$, we say the approximator 
+step \textbf{\emph{introduced $G$ as a new false positive}}.
+\end{itemize}
 \end{definition}
 
 To prove the lower bound theorem, all we need to know are some properties of the approximator steps. In particular, the following two lemmas, proved in the next section, are sufficient to conclude the proof.   
@@ -550,15 +562,15 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 We use the following claim. 
 
 \begin{claim}\label{cla:}
- Every approximator  CC$\left(X_1, \ldots, X_m\right)$ with 
-  $\left|X_i\right| \leq l$ and $m \leq M$ is either identically 0 (and thus is wrong on all positive instances, namely all positive instances are false negatives in this case), or outputs 1 on at least half of the (extreme) negative instances (namely, at least half of the negative instances are false positives).
+ Every approximator  \APPX$\left(X_1, \ldots, X_m\right)$ with 
+  $\left|X_i\right| \leq l$ and $m \leq M$ is either identically 0, that is, an OR of \emph{zero} ANDs, which is the formula $0$ (and thus is wrong on all positive instances, namely all positive instances are false negatives in this case), or outputs 1 on at least half of the (extreme) negative instances (namely, at least half of the negative instances are false positives).
 \end{claim}
 \begin{proof}
-If $\operatorname{CC}\left(X_1 \ldots X_m\right)$ is not identically 0 (namely, not the OR of \emph{zero} ANDs, i.e., not the formula $0$), then it accepts at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i\in[m]$. The size of $X_i$ is at most $ l<k$, thus many graphs $G$ that are not $k$-cliques still have $l$-cliques (because the approximator evaluates to 1 when there is a $|X_i|$-clique on the nodes in $X_i$).
+If $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$ is not identically 0 (namely, not the OR of \emph{zero} ANDs, i.e., not the formula $0$), then it accepts at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i\in[m]$. The size of $X_i$ is at most $ l<k$, thus many graphs $G$ that are not $k$-cliques still have $l$-cliques (because the approximator evaluates to 1 when there is a $|X_i|$-clique on the nodes in $X_i$).
 
 Let us  estimate  how many such extreme graphs exist. 
 Namely, we wish to show that there are many negative instances, i.e., $k-1$-colourings, that will nevertheless satisfy  
-$\operatorname{CC}\left(X_1 \ldots X_m\right)$.
+$\operatorname{\APPX}\left(X_1 \ldots X_m\right)$.
 It is simple to count this  using \emph{probability}. Consider a graph $G=(V, E)$ and  assign randomly (and independently) from among $k-1$ colours to the nodes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes, then we  have
 $$
 \operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1},
@@ -572,7 +584,7 @@ $$
 $$
 The first inequality from the left holds because there are $\binom{\mid X_i |}{2}$ pairs
 of nodes in $X_i$, and 
-the union bound.
+the union bound (see below).
 The rightmost inequality holds because 
 $ \frac{\binom{\sqrt[8]{n}}{2}}{\sqrt[4]{n}-1}
 = \frac{\frac{\sqrt[8]{n} \cdot(\sqrt[8]{n}-1)}{2}}{\sqrt[4]{n}-1} \le \frac{\sqrt[4]{n}}{2\sqrt[4]{n}}=\frac{1}{2}.
@@ -580,7 +592,7 @@ $
 
 
 
-This means that out of all negative instances to CLIQUE $(n, k)$ (namely, all $(k-1)$-colourings with $n$ nodes), at least half of them are going to colour $X_i$ with \emph{different} colours. Hence, for these negative instances, there will be edges between all nodes in $X_i$, and thus for each of these negative instances $G$ we have $CC\left(X_1, \ldots, X_m\right)(G)=1$.
+This means that out of all negative instances to CLIQUE $(n, k)$ (namely, all $(k-1)$-colourings with $n$ nodes), at least half of them are going to colour $X_i$ with \emph{different} colours. Hence, for these negative instances, there will be edges between all nodes in $X_i$, and thus for each of these negative instances $G$ we have $\APPX\left(X_1, \ldots, X_m\right)(G)=1$.
 \end{proof}
 
 
@@ -625,31 +637,41 @@ Intuitively, the union bound tells us that the probability of at least one of th
 \end{tcolorbox}
 
 We are now ready to conclude the proof of \Cref{thm:razborov} (given the two lemmas \ref{lem:new-false-positives} and \ref{lem:new-false-negatives}).
-
-Recall: $l=\sqrt[8]{n}$ and
+Recall that $l=\sqrt[8]{n}$ and
 let $p=\sqrt[8]{n} \cdot \log n$. 
-Thus, $M=(p-1)^l \cdot l!<\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}$, for large enough $n$.~\footnote{\includegraphics{image001.png}}
+Thus, 
+$$
+\begin{aligned}
+M  = 
+(p-1)^l \cdot l!
+& \leq (\sqrt[8]{n} \cdot \log n)^{\sqrt[8]{n}} \cdot \sqrt[8]{n}! \\
+& \leq (\sqrt[8]{n} \cdot \log n)^{\sqrt[8]{n}}
+\cdot \sqrt[8]{n}^{\sqrt[8]{n}} \\
+& \leq(\sqrt[4]{n} \cdot \log n)^{\sqrt[8]{n}}<
+\left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}, \text{
+for large enough $n$.}
+\end{aligned}
+$$
 
-Let $C$ be a monotone circuit computing CLIQUE $(n, \sqrt[4]{n})$.
+Let $C$ be a monotone circuit computing CLIQUE$(n, \sqrt[4]{n})$.
 We apply the approximators at each gate of $C$ iteratively (using structural induction as above).
-The output gate of $C$ thus is written as  $\operatorname{CC}\left(X_1, \ldots, X_m\right)$ for some $m \leqslant M$ and $\left|X_i\right| \leqslant l$.
+The output gate of $C$ thus is written as  $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ for some $m \leq M$ and $\left|X_i\right| \leq l$.
 Based on the above claim, we have two cases:
 
-\case 1 $\operatorname{CC}\left(X_1, \ldots, X_m\right) $ is identically 0. 
-Thus, the number of \emph{false negatives} $\operatorname{CC}\left(X_1, \ldots, X_m\right)$ has in total is the number of all possible positive instance, namely all possible $k$-cliques, which is $\binom{n}{k}$.
-By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  we have:
-
+\case 1 $\operatorname{\APPX}\left(X_1, \ldots, X_m\right) $ is identically 0. 
+Thus, the number of \emph{false negatives} $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ has in total is the number of all possible positive instance, namely all possible $k$-cliques, which is $\binom{n}{k}$.
+By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  the size of $C$\ is lower bounded by the total number of new errors introduced across all the  gates in $C$ (which is $\ge \binom{n}{k}$), divided by the maximal number of errors introduced by each gate (which is $\le M^2\cd\binom{n-l-1}{k-l-1}$). In other words,
 $$
 |C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}}, \text{~~for $c=1/12$.}
 $$
 
 
-\case 2 $\operatorname{CC}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ \emph{false positives} (half of the total number of  $(k-1)$-colourings).
+\case 2 $\operatorname{\APPX}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ \emph{false positives} (half of the total number of  $(k-1)$-colourings).
 By \Cref{lem:new-false-positives},
-each approximation step introduces at most $ M^2 \frac{(k-1)^n}{2^p}$
+each approximation step introduces at most $ M^2\cd \frac{(k-1)^n}{2^p}$
  new false positives. Therefore,  we have:
 $$
-|C| \geq \frac{\frac{1}{2}(k-1)^n}{M^2 \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c\cdot \sqrt[8]{n}}, 
+|C| \geq \frac{\frac{1}{2}(k-1)^n}{M^2\cd \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c\cdot \sqrt[8]{n}}, 
 \text{~~for~}c=\frac{1}{3}.
 $$
 
@@ -667,8 +689,8 @@ $$
 \para{Base Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.
 
-This is an easy case: We need to show an approximator $\operatorname{CC}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leqslant l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
-But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors here.)
+This is an easy case: We need to show an approximator $\operatorname{\APPX}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leq l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
+But the circuit $\APPX(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors here.)
 
 
 
@@ -676,17 +698,17 @@ But the circuit $C C(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors he
 \para{Induction step }
 
 Given two approximators
-$\operatorname{CC}(\mathcal X)$ and 
-$\operatorname{CC}(\mathcal Y) 
+$\operatorname{\APPX}(\mathcal X)$ and 
+$\operatorname{\APPX}(\mathcal Y) 
 $, with $\mathcal{X}=\{X_1, \ldots, X_m\}$, 
-$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$, we wish to construct the  approximators  for computing $CC(\mathcal{X}) \vee CC(\mathcal{Y})$, and $\operatorname{CC}(\mathcal X) \wedge 
-\operatorname{CC}(\mathcal Y)$, respectively.
+$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$, we wish to construct the  approximators  for computing $\APPX(\mathcal{X}) \vee \APPX(\mathcal{Y})$, and $\operatorname{\APPX}(\mathcal X) \wedge 
+\operatorname{\APPX}(\mathcal Y)$, respectively.
 
 \case{1}
 $\lor$-gate.
 
-\textit{Naive (wrong) attempt}: $\operatorname{CC}(\mathcal X)
-\lor \operatorname{CC}(\mathcal Y)$ is approximated by $\operatorname{CC}(\mathcal X \cup \mathcal Y)$. That is, $\operatorname{CC}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_m\right)$. At first glance this is a good solution because it does not introduce any errors (why?). But there is a \textit{problem}: what if $m+m^{\prime}>M$?
+\textit{Naive (wrong) attempt}: $\operatorname{\APPX}(\mathcal X)
+\lor \operatorname{\APPX}(\mathcal Y)$ is approximated by $\operatorname{\APPX}(\mathcal X \cup \mathcal Y)$. That is, $\operatorname{\APPX}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_m\right)$. At first glance this is a good solution because it does not introduce any errors (why?). But there is a \textit{problem}: what if $m+m^{\prime}>M$?
 
 
 \textit{Solution}: We need to cleverly \emph{reduce} the number of sets $X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma.
@@ -702,7 +724,7 @@ $\lor$-gate.
 
 
 
-%Let $U$ be some universe, namely a set of elements (e.g., nodes). Let $Z=\{Z_1,\dots,Z_M\}$ be a family of sets from the universe, i.e., $Z_i\subseteq U$, for each $i$, with $M$ some natural number. %We call the family $P$ a \emph{sunflower} if  $\left\{P_1, \ldots, P_p\right\}$ called \emph{petals}, each $\left|P_i\right| \leqslant \ell$ where $\ell=\sqrt[8]{n}$, such that all pairs $P_i \neq P_j$ in the family share the \emph{same} intersection, called the \emph{core} of the sunflower. In other words, there is a set  $ P_i\cap P_j = Core$
+%Let $U$ be some universe, namely a set of elements (e.g., nodes). Let $Z=\{Z_1,\dots,Z_M\}$ be a family of sets from the universe, i.e., $Z_i\subseteq U$, for each $i$, with $M$ some natural number. %We call the family $P$ a \emph{sunflower} if  $\left\{P_1, \ldots, P_p\right\}$ called \emph{petals}, each $\left|P_i\right| \leq \ell$ where $\ell=\sqrt[8]{n}$, such that all pairs $P_i \neq P_j$ in the family share the \emph{same} intersection, called the \emph{core} of the sunflower. In other words, there is a set  $ P_i\cap P_j = Core$
 
 \begin{svgraybox}
 \begin{definition}[Sunflower] Let $U$ be some universe, namely a set of elements (e.g., nodes). Let $P=\{P_1,\dots,P_p\}$ be a family of distinct sets from the universe, i.e., $P_i\subseteq U$, for each $i$, with $p$ some natural number. 
@@ -715,7 +737,7 @@ Note: It's okay if the core is the empty-set! This means all petals are (pairwis
 
 
 \begin{svgraybox}
-\textbf{Sunflower Lemma} (Erd\"os-Rado): For every $\ell, p$, let $Z$ be a family of more than $M=(p-1)^\ell \cdot \ell!$ non-empty sets each of size $\leqslant \ell$ (over some universe $U$). Then, $Z$ contains a sunflower of size $p$. In other words, $Z$ contains $p$ sets $\left\{P_1, \ldots, P_p\right\}$, each $P_i$ has size $\leqslant \ell$, and the intersection of every pair $P_i \neq P_j$ is fixed: $P_i \cap P_j=P_{i'} \cap P_{j'}$, for all $i \neq j \neq i' \neq j^{\prime}$.
+\textbf{Sunflower Lemma} (Erd\"os-Rado): For every $\ell, p$, let $Z$ be a family of more than $M=(p-1)^\ell \cdot \ell!$ non-empty sets each of size $\leq \ell$ (over some universe $U$). Then, $Z$ contains a sunflower of size $p$. In other words, $Z$ contains $p$ sets $\left\{P_1, \ldots, P_p\right\}$, each $P_i$ has size $\leq \ell$, and the intersection of every pair $P_i \neq P_j$ is fixed: $P_i \cap P_j=P_{i'} \cap P_{j'}$, for all $i \neq j \neq i' \neq j^{\prime}$.
 \end{svgraybox}
 
 
@@ -731,7 +753,7 @@ By induction on $\ell$.
 \case 1 If $D$ contains $\geq p$ sets then $D$ is a sunflower with empty core, and we are done.
 
 \case 2 Otherwise, let $E$ be the \emph{union} of all sets in $D$.
-Since $|D|<p$, i.e., $D$ contains less than $p$ sets, and each set in $D$ has size $\le \ell$, we know that $|E| \leqslant(p-1)\cd\ell$.
+Since $|D|<p$, i.e., $D$ contains less than $p$ sets, and each set in $D$ has size $\le \ell$, we know that $|E| \leq(p-1)\cd\ell$.
 
 \medskip 
 
@@ -762,20 +784,21 @@ This concludes the Sunflower Lemma's proof.
 % _____________________________________________________________________
 \subsubsection{Induction step of approximator construction continued: approximating OR and AND using Plucking}
 % _____________________________________________________________________
-- By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leqslant l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
+- By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leq l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
 - Plucking a sunflower: replacing all petals by their core. 4 sets
 
-Corollary: If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cant apply plucking. anymore we know by the Sunflower Lemma that the number of sets is $\leqslant M$ ).
-pluck (z): the result of repeated plucking of a family of sets $Z$, until $|Z| \leqslant M$.
-Definition (Approximate OR and AND): foxily of sets The approximate $-V$ of two crude -circuits $C C(x)$ and $\operatorname{cc}(y)$ is: $\operatorname{cc}($ pluck $(x \cup y))$.
+Corollary: If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cant apply plucking. anymore we know by the Sunflower Lemma that the number of sets is $\leq M$ ).
+pluck (z): the result of repeated plucking of a family of sets $Z$, until $|Z| \leq M$.
+Definition (Approximate OR and AND): foxily of sets The approximate $-V$ of two crude -circuits $\APPX(x)$ and $\operatorname{\APPX}(y)$ is: $\operatorname{\APPX}($ pluck $(x \cup y))$.
 
-The approximate $-\Lambda$ of $C C(x)$ and $C C(Y)$ is: $\operatorname{cc}\left(\right.$ pluck $\left\{X_i \cup Y_j:\left|X_i \cup Y_j\right| \leqslant l\right.$ and $\left.\left.X_i \in \chi, Y_j \in Y\right\}\right)$
-
-
-
+The approximate $-\Lambda$ of $\APPX(x)$ and $\APPX(Y)$ is: 
+$\operatorname{\APPX}\left(\right.$ pluck $\left\{X_i \cup Y_j:\left|X_i \cup Y_j\right| \leq l\right.$ and $\left.\left.X_i \in \chi, Y_j \in Y\right\}\right)$
 
 
-$V$-approximator of $\operatorname{CC}(x) \vee \operatorname{CC}(y)$ introduces
+
+
+
+$V$-approximator of $\operatorname{\APPX}(x) \vee \operatorname{\APPX}(y)$ introduces
 1) a false negative:
 
 A k-clique $G=(v, E)$ s.t.: $(\operatorname{cc}(x) \operatorname{vcc}(y))(G)=1$
@@ -792,7 +815,7 @@ $$
 $$
 
 
-1 -apporimator of $\operatorname{CC}(x) \wedge \operatorname{CC}(y)$ introduces
+1 -apporimator of $\operatorname{\APPX}(x) \wedge \operatorname{\APPX}(y)$ introduces
 1) a false negative:
 
 A k-clique $G=(v, E)$ s.t: : $(\operatorname{cc}(x) \wedge \operatorname{cc}(y))(G)=1$
@@ -808,7 +831,7 @@ $$
 Lemma 1: Each approximation step introduces at most $M^2 \frac{(k-1)^n}{2^p}$ false positives.
 
 Pe of F: Case 1: OR-approximator
-We start with $\overline{C C}\left(x_1, \ldots, x_m\right)$ and $\operatorname{CC}\left(y_1, \ldots, y_{m_m}\right)$ and consider a false positive introduced by
+We start with $\overline{\APPX}\left(x_1, \ldots, x_m\right)$ and $\operatorname{\APPX}\left(y_1, \ldots, y_{m_m}\right)$ and consider a false positive introduced by
 
 $$
 \operatorname{cc}\left(\text { pluck }\left(X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}\right)\right) \text {. }
@@ -860,13 +883,13 @@ Choosing a $(k-1)$-colouring of the nodes randomly and independently, what's the
 $\qquad$ As before, let $R(X)$ be the probability that $X$ has repeated colours.
 
 $$
-\operatorname{pr}\left[R\left(z_1\right) \wedge \ldots \wedge R\left(z_p\right) \wedge \neg R(z)\right] \leqslant \operatorname{pr}\left[R\left(z_1\right) \wedge \ldots \wedge R\left(z_p\right) \mid \neg R(z)\right]$$
+\operatorname{pr}\left[R\left(z_1\right) \wedge \ldots \wedge R\left(z_p\right) \wedge \neg R(z)\right] \leq \operatorname{pr}\left[R\left(z_1\right) \wedge \ldots \wedge R\left(z_p\right) \mid \neg R(z)\right]$$
 
 $$
 \begin{aligned}
 & =\prod_{i=1}^p \operatorname{Pr}\left[R\left(z_i\right) \mid \neg R(z)\right] \\
-& \leqslant \prod_{i=1}^p \operatorname{Pr}\left[R\left(z_i\right)\right]
-\leqslant \frac{1}{2^p}
+& \leq \prod_{i=1}^p \operatorname{Pr}\left[R\left(z_i\right)\right]
+\leq \frac{1}{2^p}
 \end{aligned}
 $$
 
@@ -880,7 +903,7 @@ Li's don't have common nodes, except those in $Z$.
 We've seen before that
 
 $$
-\operatorname{Pr}[R(x)] \leqslant \frac{1}{2}
+\operatorname{Pr}[R(x)] \leq \frac{1}{2}
 $$
 
 Probability of repetition of colours is increased if we doit restrict ourselves to colourings w/ no repetitions in $z \subseteq Z_i$.
@@ -895,12 +918,12 @@ $$
 
 Cont. of proof of Lemma 1
 
-Consider now an AND approximation step of approximators $C C(x)$ and $C(y)$. It can be broken down in three phases: First, we form $C C(\{X \cup Y: X \in \chi, Y \in Y\})$; this introduces no false positives, because any graph in which $X U Y$ is a clique must have a clique in both and $Y$, and thus it was accepted by both constituent approximators. The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$ ), and can therefore introduce no false positives. The third phase entails a sequence of fewer than $\mathrm{M}^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-\mathrm{P}}(\mathrm{k}-1)^{\mathrm{n}}$ false positives are introduced. The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives
+Consider now an AND approximation step of approximators $\APPX(x)$ and $C(y)$. It can be broken down in three phases: First, we form $\APPX(\{X \cup Y: X \in \chi, Y \in Y\})$; this introduces no false positives, because any graph in which $X U Y$ is a clique must have a clique in both and $Y$, and thus it was accepted by both constituent approximators. The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$ ), and can therefore introduce no false positives. The third phase entails a sequence of fewer than $\mathrm{M}^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-\mathrm{P}}(\mathrm{k}-1)^{\mathrm{n}}$ false positives are introduced. The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives
 
 
 
 \para{Proof of Lemma XXX}
-We need to show that each approximation step introduces $\leqslant M^2\binom{n-l-1}{k-l-1}$ false negatives.
+We need to show that each approximation step introduces $\leq M^2\binom{n-l-1}{k-l-1}$ false negatives.
 
 \begin{proof}[Proof of Lemma XXX]
 Case $V_{:}$a false negative:
@@ -921,7 +944,7 @@ $$
 $$
 
 
-In the first stop we replace $c a(x) \wedge c(y)$ by $C C(\{X \cup Y: x \in X, y \in Y\})$.
+In the first stop we replace $c a(x) \wedge c(y)$ by $\APPX(\{X \cup Y: x \in X, y \in Y\})$.
 Hence, if $G$ is a $K$-clique and both $X$ and $Y$ are each cliques in $G$, it must be that $X \cup Y$ is also a clique in $G(w h y$ ? ). Thus, no false negatives are introduced in this step.
 
 
@@ -929,7 +952,7 @@ $\frac{\text { (cont.) }}{\text { We next delete all sets } \overbrace{X_i \cup 
 All $k$-cliques $G$ that contain $Z$.
 We calculate an upper bound on these false negatives: There are precisely $\binom{n-|z|}{k-|z|}$ k-cliques er that contain $z$ (as part of the clique). Since, $|z|>l$, the upper bound on the false negatives introduced by each deletion is $\binom{n-l-1}{k-l-1}$.
 
-Since there are $\leqslant M^2$ deletions of sets, (because $|\chi|=|y|=M$ ), we get that the number of false negatives introduced by $a_n 1$-approximation step is $\leqslant M^2 \cdot\binom{n-t-1}{k-l-1}$.
+Since there are $\leq M^2$ deletions of sets, (because $|\chi|=|y|=M$ ), we get that the number of false negatives introduced by $a_n 1$-approximation step is $\leq M^2 \cdot\binom{n-t-1}{k-l-1}$.
 
 \end{proof}
 

@@ -574,17 +574,28 @@ Given these two lemmas, we can now easily conclude the lower bound. The idea is 
 
 We use the following claim. 
 
-\begin{claim}\label{cla:}
+\begin{claim}\label{cla:internal-in-monotone-lower-bound}
  Every approximator  \APPX$\left(X_1, \ldots, X_m\right)$ with 
   $\left|X_i\right| \leq l$ and $m \leq M$ is either identically 0, that is, an OR of \emph{zero} ANDs, which is the formula $0$ (and thus is wrong on all positive instances, namely all positive instances are false negatives in this case), or outputs 1 on at least half of the (extreme) negative instances (namely, at least half of the negative instances are false positives).
+
 \end{claim}
 \begin{proof}
-If $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$ is not identically 0 (namely, not the OR of \emph{zero} ANDs, i.e., not the formula $0$), then it accepts at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i\in[m]$. The size of $X_i$ is at most $ l<k$, thus many graphs $G$ that are not $k$-cliques still have $l$-cliques (because the approximator evaluates to 1 when there is a $|X_i|$-clique on the nodes in $X_i$).
+If $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$ is not identically 0 (namely, not the OR of \emph{zero} ANDs, i.e., not the formula $0$), then it accepts at least those graphs $G$ that have cliques on at least one of the sets $X_i$, for some $i\in[m]$. The size of $X_i$ is at most $ l<k$, thus many graphs $G$ that are not $k$-cliques still have $l$-cliques, which may cause the approximator to evaluate to 1 when there is a $|X_i|$-clique on the nodes in $X_i$.
+
+
+In Figure \ref{fig:R(xi)}  we see an example. The subset $X_i$ is circled in green and contain four nodes. To fool the approximator to accept a $k-1$-colouring, the $k-1$-colouring should contain a clique on the four nodes in $X_i$, which means that each node in $X_i$ is assigned a different colour and hence sent to a distinct independent set. The figure shows an example where this happens: the five independent sets are circled in red, and no two nodes in $X_i$ live in the same independent set. Hence, there is a clique on all nodes in $X_i$.
+\begin{figure}[H] 
+    \centering
+    \includegraphics[scale=0.5]{images/R(Xi)-lemma-cliques.png}
+
+    \caption{Example of a $k-1$-colouring that fools an approximator that checks for a clique on  the set $X_i$.}
+    \label{fig:R(xi)}
+\end{figure}
 
 Let us  estimate  how many such extreme graphs exist. 
 Namely, we wish to show that there are many negative instances, i.e., $k-1$-colourings, that will nevertheless satisfy  
 $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$.
-It is simple to count this  using \emph{probability}. Consider a graph $G=(V, E)$ and  assign randomly (and independently) from among $k-1$ colours to the nodes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes, then we  have
+It is simple to estimate this using \emph{probability}. Consider a graph $G=(V, E)$ and  assign randomly (and independently) from among $k-1$ colours to the nodes of $G$. Let $v_1 \neq v_2 \in V$ be two nodes, then we  have
 $$
 \operatorname{Pr}\left[\text { colour of } v_1=\text { colour of } v_2\right]=\frac{1}{k-1},
 $$
@@ -595,9 +606,8 @@ Then,
 $$
 \operatorname{Pr}\left[R\left(X_i\right)\right] \leq \frac{\binom{|X_i |}{2}}{k-1} \leq \frac{\binom{l}{2}}{k-1} \leq \frac{1}{2}.
 $$
-The first inequality from the left holds because there are $\binom{\mid X_i |}{2}$ pairs
-of nodes in $X_i$, and 
-the union bound (see below).
+The first inequality from the left holds using the union bound and the fact that there are $\binom{\mid X_i |}{2}$ pairs
+of nodes in $X_i$. See below for a recap of the union bound and basic notions from discrete probability we shall use throughout this book.
 The rightmost inequality holds because 
 $ \frac{\binom{\sqrt[8]{n}}{2}}{\sqrt[4]{n}-1}
 = \frac{\frac{\sqrt[8]{n} \cdot(\sqrt[8]{n}-1)}{2}}{\sqrt[4]{n}-1} \le \frac{\sqrt[4]{n}}{2\sqrt[4]{n}}=\frac{1}{2}.
@@ -730,7 +740,7 @@ It is left to prove the two lemmas  \ref{lem:new-false-positives} and \ref{lem:n
 \subsection{Proofs of Lemma \ref{lem:new-false-positives} and Lemma \ref{lem:new-false-negatives}: the Approximator Steps}
 %_______________________________________________________________________
 
-We prove both lemmas together, as the argument is mostly similar.
+We prove the base approximator case of  both lemmas together, as the argument is the same.  
 
 \para{Base Approximator Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.

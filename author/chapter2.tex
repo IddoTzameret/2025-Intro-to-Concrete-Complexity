@@ -441,7 +441,6 @@ For simplicity, we shall call these negative inputs \emph{$(k-1)$-\textbf{colour
  A $(k-1)$-colouring is a negative-input for \cliquenk\ because a $k$-clique cannot be coloured by $k-1$ colours.
 \item
  Assuming each independent set has at least one node (namely,
-
 there exist  $k-1$ nodes with different colours) then even a \emph{single} \emph{edge} added to a $(k-1)$-colouring will make the graph contain a $k$-clique!
 \end{enumerate}
 \end{note}
@@ -588,7 +587,7 @@ In Figure \ref{fig:R(xi)}  we see an example. The subset $X_i$ is circled in gre
     \centering
     \includegraphics[scale=0.5]{images/R(Xi)-lemma-cliques.png}
 
-    \caption{Example of a $k-1$-colouring that fools an approximator that checks for a clique on  the set $X_i$.}
+    \caption{Example of a $k-1$-colouring that fools an approximator that checks for a clique on  the set $X_i$. The red sets are the independent sets, the green set is $X_i$ and the blue edges are the clique formed on $X_i$ that fools the approximator $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$.}
     \label{fig:R(xi)}
 \end{figure}
 
@@ -629,7 +628,7 @@ there are $m$ possible ``bad'' events, each with probability at most $\alpha$, t
 \medskip 
 ---
 
-We recall some  basic notions from  discrete (finite) probability, and explain more formally the union bound in what follows.
+We recall some  basic notions from  \textbf{discrete (finite) probability}, and explain more formally the union bound in what follows.
 
 In discrete probability we consider a \emph{ Sample Space}
 $\Omega$ as a finite set of  all possible outcomes of a random experiment. The experiment is random in the sense that its outcomes are not deterministic rather hold  probabilities. 
@@ -690,14 +689,14 @@ Based on the above claim, we have two cases:
 
 \noindent \case 1 $\operatorname{\APPX}\left(X_1, \ldots, X_m\right) $ is identically 0. 
 Thus, the number of \emph{false negatives} $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ has in total is the number of all possible positive instance, namely all possible $k$-cliques, which is $\binom{n}{k}$.
-By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  the size of $C$\ is lower bounded by the total number of new errors introduced across all the  gates in $C$ (which is $\ge \binom{n}{k}$), divided by the maximal number of errors introduced by each gate (which is $\le M^2\cd\binom{n-l-1}{k-l-1}$). In other words,
+By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  the number of gates in  $C$\ is lower bounded by the total number of new errors introduced across all the  gates in $C$ (which is $\binom{n}{k}$), divided by the maximal number of errors introduced by each gate (which is $\le M^2\cd\binom{n-l-1}{k-l-1}$). In other words,
 \begin{align*}
 |C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}}
 & = \frac{1}{M^2}\cd\frac{n!}{k!(n-k)!} \cdot \frac{(k-l-1)!(n-l-k)!}{(n-l-1)!} \\
 & = \frac{1}{M^2}\cd \frac{n}{k} \cdot \frac{n-1}{k-1} \cdots \frac{n-l+1}{k-l+1},
 \\
 \intertext{
-since $\frac{n-i}{k-i} \geq \frac{n-l}{k}$
+and since $\frac{n-i}{k-i} \geq \frac{n-l}{k}$
 for $i=0,\dots,l-1$ and by \Cref{eq:651:16}, we have 
 }
  & \geq \frac{1}{M^2}
@@ -740,7 +739,7 @@ It is left to prove the two lemmas  \ref{lem:new-false-positives} and \ref{lem:n
 \subsection{Proofs of Lemma \ref{lem:new-false-positives} and Lemma \ref{lem:new-false-negatives}: the Approximator Steps}
 %_______________________________________________________________________
 
-We prove the base approximator case of  both lemmas together, as the argument is the same.  
+We prove the base approximator case of  both lemmas in one shot, as the argument is the same.  
 
 \para{Base Approximator Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.
@@ -767,7 +766,7 @@ $\lor$-gate.
 \lor \operatorname{\APPX}(\mathcal Y)$ is approximated by $\operatorname{\APPX}(\mathcal X \cup \mathcal Y)$. That is, $\operatorname{\APPX}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_m\right)$. At first glance this is a good solution because it does not introduce any errors (why?). But there is a \textit{problem}: what if $m+m^{\prime}>M$?
 
 
-\textit{Solution}: We need to cleverly \emph{reduce} the number of sets $X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma.
+\textit{Solution}: We need to cleverly \emph{reduce} the number of sets $X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma, explained in what follows. 
 
 \subsubsection{The Sunflower Lemma}
 
@@ -784,16 +783,18 @@ $\lor$-gate.
 
 \begin{svgraybox}
 \begin{definition}[Sunflower] Let $U$ be some universe, namely a set of elements (e.g., nodes). Let $P=\{P_1,\dots,P_p\}$ be a family of distinct sets from the universe, i.e., $P_i\subseteq U$, for each $i$, with $p$ some natural number. 
-We call the family $P$ a \emph{sunflower} if each all pairs $P_i \neq P_j$ in the family $P$ share the \emph{same} intersection, called the \emph{core} of the sunflower.
+We call the family $P$ a \emph{sunflower} if  all pairs $P_i \neq P_j$ in the family $P$ share the \emph{same} intersection, called the \emph{core} of the sunflower.
 In other words, there is a (possibly empty) set $\mathrm{core}\subseteq U$, such that for all $i\neq j$,  $ P_i\cap P_j = \mathrm{core}$.
 If $P$ is a sunflower we call the $P_i$'s the \emph{petals} of the sunflower $P$.
 \end{definition}
 \end{svgraybox}
-Note: It's okay if the core is the empty-set! This means all petals are (pairwise) disjoint.
+In other words, in a sunflower $P$ the intersection of every pair $P_i \neq P_j$ is fixed: $P_i \cap P_j=P_{i'} \cap P_{j'}$, for all $i \neq j $ and $ i' \neq j^{\prime}$.
+Note that it is okay if the core is the empty-set! This means all petals are (pairwise) disjoint.
 
 
 \begin{svgraybox}
-\textbf{Sunflower Lemma} (Erd\"os-Rado): For every $\ell, p$, let $Z$ be a family of more than $M=(p-1)^\ell \cdot \ell!$ non-empty sets each of size $\leq \ell$ (over some universe $U$). Then, $Z$ contains a sunflower of size $p$. In other words, $Z$ contains $p$ sets $\left\{P_1, \ldots, P_p\right\}$, each $P_i$ has size $\leq \ell$, and the intersection of every pair $P_i \neq P_j$ is fixed: $P_i \cap P_j=P_{i'} \cap P_{j'}$, for all $i \neq j \neq i' \neq j^{\prime}$.
+\textbf{Sunflower Lemma} (Erd\"os-Rado): For every $\ell, p$, let $Z$ be a family of more than $M=(p-1)^\ell \cdot \ell!$ non-empty sets each of size $\leq \ell$ (over some universe $U$). Then, $Z$ contains a sunflower of size $p$. In other words, $Z$ contains $p$ sets $\left\{P_1, \ldots, P_p\right\}$, each $P_i$ has size $\leq \ell$, that share the same core. 
+%and the intersection of every pair $P_i \neq P_j$ is fixed: $P_i %\cap P_j=P_{i'} \cap P_{j'}$, for all $i \neq j \neq i' \neq j^{\prime}$.
 \end{svgraybox}
 
 
@@ -801,12 +802,12 @@ Note: It's okay if the core is the empty-set! This means all petals are (pairwis
 \begin{proof}[Proof of the Sunflower Lemma]
 By induction on $\ell$.
 
-\Base  $\ell=1$. Thus the statement we need to show is that $p$ different singletons form a sunflower. Which is true (the core is $\varnothing$ ).
+\Base  $\ell=1$. Thus the statement we need to show is that $p$ different singletons form a sunflower. Which is true (the core is $\varnothing$).
 
 
 \induction $\ell>1$. Consider a family $D \subseteq Z$ of pairwise disjoint sets that is maximal in the sense that if we add any new set in $Z$ to the family $D$, the sets in $D$ are not pairwise disjoint anymore. That is, every set in $Z \backslash D$ intersects some set in $D$.
 
-\case 1 If $D$ contains $\geq p$ sets then $D$ is a sunflower with empty core, and we are done.
+\case 1 If $D$ contains $\geq p$ sets then $D$ is a sunflower with an empty core, and we are done.
 
 \case 2 Otherwise, let $E$ be the \emph{union} of all sets in $D$.
 Since $|D|<p$, i.e., $D$ contains less than $p$ sets, and each set in $D$ has size $\le \ell$, we know that $|E| \leq(p-1)\cd\ell$.
@@ -814,14 +815,10 @@ Since $|D|<p$, i.e., $D$ contains less than $p$ sets, and each set in $D$ has si
 \medskip 
 
 Moreover, $E$ intersects every set in $Z$ by assumption.
-Since $Z$ has more than $M$ sets by assumption, and each set intersects some element of $E$, there exists an element $d \in E$ that intersects $>\frac{M}{(p-1) l}=(p-1)^{l-1} \cdot(l-1)!$ sets in $Z$.
-
-
-\begin{remark}
-If a set $E$ intersect all sets in a family of sets $X_1, . ., X_M$ then there is an element in $E$ that appears in $\geq \frac{M}{|E|}$ sets $X_i$.
+Since $Z$ has more than $M$ sets by assumption, and each set intersects some element of $E$, there exists an element $d \in E$ that intersects $>\frac{M}{(p-1)\cd l}=(p-1)^{l-1} \cdot(l-1)!$ sets in $Z$.
+\footnote{If a set $E$ intersects all sets in a family of sets $X_1, . ., X_M$ then there is an element in $E$ that appears in $\geq \frac{M}{|E|}$ sets $X_i$.
 Otherwise, each element in $E$ appears in $<\frac{M}{|E|}$ sets $X_i$. Thus, $E$ intersects $<|E| \cdot \frac{M}{|E|}=M$ sets $X_i$, which is a contradiction to the assumption.
-\end{remark}
-
+}
 
 Consider
 
@@ -833,7 +830,6 @@ $$
 We know that $Z^{\prime}$ contains more than $M^{\prime}=(p-1)^{l-1} \cdot(l-1)!$ sets.
 By \emph{induction hypothesis} (since $M^{\prime}$ is "$M$ with $\ell$ decreased by one"), $Z^{\prime}$ contains a sunflower denoted $\left\{P_1, \ldots, P_p\right\}$ with $\left|p_i\right| \leq \ell-1$, for all $i$.
 Hence, $\left\{P_1 \cup\{d\}, \ldots, P_p \cup\{d\}\right\}$ is a sunflower in $Z$.
-This concludes the Sunflower Lemma's proof.
 \end{proof}
 
 % Enable watermark from this point onward
@@ -1016,5 +1012,4 @@ We calculate an upper bound on these false negatives: There are precisely $\bino
 
 Since there are $\leq M^2$ deletions of sets, (because $|\chi|=|y|=M$ ), we get that the number of false negatives introduced by $a_n 1$-approximation step is $\leq M^2 \cdot\binom{n-t-1}{k-l-1}$.
 
-\end{proof}
 

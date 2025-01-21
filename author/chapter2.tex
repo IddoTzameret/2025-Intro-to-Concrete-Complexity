@@ -129,7 +129,7 @@ Now, to lower bound $\binom{n}{\log n} $ we have:
         {2^{\log (\log n)}}\right)^{\log n} \\
 & =2^{(\log n-\log \log n) \cdot \log n} \\
 & =2^{\log^2n-\log n \cdot \log \log n} \\
-& =2^{\log ^2 n-o(\log n)} \\
+& =2^{\log ^2 n-o(\log ^2n)} \\
 & = 2^{c \log ^2 n} \text {, ~~~for some constant $c$, say, $c=1/2$} \\
 & =\left(2^{\log n}\right)^{c \cdot \log n}=
 n^{c \log n},
@@ -356,7 +356,7 @@ $$
 \begin{aligned}
 & l=\sqrt[8]{n} \\
 & p \approx \sqrt[8]{n} \\
-& M=(p-1)^l \cdot l! & \approx(\sqrt[8]{n}-1)^{\sqrt[8]{x}} \cdot(\sqrt[8]{n})! \\
+& M=(p-1)^l \cdot l! & \approx(\sqrt[8]{n}-1)^{\sqrt[8]{n}} \cdot(\sqrt[8]{n})! \\
 & & \leq(\sqrt[4]{n})^{\sqrt[8]{n}}.
 \end{aligned}
 $$
@@ -440,7 +440,9 @@ For simplicity, we shall call these negative inputs \emph{$(k-1)$-\textbf{colour
 \item 
  A $(k-1)$-colouring is a negative-input for \cliquenk\ because a $k$-clique cannot be coloured by $k-1$ colours.
 \item
- In fact, even a single edge added to a $(k-1)$-colouring will make the graph contain a k-clique!
+ Assuming each independent set has at least one node (namely,
+
+there exist  $k-1$ nodes with different colours) then even a \emph{single} \emph{edge} added to a $(k-1)$-colouring will make the graph contain a $k$-clique!
 \end{enumerate}
 \end{note}
 
@@ -499,11 +501,10 @@ Now, assume that $C$ is a monotone circuit we wish to build an approximation for
 Recall that $\APPX({\mathcal X})$ stands for an approximator with the parameters described above $ l=\sqrt[8]{n} , p \approx \sqrt[8]{n} , M=(p-1)^l \cdot l!$.
 
 \begin{description}
-\item[\textbf{Base step}:] 
-Input nodes $x_{ij}$. Build an approximator $\APPX(x_{ij})$ (we shall see this in the next section).
+\item[\textbf{Base Approximation Step}:] 
+Input nodes $x_{ij}$. Define the approximator $\APPX(x_{ij}):=x_{ij}$. Note that $x_{ij}$ is indeed an OR of (a single) AND, and so this definition is legit.
 
-\item[\textbf{Induction step (the Approximator Step)}:]
-\
+\item[\textbf{Induction  Approximator Step}:]\
 
 \case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $\APPX(g_1),\APPX(g_2)$, respectively. We thus need to construct $\APPX(g_1\lor g_2)$ from $\APPX(g_1),\APPX(g_2)$ (we shall do this in the sequel).
 
@@ -515,17 +516,23 @@ $\APPX(g_1),\APPX(g_2)$ (again, we shall do this in the sequel).
 \end{description} 
 \end{trailer}
 
- We call the two cases of the induction step above \emph{the approximator steps}. Namely, we have an approximator step for an OR gate and an AND gate, respectively. 
+
+ %We call the two cases of the induction step above \emph{the approximator steps}. Namely, we have an approximator step for an OR gate and an AND gate, respectively. 
 
 
 \begin{definition}[Introducing new false positives and false negatives]
-Let $g_1\circ g_2$ be an $\lor$ or $\land$ gate with two incoming subcircuits $g_1$ and $g_2$, respectively (i.e., $\circ\in\{\lor,\land\}$). \begin{itemize}
+Let $g_1\circ g_2$ be an $\lor$ or $\land$ gate with two incoming subcircuits $g_1$ and $g_2$, respectively (i.e., $\circ\in\{\lor,\land\}$). And let $g_0$ be in input node in the circuit (with no incoming edges).
+\begin{itemize}
+\item 
+If for \emph{every} graph $G$, whether positive or a  negative instance, 
+$\APPX(g_0)(G)=(g_0)(G)$, we say that \emph{neither a false positive nor a false negative was introduced}.  
+ 
 \item 
 Let the graph $G$ be a \emph{negative} input, i.e., a $(k-1)$-colouring. If $(\APPX(g_1)\circ \APPX(g_2))(G)=0$, namely, $\APPX(g_1)\circ \APPX(g_2)$ correctly identified $G$ as a negative input, 
 while $\APPX(g_1\circ g_2)(G)=1$, we say the approximator step \emph{\textbf{introduced $G$ as a new false positive}}. 
 \item Let the graph $G$ be a \emph{positive} input, i.e., a $k$-clique. If $(\APPX(g_1)\circ \APPX(g_2))(G)=1$, namely, $\APPX(g_1)\circ \APPX(g_2)$ correctly identified $G$ as a positive input, while 
 $\APPX(g_1\circ g_2)(G)=0$, we say the approximator 
-step \textbf{\emph{introduced $G$ as a new false positive}}.
+step \textbf{\emph{introduced $G$ as a new false negative}}.
 \end{itemize}
 \end{definition}
 
@@ -546,6 +553,12 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 \end{lemma}
 
 
+Given these two lemmas, we can now easily conclude the lower bound. The idea is that, if we assume by way of contradiction that we are given a small monotone circuit computing \cliquenk, then we can approximate the output gate of  this circuit with an approximator that does not make too much errors: the circuit is small and each original gate when approximated contributes only few new errors. But it is not hard to show that a good approximator does not exist. We formalise this argument in what follows.
+
+
+
+
+
 \bigskip
 
 
@@ -556,7 +569,7 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 
 
 
-\begin{proof}[Proof of \Cref{thm:razborov}   from \Cref{lem:new-false-positives} and \Cref{lem:new-false-negatives}]
+\begin{proof}[of \Cref{thm:razborov}, given  \Cref{lem:new-false-positives} and \Cref{lem:new-false-negatives}]
 \
 
 We use the following claim. 
@@ -606,7 +619,7 @@ there are $m$ possible ``bad'' events, each with probability at most $\alpha$, t
 \medskip 
 ---
 
-We recall some  basic notions from  discrete probability, and explain more formally the union bound in what follows.
+We recall some  basic notions from  discrete (finite) probability, and explain more formally the union bound in what follows.
 
 In discrete probability we consider a \emph{ Sample Space}
 $\Omega$ as a finite set of  all possible outcomes of a random experiment. The experiment is random in the sense that its outcomes are not deterministic rather hold  probabilities. 
@@ -640,62 +653,95 @@ We are now ready to conclude the proof of \Cref{thm:razborov} (given the two lem
 Recall that $l=\sqrt[8]{n}$ and
 let $p=\sqrt[8]{n} \cdot \log n$. 
 Thus, 
-$$
+\begin{equation}
+\label{eq:651:16}
 \begin{aligned}
 M  = 
 (p-1)^l \cdot l!
 & \leq (\sqrt[8]{n} \cdot \log n)^{\sqrt[8]{n}} \cdot \sqrt[8]{n}! \\
 & \leq (\sqrt[8]{n} \cdot \log n)^{\sqrt[8]{n}}
 \cdot \sqrt[8]{n}^{\sqrt[8]{n}} \\
-& \leq(\sqrt[4]{n} \cdot \log n)^{\sqrt[8]{n}}<
+& =(\sqrt[4]{n} \cdot \log n)^{\sqrt[8]{n}}<
 \left(n^{\frac{1}{3}}\right)^{\sqrt[8]{n}}, \text{
 for large enough $n$.}
 \end{aligned}
-$$
+\end{equation}
+
 
 Let $C$ be a monotone circuit computing CLIQUE$(n, \sqrt[4]{n})$.
-We apply the approximators at each gate of $C$ iteratively (using structural induction as above).
-The output gate of $C$ thus is written as  $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ for some $m \leq M$ and $\left|X_i\right| \leq l$.
+%
+%We apply the approximators at each gate of $C$ using structural induction to prove the following
+%\textbf{Induction Statement:} For every gate $g$ in $C$, the approximator   $\APPX(g)$  introduced 
+%
+%
+The approximator of the output gate of $C$ is written as  $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ for some $m \leq M$ and $\left|X_i\right| \leq l$.
 Based on the above claim, we have two cases:
+\medskip 
 
-\case 1 $\operatorname{\APPX}\left(X_1, \ldots, X_m\right) $ is identically 0. 
+\noindent \case 1 $\operatorname{\APPX}\left(X_1, \ldots, X_m\right) $ is identically 0. 
 Thus, the number of \emph{false negatives} $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ has in total is the number of all possible positive instance, namely all possible $k$-cliques, which is $\binom{n}{k}$.
 By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  the size of $C$\ is lower bounded by the total number of new errors introduced across all the  gates in $C$ (which is $\ge \binom{n}{k}$), divided by the maximal number of errors introduced by each gate (which is $\le M^2\cd\binom{n-l-1}{k-l-1}$). In other words,
-$$
-|C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}} \geq \frac{1}{M^2}\left(\frac{n-l}{k}\right)^l \geq n^{c \sqrt[8]{n}}, \text{~~for $c=1/12$.}
-$$
+\begin{align*}
+|C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}}
+& = \frac{1}{M^2}\cd\frac{n!}{k!(n-k)!} \cdot \frac{(k-l-1)!(n-l-k)!}{(n-l-1)!} \\
+& = \frac{1}{M^2}\cd \frac{n}{k} \cdot \frac{n-1}{k-1} \cdots \frac{n-l+1}{k-l+1},
+\\
+\intertext{
+since $\frac{n-i}{k-i} \geq \frac{n-l}{k}$
+for $i=0,\dots,l-1$ and by \Cref{eq:651:16}, we have 
+}
+ & \geq \frac{1}{M^2}
+ \cd\left(\frac{n-l}{k}\right)^l \geq
+  \frac{1}{n^{2/3\cd\sqrt[8]{n}}}\cd
+  \left(\frac{n-\sqrt[8]{n}}{\sqrt[4]{n}}\right)^{\sqrt[8]{n}} \\
+& \ge
+  \left(\frac{\frac{1}{2}n}{{n^{2/3}}\cd\sqrt[4]{n}}\right)^{\sqrt[8]{n}}
+=
+  n^{\Omega(\sqrt[8]{n})}.
+\end{align*}
 
 
-\case 2 $\operatorname{\APPX}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ \emph{false positives} (half of the total number of  $(k-1)$-colourings).
+\medskip 
+
+\noindent\case 2 $\operatorname{\APPX}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ \emph{false positives} (half of the total number of  $(k-1)$-colourings).
 By \Cref{lem:new-false-positives},
 each approximation step introduces at most $ M^2\cd \frac{(k-1)^n}{2^p}$
- new false positives. Therefore,  we have:
+ new false positives. Therefore,  as in the previous case, we have:
 $$
-|C| \geq \frac{\frac{1}{2}(k-1)^n}{M^2\cd \frac{(k-1)^n}{2^p}}=\frac{2^p}{2 \cdot M^2}>n^{c\cdot \sqrt[8]{n}}, 
-\text{~~for~}c=\frac{1}{3}.
+|C| \geq \frac{\frac{1}{2}(k-1)^n}{M^2\cd \frac{(k-1)^n}{2^p}}
+= \frac{2^p}{2 \cdot M^2}
+> \frac{2^{\log n\cd \sqrt[8]{n}}}
+    {2 \cdot \left(
+        n^{\frac{2}{3}}
+                \right)^{
+                    \sqrt[8]{n}}
+                    }
+= n^{\Omega(\sqrt[8]{n})}.
 $$
-
+This concludes the proof of \Cref{thm:razborov}.
 \end{proof}
+It is left to prove the two lemmas  \ref{lem:new-false-positives} and \ref{lem:new-false-negatives}. 
 
 
 
-% Enable watermark from this point onward
-\newpage\SetWatermarkText{DRAFT}
 
 
 % _____________________________________________________________________
-\subsection{Proofs of \cref{lem:new-false-positives} and \cref{lem:new-false-negatives}: the approximator steps}
+\subsection{Proofs of Lemma \ref{lem:new-false-positives} and Lemma \ref{lem:new-false-negatives}: the Approximator Steps}
 %_______________________________________________________________________
-\para{Base Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
+
+We prove both lemmas together, as the argument is mostly similar.
+
+\para{Base Approximator Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
 That is, if there is an edge between $i$ and $j$ in the input graph $G$.
 
-This is an easy case: We need to show an approximator $\operatorname{\APPX}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leq l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors; we shall count precisely the number of potential errors later).
-But the circuit $\APPX(\{i, j\})$ is $g_{i j}$ by definition. (Hence, no errors here.)
+This is an easy case: We need to show an approximator $\operatorname{\APPX}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leq l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors.
+But the circuit $\APPX(\{i, j\})$ is $g_{i j}$ by definition. Hence, no error are introduced in this step.
 
 
 
 
-\para{Induction step }
+\para{Induction Approximator Step }
 
 Given two approximators
 $\operatorname{\APPX}(\mathcal X)$ and 
@@ -780,20 +826,27 @@ Hence, $\left\{P_1 \cup\{d\}, \ldots, P_p \cup\{d\}\right\}$ is a sunflower in $
 This concludes the Sunflower Lemma's proof.
 \end{proof}
 
+% Enable watermark from this point onward
+\newpage\SetWatermarkText{DRAFT}
 
 % _____________________________________________________________________
-\subsubsection{Induction step of approximator construction continued: approximating OR and AND using Plucking}
+\subsubsection{Induction Approximator Step Continued: Approximating OR and AND using Plucking}
 % _____________________________________________________________________
 - By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leq l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
 - Plucking a sunflower: replacing all petals by their core. 4 sets
 
-Corollary: If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cant apply plucking. anymore we know by the Sunflower Lemma that the number of sets is $\leq M$ ).
+\begin{corollary}
+If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cant apply plucking anymore we know by the Sunflower Lemma that the number of sets is $\leq M$ ).
+\end{corollary}
+
 pluck (z): the result of repeated plucking of a family of sets $Z$, until $|Z| \leq M$.
-Definition (Approximate OR and AND): foxily of sets The approximate $-V$ of two crude -circuits $\APPX(x)$ and $\operatorname{\APPX}(y)$ is: $\operatorname{\APPX}($ pluck $(x \cup y))$.
+
+\begin{definition}[Approximate OR and AND]
+foxily of sets The approximate $-V$ of two crude -circuits $\APPX(x)$ and $\operatorname{\APPX}(y)$ is: $\operatorname{\APPX}($ pluck $(x \cup y))$.
 
 The approximate $-\Lambda$ of $\APPX(x)$ and $\APPX(Y)$ is: 
 $\operatorname{\APPX}\left(\right.$ pluck $\left\{X_i \cup Y_j:\left|X_i \cup Y_j\right| \leq l\right.$ and $\left.\left.X_i \in \chi, Y_j \in Y\right\}\right)$
-
+\end{definition}
 
 
 
@@ -826,9 +879,8 @@ $$
 $$
 
 
-
-
-Lemma 1: Each approximation step introduces at most $M^2 \frac{(k-1)^n}{2^p}$ false positives.
+\para{Proof of \Cref{lem:new-false-positives}}
+Each approximation step introduces at most $M^2 \frac{(k-1)^n}{2^p}$ false positives.
 
 Pe of F: Case 1: OR-approximator
 We start with $\overline{\APPX}\left(x_1, \ldots, x_m\right)$ and $\operatorname{\APPX}\left(y_1, \ldots, y_{m_m}\right)$ and consider a false positive introduced by
@@ -916,16 +968,16 @@ M^2 \cdot \frac{(k-1)^n}{2^p} \geq \frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p}
 $$
 
 
-Cont. of proof of Lemma 1
+% Cont. of proof of Lemma 1
 
 Consider now an AND approximation step of approximators $\APPX(x)$ and $C(y)$. It can be broken down in three phases: First, we form $\APPX(\{X \cup Y: X \in \chi, Y \in Y\})$; this introduces no false positives, because any graph in which $X U Y$ is a clique must have a clique in both and $Y$, and thus it was accepted by both constituent approximators. The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$ ), and can therefore introduce no false positives. The third phase entails a sequence of fewer than $\mathrm{M}^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-\mathrm{P}}(\mathrm{k}-1)^{\mathrm{n}}$ false positives are introduced. The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives
 
 
 
-\para{Proof of Lemma XXX}
+\para{Proof of Lemma \Cref{lem:new-false-negatives}}
 We need to show that each approximation step introduces $\leq M^2\binom{n-l-1}{k-l-1}$ false negatives.
 
-\begin{proof}[Proof of Lemma XXX]
+
 Case $V_{:}$a false negative:
 A $k$-clique $G=(v, E)$ st.: $(\operatorname{cc}(x) \vee \operatorname{ccc}(y))(G)=1$ (
 

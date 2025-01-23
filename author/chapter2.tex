@@ -96,11 +96,11 @@ A  circuit for computing $\operatorname{CLIQUE}  (n, k),$ consisting of an OR ga
 \begin{tcolorbox}[colframe=white, colback=red!5, boxrule=0mm, sharp corners]
 \textbf{Approximators $\APPX\left(X_1, \ldots, X_m\right)$ for CLIQUE}.
 Let $V$ be a set of nodes and let $X_1,\dots,X_n\in V$ be a collection of subsets of nodes. The \emph{approximator} $\APPX\left(X_1, \ldots, X_m\right)$ is defined to be 
-$\bigvee_{r=1}^m\bigwedge_{i<j \in X_r} x_{ij}$.
+$\bigvee_{r=1}^m\bigwedge_{i<j \in X_r} x_{ij}$, with $x_{ij}$ the Boolean variables representing that there is an edge between nodes $i$ and $j$.
 Note that the $X_i$'s may have different sizes (and specifically their sizes may be different from $k$).
 \end{tcolorbox}
  
-Note that $\APPX\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\choose 2}$, precisely when in the graph $G$ over the nodes $V$ described by the assignment $\alpha$, at least one of the $X_i$ subgraphs is a clique. The ida behind the approximator is that it provides a good approximation for the CLIQUE function, in the sense that for many  input graphs it provides the correct answer.   
+Note that $\APPX\left(X_1, \ldots, X_m\right)(\alpha)=1$, for $\alpha\in\bits^{n\choose 2}$, precisely when in the graph $G$ over the nodes $V$ described by the assignment $\alpha$, at least one of the $X_i$ subgraphs is a clique. The idea behind the approximator is that it provides a good approximation for the CLIQUE function, in the sense that, depending on the number of sets $m$ and size of each set $X_i$, for many  input graphs it provides the correct answer.   
 
 We shall also use the abbreviated notation $\APPX(\mathcal X)$ for $\APPX(X_1,\dots,X_m)$ when $\mathcal X = \{X_1,\dots,X_m\}$.
 
@@ -282,13 +282,13 @@ Copyright: The University of Chicago}
 
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
-\begin{theorem}[Razborov \cite{Razb85}]\label{thm:razborov} Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing {\rm CLIQUE}$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
+\begin{theorem}[Razborov~\cite{Razb85}; cf.~\cite{AB87}]\label{thm:razborov} Let $k=\sqrt[4]{n}$. Then, every monotone circuit computing {\rm CLIQUE}$(n, k)$ has size $2^{\Omega(\sqrt[8]{n})}$.
 \end{theorem}
 \end{tcolorbox}
 That is, there exists a constant $c$ such that  for large enough $n \in \mathbb{N}$, if $C_n$ computes CLIQUE$(n,k)$ then $\left|C_n\right| \geq 2^{c \cdot \sqrt[8]{n}}$.
 
 
-The rest of this chapter aims to prove this theorem. \textit{Our exposition is taken from Papadimitriou's textbook} \cite{Pap94}.
+The rest of this chapter aims to prove this theorem. \textit{Our exposition is taken mostly from Papadimitriou's textbook} \cite{Pap94}.
 
 
 %Recall: a approximator is a big OR of cliques, each computed as a big AND.
@@ -552,7 +552,7 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 \end{lemma}
 
 
-Given these two lemmas, we can now easily conclude the lower bound. The idea is that, if we assume by way of contradiction that we are given a small monotone circuit computing \cliquenk, then we can approximate the output gate of  this circuit with an approximator that does not make too much errors: the circuit is small and each original gate when approximated contributes only few new errors. But it is not hard to show that a good approximator does not exist. We formalise this argument in what follows.
+Given these two lemmas, we can now easily conclude the lower bound. The idea is that, if we assume by way of contradiction that we are given a small monotone circuit computing \cliquenk, then we can approximate the output gate of this circuit with an approximator that does not make too many errors: the circuit is small and each original gate when approximated contributes only a few new errors. But it is not hard to show that a good approximator for the \cliquenk\ function does not exist. We formalise this argument in what follows.
 
 
 
@@ -585,9 +585,8 @@ If $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$ is not identically 0 (namel
 In Figure \ref{fig:R(xi)}  we see an example. The subset $X_i$ is circled in green and contain four nodes. To fool the approximator to accept a $k-1$-colouring, the $k-1$-colouring should contain a clique on the four nodes in $X_i$, which means that each node in $X_i$ is assigned a different colour and hence sent to a distinct independent set. The figure shows an example where this happens: the five independent sets are circled in red, and no two nodes in $X_i$ live in the same independent set. Hence, there is a clique on all nodes in $X_i$.
 \begin{figure}[H] 
     \centering
-    \includegraphics[scale=0.5]{images/R(Xi)-lemma-cliques.png}
-
-    \caption{Example of a $k-1$-colouring that fools an approximator that checks for a clique on  the set $X_i$. The red sets are the independent sets, the green set is $X_i$ and the blue edges are the clique formed on $X_i$ that fools the approximator $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$.}
+    \includegraphics[scale=0.15]{images/R(Xi)-lemma-cliques.png}
+        \caption{Example of a $k-1$-colouring that fools an approximator that checks for a clique on  the set $X_i$. The red sets are the independent sets, the green set is $X_i$ and the blue edges are the clique formed on $X_i$ that fools the approximator $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$.}
     \label{fig:R(xi)}
 \end{figure}
 
@@ -706,7 +705,8 @@ for $i=0,\dots,l-1$ and by \Cref{eq:651:16}, we have
 & \ge
   \left(\frac{\frac{1}{2}n}{{n^{2/3}}\cd\sqrt[4]{n}}\right)^{\sqrt[8]{n}}
 =
-  n^{\Omega(\sqrt[8]{n})}.
+  n^{\Omega(\sqrt[8]{n})}
+= 2^{\Omega(\sqrt[8]{n})}.
 \end{align*}
 
 
@@ -725,7 +725,8 @@ $$
                 \right)^{
                     \sqrt[8]{n}}
                     }
-= n^{\Omega(\sqrt[8]{n})}.
+= n^{\Omega(\sqrt[8]{n})}
+= 2^{\Omega(\sqrt[8]{n})}.
 $$
 This concludes the proof of \Cref{thm:razborov}.
 \end{proof}

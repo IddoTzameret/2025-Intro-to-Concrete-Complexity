@@ -494,24 +494,30 @@ The approximation of the  monotone circuit $C$ that computes $\operatorname{CLIQ
 
 Now, assume that $C$ is a monotone circuit we wish to build an approximation for. We are going to build the approximator for the output gate $C$ gradually, from the input gates of $C$  through the internal gates, up to the output gate, so that the approximator of the output gate will be the approximator of the circuit $C$. The skeleton of this construction is done as follows, following a standard structural induction scheme:
 
+
+\newcommand{\gapx}{\ensuremath{{\rm approx}}}
+
 \begin{trailer}
 {Approximation of the output gate of $C$ via structural induction}
 
-Recall that $\APPX({\mathcal X})$ stands for an approximator with the parameters described above $ l=\sqrt[8]{n} , p \approx \sqrt[8]{n} , M=(p-1)^l \cdot l!$.
+Recall that $\APPX({\mathcal X})$ stands for an approximator with the parameters described above $ l=\sqrt[8]{n} , p \approx \sqrt[8]{n}, M=(p-1)^l \cdot l!$.
+For every gate $g$ in $C$ we are going to define $\gapx(g)$ to be $\APPX(\cX)$ for some sequence $\cX$ of sets of nodes, i.e., an OR of cliques $\cX$. The main challenge would be to define precisely which sets $\cX$ are used for each gate approximator, which will be done in the sequel.
+
 
 \begin{description}
 \item[\textbf{Base Approximation Step}:] 
-Input nodes $x_{ij}$. Define the approximator $\APPX(x_{ij}):=x_{ij}$. Note that $x_{ij}$ is indeed an OR of (a single) AND, and so this definition is legit.
+Input nodes $x_{ij}$. Define the approximator of $x_{ij}$, denoted  to be precisely $x_{ij}$, that is $\gapx(x_{ij}):=x_{ij}$.
+Note that $x_{ij}$ is indeed an OR of (a single) AND, namely $x_{ij}=\APPX(\{x_{ij}\})$, and so this definition is legit.
 
 \item[\textbf{Induction  Approximator Step}:]\
 
-\case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $\APPX(g_1),\APPX(g_2)$, respectively. We thus need to construct $\APPX(g_1\lor g_2)$ from $\APPX(g_1),\APPX(g_2)$ (we shall do this in the sequel).
+\case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $\gapx(g_1),\gapx(g_2)$, respectively. Using these, we construct an approximation of $g_1\lor g_2$ denoted $\gapx(g_1\lor g_2)$  (we shall show how to define this approximator as $\APPX(\cX)$ in the  sequel).
 
 \case 2 AND gate $g_1\land g_2$. 
 By induction hypothesis we already built the approximators 
-of $g_1,g_2$, $\APPX(g_1),\APPX(g_2)$, respectively. 
-We thus need to construct $\APPX(g_1\land g_2)$ from 
-$\APPX(g_1),\APPX(g_2)$ (again, we shall do this in the sequel).
+of $g_1,g_2$, $\gapx(g_1),\gapx(g_2)$, respectively. 
+We construct an approximation of $g_1\land g_2$ denoted 
+$\gapx(g_1\land g_2)$ from these (again, we shall do this in the sequel).
 \end{description} 
 \end{trailer}
 
@@ -520,29 +526,36 @@ $\APPX(g_1),\APPX(g_2)$ (again, we shall do this in the sequel).
 
 
 \begin{definition}[Introducing new false positives and false negatives]
-Let $g_1\circ g_2$ be an $\lor$ or $\land$ gate with two incoming subcircuits $g_1$ and $g_2$, respectively (i.e., $\circ\in\{\lor,\land\}$). And let $g_0$ be in input node in the circuit (with no incoming edges).
+Let $g_1\circ g_2$ be an $\lor$ or $\land$ gate with two incoming subcircuits $g_1$ and $g_2$, respectively (i.e., $\circ\in\{\lor,\land\}$). And let $x_{ij}$ be in input node in the circuit (with no incoming edges).
 \begin{itemize}
 \item 
-If for \emph{every} graph $G$, whether positive or a  negative instance, 
-$\APPX(g_0)(G)=(g_0)(G)$, we say that \emph{neither a false positive nor a false negative was introduced}.  
+For \emph{every} graph $G$, whether a positive or a  negative instance, 
+$\gapx(x_{ij})(G)=(x_{ij})(G)$, hence we say that \emph{neither a false positive nor a false negative was introduced}.  
  
 \item 
-Let the graph $G$ be a \emph{negative} input, i.e., a $(k-1)$-colouring. If $(\APPX(g_1)\circ \APPX(g_2))(G)=0$, namely, $\APPX(g_1)\circ \APPX(g_2)$ correctly identified $G$ as a negative input, 
-while $\APPX(g_1\circ g_2)(G)=1$, we say the approximator step \emph{\textbf{introduced $G$ as a new false positive}}. 
-\item Let the graph $G$ be a \emph{positive} input, i.e., a $k$-clique. If $(\APPX(g_1)\circ \APPX(g_2))(G)=1$, namely, $\APPX(g_1)\circ \APPX(g_2)$ correctly identified $G$ as a positive input, while 
-$\APPX(g_1\circ g_2)(G)=0$, we say the approximator 
+Let the graph $G$ be a \emph{negative} input, i.e., a $(k-1)$-colouring. If $(\gapx(g_1)\circ \gapx(g_2))(G)=0$, namely, $\gapx(g_1)\circ \gapx(g_2)$ correctly identified $G$ as a negative input, 
+while $\gapx(g_1\circ g_2)(G)=1$, we say the approximator 
+step \emph{\textbf{introduced $G$ as a new false positive}}. 
+
+\item Let the graph $G$ be a \emph{positive} input, i.e., a $k$-clique. If $(\gapx(g_1) \circ \gapx(g_2))(G)=1$, namely, $\gapx(g_1)\circ \gapx(g_2)$ correctly identified $G$ as a positive input, while 
+$\gapx(g_1\circ g_2)(G)=0$, we say the approximator 
 step \textbf{\emph{introduced $G$ as a new false negative}}.
 \end{itemize}
 \end{definition}
 
-To prove the lower bound theorem, all we need to know are some properties of the approximator steps. In particular, the following two lemmas, proved in the next section, are sufficient to conclude the proof.   
+Notice the  subtlety in this definition: introducing new errors here means that we do not care for errors introduced before, namely, those errors incurred  when we constructed each of the (separate) approximators for $g_1$ and $g_2$. We only count \emph{new errors introduced over the function computed by $\gapx(g_1)\circ \gapx(g_2)$}.
+
+
+%\begin{note}
+%Make sure to notice that an approximation of a gate $g_1\land g_2$ is an approximation of appx(g) AND appx(h), where we prove that the approximation of g AND h is good because it introduces on top of the errors incurred already by appx g   as well as  appx h, only few *new* errors. 
+%\end{note}
 
 
 
 
 
-
-
+To prove the lower bound theorem, all we need to know are \emph{some properties} of the approximator steps. In other words, given these properties it would not be important how precisely we defined the approximators for gates (that is, how precisely we picked the $\cX$ in each approximator $\APPX(\cX)$).
+In particular, the following two lemmas, proved in the next section, are sufficient to conclude the proof. 
 \begin{lemma}\label{lem:new-false-positives}
 Each approximation step introduces at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
 \end{lemma}
@@ -552,7 +565,7 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 \end{lemma}
 
 
-Given these two lemmas, we can now easily conclude the lower bound. The idea is that, if we assume by way of contradiction that we are given a small monotone circuit computing \cliquenk, then we can approximate the output gate of this circuit with an approximator that does not make too many errors: the circuit is small and each original gate when approximated contributes only a few new errors. But it is not hard to show that a good approximator for the \cliquenk\ function does not exist. We formalise this argument in what follows.
+Given these two lemmas, we can now relatively easily conclude the lower bound. The idea is that, if we assume by way of contradiction that we are given a small monotone circuit computing \cliquenk, then we can approximate the output gate of this circuit with an approximator that does not make too many errors: the circuit is small and each original gate when approximated contributes only a few new errors. But it is not hard to show that a good approximator for the \cliquenk\ function does not exist. We formalise this argument in what follows.
 
 
 
@@ -585,7 +598,7 @@ If $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$ is not identically 0 (namel
 In Figure \ref{fig:R(xi)}  we see an example. The subset $X_i$ is circled in green and contain four nodes. To fool the approximator to accept a $k-1$-colouring, the $k-1$-colouring should contain a clique on the four nodes in $X_i$, which means that each node in $X_i$ is assigned a different colour and hence sent to a distinct independent set. The figure shows an example where this happens: the five independent sets are circled in red, and no two nodes in $X_i$ live in the same independent set. Hence, there is a clique on all nodes in $X_i$.
 \begin{figure}[H] 
     \centering
-    \includegraphics[scale=0.15]{images/R(Xi)-lemma-cliques.png}
+    \includegraphics[scale=0.35]{images/R(Xi)-lemma-cliques.png}
         \caption{Example of a $k-1$-colouring that fools an approximator that checks for a clique on  the set $X_i$. The red sets are the independent sets, the green set is $X_i$ and the blue edges are the clique formed on $X_i$ that fools the approximator $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$.}
     \label{fig:R(xi)}
 \end{figure}
@@ -688,7 +701,7 @@ Based on the above claim, we have two cases:
 
 \noindent \case 1 $\operatorname{\APPX}\left(X_1, \ldots, X_m\right) $ is identically 0. 
 Thus, the number of \emph{false negatives} $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ has in total is the number of all possible positive instance, namely all possible $k$-cliques, which is $\binom{n}{k}$.
-By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  the number of gates in  $C$\ is lower bounded by the total number of new errors introduced across all the  gates in $C$ (which is $\binom{n}{k}$), divided by the maximal number of errors introduced by each gate (which is $\le M^2\cd\binom{n-l-1}{k-l-1}$). In other words,
+By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  \emph{the number of gates in  $C$\ is lower bounded by the total number of new errors introduced across all the  gates in $C$ (which is $\binom{n}{k}$), divided by the maximal number of errors introduced by each gate (which is $\le M^2\cd\binom{n-l-1}{k-l-1}$).} In other words,
 \begin{align*}
 |C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}}
 & = \frac{1}{M^2}\cd\frac{n!}{k!(n-k)!} \cdot \frac{(k-l-1)!(n-l-k)!}{(n-l-1)!} \\
@@ -715,7 +728,7 @@ for $i=0,\dots,l-1$ and by \Cref{eq:651:16}, we have
 \noindent\case 2 $\operatorname{\APPX}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ \emph{false positives} (half of the total number of  $(k-1)$-colourings).
 By \Cref{lem:new-false-positives},
 each approximation step introduces at most $ M^2\cd \frac{(k-1)^n}{2^p}$
- new false positives. Therefore,  as in the previous case, we have:
+ new false positives. Therefore,  similar to the argument  in the previous case, we have:
 $$
 |C| \geq \frac{\frac{1}{2}(k-1)^n}{M^2\cd \frac{(k-1)^n}{2^p}}
 = \frac{2^p}{2 \cdot M^2}
@@ -740,34 +753,77 @@ It is left to prove the two lemmas  \ref{lem:new-false-positives} and \ref{lem:n
 \subsection{Proofs of Lemma \ref{lem:new-false-positives} and Lemma \ref{lem:new-false-negatives}: the Approximator Steps}
 %_______________________________________________________________________
 
-We prove the base approximator case of  both lemmas in one shot, as the argument is the same.  
-
-\para{Base Approximator Case} $|C|=1$, i.e., $C$ consists of only a single input gate $g_{ij}$. Recall that $g_{i j}$ is an input gate denoting whether $(i, j) \in E$, for $i, j \in V$.
-That is, if there is an edge between $i$ and $j$ in the input graph $G$.
-
-This is an easy case: We need to show an approximator $\operatorname{\APPX}(X_1, \ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leq l$, for all $i \in[m]$ that approximates $g_{i j}$ (without introducing too many errors.
-But the circuit $\APPX(\{i, j\})$ is $g_{i j}$ by definition. Hence, no error are introduced in this step.
 
 
 
+We prove the base  case of  both lemmas in one shot, as the argument is the same.  
 
-\para{Induction Approximator Step }
+\para{Input node (base) Approximator Case:}
+We need to show that if $x_{ij}$ is an input gate, then the approximator $\gapx(x_{ij})=x_{ij}$ does not introduce many false positives or false negatives. 
+%Recall that $g_{i j}$ is an input gate denoting whether $(i, j) %\in E$, for $i, j \in V$.
+%That is, if there is an edge between $i$ and $j$ in the input graph %$G$.
+%
+This is immediate because the approximator for the input gate $x_{ij}$ is $x_{ij}$, so no errors whatsoever are introduced.  
 
-Given two approximators
-$\operatorname{\APPX}(\mathcal X)$ and 
-$\operatorname{\APPX}(\mathcal Y) 
-$, with $\mathcal{X}=\{X_1, \ldots, X_m\}$, 
-$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$, we wish to construct the  approximators  for computing $\APPX(\mathcal{X}) \vee \APPX(\mathcal{Y})$, and $\operatorname{\APPX}(\mathcal X) \wedge 
-\operatorname{\APPX}(\mathcal Y)$, respectively.
+%an easy case: We need to show an approximator $\operatorname{\APPX}(X_1, %\ldots, X_m)$ with $m \leq M$ and $\left|X_i\right| \leq l$, for %all $i \in[m]$ that approximates $g_{i j}$ (without introducing %too many errors.
+%But the circuit $\APPX(\{i, j\})$ is $g_{i j}$ by definition. Hence, no error are introduced in this step.
+
+
+
+\para{$\lor$ and $\land$-gates (induction) Approximator Step }
+
+
+
+% % OLD 
+% 
+% 
+% \textcolor[rgb]{0.752941,0.752941,0.752941}{Given two approximators
+% $\operatorname{\APPX}(\mathcal X)$ and 
+% $\operatorname{\APPX}(\mathcal Y) 
+% $, with $\mathcal{X}=\{X_1, \ldots, X_m\}$, 
+% $\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$, we wish to construct the  approximators  for computing $\APPX(\mathcal{X}) \vee \APPX(\mathcal{Y})$, and $\operatorname{\APPX}(\mathcal X) \wedge 
+% \operatorname{\APPX}(\mathcal Y)$, respectively, that does not introduce too many errors.
+% In other words, our goal is to prove the following inductive statement.
+% }
+% \begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
+% \textbf{Induction Statement for \Cref{lem:new-false-positives} and \Cref{lem:new-false-negatives}:}
+%  Let $\APPX(g_1),\APPX(g_2)$ be two approximators for the two gates $g_1,g_2$, respectively, and let $\circ$ be either a ``$\lor$'' gate or a ``$\land$'' gate. 
+%  There exists an approximator $\APPX(g_1\circ g_2)$, that well approximates $\APPX(g_1)\circ\APPX(g_2)$, in the sense that it introduces at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives and at most $M^2 \cdot\binom{n-l-1}{k-l-1}$  false negatives. 
+% \end{tcolorbox}
+
+
+
+\begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
+\textbf{Gaol to prove:}
+Let $\operatorname{\APPX}(\mathcal X)$ and 
+$\operatorname{\APPX}(\mathcal Y)$ be 
+two approximators,
+with $\mathcal{X}=\{X_1, \ldots, X_m\}$, 
+$\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$.
+We wish to construct   two approximators that do not introduce too many errors over  $\APPX(\mathcal{X}) \vee \APPX(\mathcal{Y})$, and $\operatorname{\APPX}(\mathcal X) \wedge 
+\operatorname{\APPX}(\mathcal Y)$, respectively,
+in the sense that they introduce at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ new false positives and at most $M^2 \cdot\binom{n-l-1}{k-l-1}$  new false negatives.\end{tcolorbox}
+
+% In other words, our goal is to prove the following inductive statement.
+%  Let $\APPX(g_1),\APPX(g_2)$ be two approximators for the two gates $g_1,g_2$, respectively, and let $\circ$ be either a ``$\lor$'' gate or a ``$\land$'' gate. 
+%  There exists an approximator $\APPX(g_1\circ g_2)$, that well approximates $\APPX(g_1)\circ\APPX(g_2)$, in the sense that it introduces at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives and at most $M^2 \cdot\binom{n-l-1}{k-l-1}$  false negatives. 
+
+ 
+
+
+
+
+
+
 
 \case{1}
 $\lor$-gate.
 
 \textit{Naive (wrong) attempt}: $\operatorname{\APPX}(\mathcal X)
-\lor \operatorname{\APPX}(\mathcal Y)$ is approximated by $\operatorname{\APPX}(\mathcal X \cup \mathcal Y)$. That is, $\operatorname{\APPX}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_m\right)$. At first glance this is a good solution because it does not introduce any errors (why?). But there is a \textit{problem}: what if $m+m^{\prime}>M$?
+\lor \operatorname{\APPX}(\mathcal Y)$ is approximated by $\operatorname{\APPX}(\mathcal X \cup \mathcal Y)$. That is, $\operatorname{\APPX}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_m\right)$. At first glance this is a good solution because it does not introduce \emph{any} errors (why?). But there is a \textit{problem}: what if $m+m^{\prime}>M$?
 
 
-\textit{Solution}: We need to cleverly \emph{reduce} the number of sets $X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma, explained in what follows. 
+The solution to this problem is nontrivial. We need to cleverly \emph{reduce} the number of sets $X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}$. To do this we use a combinatorial lemma called The Sunflower Lemma, explained in what follows. 
 
 \subsubsection{The Sunflower Lemma}
 
@@ -833,60 +889,91 @@ By \emph{induction hypothesis} (since $M^{\prime}$ is "$M$ with $\ell$ decreased
 Hence, $\left\{P_1 \cup\{d\}, \ldots, P_p \cup\{d\}\right\}$ is a sunflower in $Z$.
 \end{proof}
 
+
+\para{Plucking}
+ By the Sunflower Lemma, for every family of $\geq M$ nonempty sets, each of cardinality $\leq l$, we can find a sunflower  with 
+$l=\sqrt[8]{n}$, $p =\sqrt[8]{n}\cd\log n$ and $M=(p-1)^l \cdot \ell!$.
+
+By \emph{plucking a sunflower} we mean the process of replacing all petals by their core, as in the following figure. 
+\includegraphics[scale=0.7]{image004.png}
+
+
+\begin{corollary}
+If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cannot apply plucking anymore we know by the Sunflower Lemma that the number of sets is $\leq M$).
+\end{corollary}
+We use the notation 
+${\rm pluck}(Z)$ to denote the result of repeated plucking of a family $Z$ of sets, until $|Z| \leq M$.
+
+
+
+
 % Enable watermark from this point onward
-\newpage\SetWatermarkText{DRAFT}
+%\newpage\SetWatermarkText{DRAFT}
 
 % _____________________________________________________________________
 \subsubsection{Induction Approximator Step Continued: Approximating OR and AND using Plucking}
 % _____________________________________________________________________
-- By the Sunflower Lemma, every family of $\geq M$ nonempty sets, each of cardinality $\leq l$, then we can find a sunflower in it with $l=\sqrt[3]{n}(p \approx \sqrt[3]{n}) M=(p-1)^l \cdot \ell!$.
-- Plucking a sunflower: replacing all petals by their core. 4 sets
 
-\begin{corollary}
-If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cant apply plucking anymore we know by the Sunflower Lemma that the number of sets is $\leq M$ ).
-\end{corollary}
+We are finally ready to define precisely how to approximate OR and AND gates.
+\begin{definition}[Approximators for $\lor$ and $\land$ gates]
 
-pluck (z): the result of repeated plucking of a family of sets $Z$, until $|Z| \leq M$.
+\begin{description}
+\item[The approximate for $g_1\lor g_2$:] Assume that $\gapx(g_1)=\APPX(\cX)$ and $\gapx(g_2)=\operatorname{\APPX}(\cY)$. Define 
+$$\gapx(g_1\lor g_2):=\APPX(\operatorname{pluck}(\cX \cup \cY)).$$
 
-\begin{definition}[Approximate OR and AND]
-foxily of sets The approximate $-V$ of two crude -circuits $\APPX(x)$ and $\operatorname{\APPX}(y)$ is: $\operatorname{\APPX}($ pluck $(x \cup y))$.
-
-The approximate $-\Lambda$ of $\APPX(x)$ and $\APPX(Y)$ is: 
-$\operatorname{\APPX}\left(\right.$ pluck $\left\{X_i \cup Y_j:\left|X_i \cup Y_j\right| \leq l\right.$ and $\left.\left.X_i \in \chi, Y_j \in Y\right\}\right)$
+\item[The approximate  for $g_1\land g_2$:]
+Assume that $\gapx(g_1)=\APPX(\cX)$ and $\gapx(g_2)=\operatorname{\APPX}(\cY)$. Define 
+$$\gapx(g_1\land g_2):=
+    \APPX
+        \left(
+            \operatorname{pluck}
+                \left\{
+                    X_i \cup Y_j:
+                        \left|
+                            X_i \cup Y_j
+                        \right| 
+                        \leq l \text{ and } 
+                        X_i \in \cX, Y_j \in \cY
+                \right\}
+       \right).
+$$
+\end{description}
 \end{definition}
 
 
-
-
-$V$-approximator of $\operatorname{\APPX}(x) \vee \operatorname{\APPX}(y)$ introduces
-1) a false negative:
-
-A k-clique $G=(v, E)$ s.t.: $(\operatorname{cc}(x) \operatorname{vcc}(y))(G)=1$
-2) a false positive:
-$\operatorname{cedpluck}(x \cup y)(G)=0$
-$V$-aterosimator
-$A(k-1)$-coburing $G=(v, E)$ s.t.
-
-$$
-\begin{aligned}
-& (\operatorname{cc}(x) \vee \operatorname{cc}(y))(G)=0 \\
-& \frac{\operatorname{cc}(p l u c k(x \cup y))(G)}{V \text {-approvinator }}=1
-\end{aligned}
-$$
-
-
-1 -apporimator of $\operatorname{\APPX}(x) \wedge \operatorname{\APPX}(y)$ introduces
-1) a false negative:
-
-A k-clique $G=(v, E)$ s.t: : $(\operatorname{cc}(x) \wedge \operatorname{cc}(y))(G)=1$
-2) a false positive: $c c\left(P \mid\right.$ luck $\left.\left\{x_i\left|y_i:\left|x_i \cup y_i\right| \leq l, x_i \in X, y_i \in\right\}\right\}\right)=0$
-
-$$
-\left.c c\left(p l u c k\left\{x_i \cup Y_j:\left|x_i \cup y_0\right| \leq l, x_i \in \chi, y_i \in\right\}\right\}\right)=1
-$$
-
+% NOT NEEDED:
+% We show that: \includegraphics[scale=0.3]{image005.png}
+% 
+% $V$-approximator of $\operatorname{\APPX}(x) \vee \operatorname{\APPX}(y)$ introduces
+% 1) a false negative:
+% 
+% A k-clique $G=(v, E)$ s.t.: $(\operatorname{cc}(x) \operatorname{vcc}(y))(G)=1$
+% 2) a false positive:
+% $\operatorname{cedpluck}(x \cup y)(G)=0$
+% $V$-aterosimator
+% $A(k-1)$-coburing $G=(v, E)$ s.t.
+% 
+% $$
+% \begin{aligned}
+% & (\operatorname{cc}(x) \vee \operatorname{cc}(y))(G)=0 \\
+% & \frac{\operatorname{cc}(p l u c k(x \cup y))(G)}{V \text {-approvinator }}=1
+% \end{aligned}
+% $$
+% 
+% 
+% 1 -apporimator of $\operatorname{\APPX}(x) \wedge \operatorname{\APPX}(y)$ introduces
+% 1) a false negative:
+% 
+% A k-clique $G=(v, E)$ s.t: : $(\operatorname{cc}(x) \wedge \operatorname{cc}(y))(G)=1$
+% 2) a false positive: $c c\left(P \mid\right.$ luck $\left.\left\{x_i\left|y_i:\left|x_i \cup y_i\right| \leq l, x_i \in X, y_i \in\right\}\right\}\right)=0$
+% 
+% $$
+% \left.c c\left(p l u c k\left\{x_i \cup Y_j:\left|x_i \cup y_0\right| \leq l, x_i \in \chi, y_i \in\right\}\right\}\right)=1
+% $$
+%%%%% NOT NEEDED END
 
 \para{Proof of \Cref{lem:new-false-positives}}
+\includegraphics[scale=0.4]{image006.png}
 Each approximation step introduces at most $M^2 \frac{(k-1)^n}{2^p}$ false positives.
 
 Pe of F: Case 1: OR-approximator
@@ -913,7 +1000,7 @@ $$
 We consider each plucking involved in (2), and bound from above the number of false positive introduced by this plucking. (Note this is the only reason a false positive can be introduced.)
 
 
- - Consider a single plucking : replace sunflower $\left\{z_1, \ldots, z_p\right\}$ by its core $Z$.
+ - Consider a single plucking \footnote{It is fine to consider each single plucking, and count how many errors introduced in each such plucking. The reason is that once a plucking what done, we take the core Z of some sunflower; and this new set Z that replaces all other set in the sunflower. Then we count the number of new errors introduced. Now, this Z can be replaced again in future pluckings, and we shall count the new errors introduced again....}: replace sunflower $\left\{z_1, \ldots, z_p\right\}$ by its core $Z$.
 
 By (1): $Y_i^{\prime} s \& X_i^{\prime} s(\&, ' s)$
 are all hon-cliques

@@ -911,7 +911,7 @@ ${\rm pluck}(Z)$ to denote the result of repeated plucking of a family $Z$ of se
 %\newpage\SetWatermarkText{DRAFT}
 
 % _____________________________________________________________________
-\subsubsection{Induction Approximator Step Continued: Approximating OR and AND using Plucking}
+\subsubsection{  Approximator Step Continued: Approximating OR and AND using Plucking}
 % _____________________________________________________________________
 
 We are finally ready to define precisely how to approximate OR and AND gates.
@@ -973,102 +973,103 @@ $$
 %%%%% NOT NEEDED END
 
 \para{Proof of \Cref{lem:new-false-positives}}
-\includegraphics[scale=0.4]{image006.png}
-Each approximation step introduces at most $M^2 \frac{(k-1)^n}{2^p}$ false positives.
-
-Pe of F: Case 1: OR-approximator
-We start with $\overline{\APPX}\left(x_1, \ldots, x_m\right)$ and $\operatorname{\APPX}\left(y_1, \ldots, y_{m_m}\right)$ and consider a false positive introduced by
-
-$$
-\operatorname{cc}\left(\text { pluck }\left(X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}\right)\right) \text {. }
-$$
 
 
-That is, a $G=(v, E)$ s.t.,
+We need to show that each approximation step introduces at most $M^2 \frac{(k-1)^n}{2^p}$ false positives.
+
+
+\case 1  OR-approximator.
+We start with $\APPX\left(X_1, \ldots, X_m\right)$ and 
+$\operatorname{\APPX}\left(Y_1, \ldots, Y_{m_m}\right)$ and consider a false positive introduced by
 
 $$
-\operatorname{cc}\left(x_1, \ldots, x_m\right)(G)=0, \quad \operatorname{cc}\left(y_1, \ldots, y_m\right)(G)=0
-$$
-
-and
-
-$$
-\operatorname{cc}\left(\operatorname{pluck}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}\right)\right)(G)=1 .
+\operatorname{APPX}\left(\text{pluck}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}\right)\right) \text {. }
 $$
 
 
-We consider each plucking involved in (2), and bound from above the number of false positive introduced by this plucking. (Note this is the only reason a false positive can be introduced.)
+That is, a $G=(V, E)$ such that,
+\begin{equation}\label{eq:991:24}
+\operatorname{\APPX}\left(X_1, \ldots, X_m\right)(G)=0 
+\quad \text{ and } ~~~\operatorname{\APPX}\left(Y_1, \ldots, Y_m\right)(G)=0
+\end{equation}
+while 
+\begin{equation}\label{eq:960:30}
+\operatorname{\APPX}\left(\operatorname{pluck}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}\right)\right)(G)=1 .
+\end{equation}
+
+We consider each plucking involved in \Cref{eq:960:30}, and bound from above the number of false positive introduced by this plucking. (Note that plucking is the only reason a false positive could be introduced.)
 
 
- - Consider a single plucking \footnote{It is fine to consider each single plucking, and count how many errors introduced in each such plucking. The reason is that once a plucking what done, we take the core Z of some sunflower; and this new set Z that replaces all other set in the sunflower. Then we count the number of new errors introduced. Now, this Z can be replaced again in future pluckings, and we shall count the new errors introduced again....}: replace sunflower $\left\{z_1, \ldots, z_p\right\}$ by its core $Z$.
+Consider a single plucking\footnote{It is fine to consider each single plucking, and count how many errors introduced in each such plucking. The reason is that once a plucking what done, we take the core Z of some sunflower; and this new set Z that replaces all other set in the sunflower. Then we count the number of new errors introduced. Now, this Z can be replaced again in future pluckings, and we shall count the new errors introduced again.}: 
+replace sunflower $\left\{Z_1, \ldots, Z_p\right\}$ by its core $Z$.
 
-By (1): $Y_i^{\prime} s \& X_i^{\prime} s(\&, ' s)$
-are all hon-cliques
-Thus, by (2)
-$Z$ is a clique
-and every petal $z_i$
-has two nodes w/ the $\frac{\text { same colour! }}{L \operatorname{bg}(1)}$
-
-
+By \Cref{eq:991:24}: $Y_i$'s and $X_i$'s are all non-cliques.
+Thus, by \Cref{eq:960:30}, $Z$ \emph{is} a clique
+and for every $i\in[p]$, the petal of $Z_i$ contains two nodes with the \emph{same colour} (otherwise, there would have been a clique on some $Z_i$ in contrast to \Cref{eq:991:24}).
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.6\linewidth]{images/clique3.png}
-    \caption{Enter Caption}
+    \caption{Example}
     \label{fig:enter-label}
 \end{figure}
 
 
-- We count the number of such colourings.
-- We do this probabilistically:
+We estimate the number of such $(k-1)$-colourings, using simple probability.
+Choosing a $(k-1)$-colouring of the nodes randomly and independently. 
 
-Choosing a $(k-1)$-colouring of the nodes randomly and independently, what's the probability every $z_i$ has repeated colours but $z$ does not?
-- As before, let $R(X)$ be the probability that $X$ has repeated colours.
+What is the probability that every (petal of) $Z_i$ has repeated colours but the core $Z$ does not?
 
+As before, let $R(X)$ be the probability that $X$ has repeated colours.
 
-$\qquad$ As before, let $R(X)$ be the probability that $X$ has repeated colours.
 
 $$
-\operatorname{pr}\left[R\left(z_1\right) \wedge \ldots \wedge R\left(z_p\right) \wedge \neg R(z)\right] \leq \operatorname{pr}\left[R\left(z_1\right) \wedge \ldots \wedge R\left(z_p\right) \mid \neg R(z)\right]$$
+\operatorname{Pr}
+\left[R\left(Z_1\right) \wedge 
+\ldots \wedge R\left(Z_p\right) \wedge \neg R(Z)
+\right] 
+\leq \operatorname{Pr}\left[R\left(Z_1\right) \wedge \ldots \wedge R\left(Z_p\right) \mid \neg R(Z)\right]$$
+(by definition of conditional probability $\operatorname{Pr}[A \land B]=\operatorname{Pr}[A \mid B] \cdot \operatorname{Pr}[B]$)
 
+\begin{align*}
+& =\prod_{i=1}^p \operatorname{Pr}\left[R\left(Z_i\right) \mid \neg R(Z)\right] 
+\intertext{($Z_i$'s do not have common nodes, except those in $Z$, so given $\neg R(Z)$ the events $R(Z_i)$ are independent)}
+& \leq \prod_{i=1}^p \operatorname{Pr}\left[R\left(Z_i\right)\right]\\
+\intertext{(that probability of repetition of colours is increased if we do not restrict ourselves to colourings with no repetitions in the core $Z \subseteq Z_i$)}
+& \leq \frac{1}{2^p}
+\end{align*}
+(because as we have seen before 
+$\operatorname{Pr}[R(X)] \leq \frac{1}{2}$, for $|X|\le \ell$).
+
+
+Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $\mathrm{p}-1$, and there are no more than $2M$ sets when we start), the lemma holds for the $\lor$ approximation step: because 
 $$
-\begin{aligned}
-& =\prod_{i=1}^p \operatorname{Pr}\left[R\left(z_i\right) \mid \neg R(z)\right] \\
-& \leq \prod_{i=1}^p \operatorname{Pr}\left[R\left(z_i\right)\right]
-\leq \frac{1}{2^p}
-\end{aligned}
-$$
-
-$$
-\operatorname{Pr}[A \| B]=\operatorname{Pr}[A \mid B] \cdot \operatorname{Pr}[B]
-$$
-
-
-Li's don't have common nodes, except those in $Z$.
-
-We've seen before that
-
-$$
-\operatorname{Pr}[R(x)] \leq \frac{1}{2}
-$$
-
-Probability of repetition of colours is increased if we doit restrict ourselves to colourings w/ no repetitions in $z \subseteq Z_i$.
-
-
-Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $\mathrm{p}-1$, and there are no more than 2 M sets when we start), the lemma holds for the OR approximation step: because e
-
-$$
-M^2 \cdot \frac{(k-1)^n}{2^p} \geq \frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p}
+M^2 \cdot \frac{(k-1)^n}{2^p} \geq \frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p}.
 $$
 
 
-% Cont. of proof of Lemma 1
+\case 2 {$\land$-gate}.  Consider now an AND approximation step of approximators $\APPX(\cX)$ and $\APPX(\cY)$. It can be broken down in three phases, as follows. 
 
-Consider now an AND approximation step of approximators $\APPX(x)$ and $C(y)$. It can be broken down in three phases: First, we form $\APPX(\{X \cup Y: X \in \chi, Y \in Y\})$; this introduces no false positives, because any graph in which $X U Y$ is a clique must have a clique in both and $Y$, and thus it was accepted by both constituent approximators. The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$ ), and can therefore introduce no false positives. The third phase entails a sequence of fewer than $\mathrm{M}^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-\mathrm{P}}(\mathrm{k}-1)^{\mathrm{n}}$ false positives are introduced. The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives
+First, we form $\APPX(\{X \cup Y: X \in \cX, Y \in \cY\})$; this introduces no false positives, because any graph in which $X \cup Y$ is a clique must have a clique in both $X$ and $Y$, and thus it was accepted by both constituent approximators. 
 
+The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$), and can therefore introduce no false positives. 
 
+The third phase entails a sequence of fewer than $M^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-p}(k-1)^{n}$ false positives are introduced. 
+
+The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
+
+\newpage
 
 \para{Proof of Lemma \Cref{lem:new-false-negatives}}
+
+
+\includegraphics{image007.png}
+
+\includegraphics{image008.png}
+
+\newpage
+
+\iffalse
 We need to show that each approximation step introduces $\leq M^2\binom{n-l-1}{k-l-1}$ false negatives.
 
 
@@ -1099,5 +1100,5 @@ All $k$-cliques $G$ that contain $Z$.
 We calculate an upper bound on these false negatives: There are precisely $\binom{n-|z|}{k-|z|}$ k-cliques er that contain $z$ (as part of the clique). Since, $|z|>l$, the upper bound on the false negatives introduced by each deletion is $\binom{n-l-1}{k-l-1}$.
 
 Since there are $\leq M^2$ deletions of sets, (because $|\chi|=|y|=M$ ), we get that the number of false negatives introduced by $a_n 1$-approximation step is $\leq M^2 \cdot\binom{n-t-1}{k-l-1}$.
-
+\fi
 

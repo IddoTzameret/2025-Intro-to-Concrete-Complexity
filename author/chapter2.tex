@@ -725,7 +725,7 @@ for $i=0,\dots,l-1$ and by \Cref{eq:651:16}, we have
 
 \medskip 
 
-\noindent\case 2 $\operatorname{\APPX}\left(x_1, \ldots, x_n\right)$ has at least $\frac{1}{2}(k-1)^n$ \emph{false positives} (half of the total number of  $(k-1)$-colourings).
+\noindent\case 2 $\operatorname{\APPX}\left(X_1, \ldots, X_n\right)$ has at least $\frac{1}{2}(k-1)^n$ \emph{false positives} (half of the total number of  $(k-1)$-colourings).
 By \Cref{lem:new-false-positives},
 each approximation step introduces at most $ M^2\cd \frac{(k-1)^n}{2^p}$
  new false positives. Therefore,  similar to the argument  in the previous case, we have:
@@ -874,8 +874,7 @@ Since $|D|<p$, i.e., $D$ contains less than $p$ sets, and each set in $D$ has si
 Moreover, $E$ intersects every set in $Z$ by assumption.
 Since $Z$ has more than $M$ sets by assumption, and each set intersects some element of $E$, there exists an element $d \in E$ that intersects $>\frac{M}{(p-1)\cd l}=(p-1)^{l-1} \cdot(l-1)!$ sets in $Z$.
 \footnote{If a set $E$ intersects all sets in a family of sets $X_1, . ., X_M$ then there is an element in $E$ that appears in $\geq \frac{M}{|E|}$ sets $X_i$.
-Otherwise, each element in $E$ appears in $<\frac{M}{|E|}$ sets $X_i$. Thus, $E$ intersects $<|E| \cdot \frac{M}{|E|}=M$ sets $X_i$, which is a contradiction to the assumption.
-}
+Otherwise, each element in $E$ appears in $<\frac{M}{|E|}$ sets $X_i$. Thus, $E$ intersects $<|E| \cdot \frac{M}{|E|}=M$ sets $X_i$, which is a contradiction to the assumption. Another way to look at this is through the pigeonhole principle: if $E$ intersect each set $X_i$, then there is a functional mapping from each of the $M$ sets $X_i$ to a (single, arbitrarily chosen) element of $E$ that occurs also in $X_i$. Thus, there must be an element of $E$ with at least $\frac{M}{|E|}$ sets $X_i$ that maps to it.}
 
 Consider
 
@@ -891,24 +890,20 @@ Hence, $\left\{P_1 \cup\{d\}, \ldots, P_p \cup\{d\}\right\}$ is a sunflower in $
 
 
 \para{Plucking}
- By the Sunflower Lemma, for every family of $\geq M$ nonempty sets, each of cardinality $\leq l$, we can find a sunflower  with 
+ By the Sunflower Lemma, for every family of $>M$ nonempty sets, each of cardinality $\leq l$, we can find a sunflower with at least $p$ sets, assuming    
 $l=\sqrt[8]{n}$, $p =\sqrt[8]{n}\cd\log n$ and $M=(p-1)^l \cdot \ell!$.
 
 By \emph{plucking a sunflower} we mean the process of replacing all petals by their core, as in the following figure. 
 \includegraphics[scale=0.7]{image004.png}
 
 
-\begin{corollary}
-If we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cannot apply plucking anymore we know by the Sunflower Lemma that the number of sets is $\leq M$).
+\begin{corollary}[Repeated plucking]
+With the parameters above, if we have $>M$ sets in a family, by repeated plucking we can reduce the number of sets to $\leq M$ (if we cannot apply plucking anymore we know by the Sunflower Lemma that the number of sets is $\leq M$).
 \end{corollary}
 We use the notation 
 ${\rm pluck}(Z)$ to denote the result of repeated plucking of a family $Z$ of sets, until $|Z| \leq M$.
 
 
-
-
-% Enable watermark from this point onward
-%\newpage\SetWatermarkText{DRAFT}
 
 % _____________________________________________________________________
 \subsubsection{  Approximator Step Continued: Approximating OR and AND using Plucking}
@@ -987,7 +982,7 @@ $$
 $$
 
 
-That is, a $G=(V, E)$ such that,
+That is, a $(k-1)$-colouring $G=(V, E)$ such that,
 \begin{equation}\label{eq:991:24}
 \operatorname{\APPX}\left(X_1, \ldots, X_m\right)(G)=0 
 \quad \text{ and } ~~~\operatorname{\APPX}\left(Y_1, \ldots, Y_m\right)(G)=0
@@ -1000,25 +995,23 @@ while
 We consider each plucking involved in \Cref{eq:960:30}, and bound from above the number of false positive introduced by this plucking. (Note that plucking is the only reason a false positive could be introduced.)
 
 
-Consider a single plucking\footnote{It is fine to consider each single plucking, and count how many errors introduced in each such plucking. The reason is that once a plucking what done, we take the core Z of some sunflower; and this new set Z that replaces all other set in the sunflower. Then we count the number of new errors introduced. Now, this Z can be replaced again in future pluckings, and we shall count the new errors introduced again.}: 
-replace sunflower $\left\{Z_1, \ldots, Z_p\right\}$ by its core $Z$.
+Consider a single plucking\footnote{It is fine to consider each single plucking, and count how many errors introduced in each such plucking. The reason is that once a plucking was done, we take the core $Z$ of some sunflower; and this new set $Z$ replaces all other set in the sunflower. Then we count the number of new errors introduced. Now, this $Z$ could  be replaced again in future pluckings, and we shall count the new errors introduced again.}: 
+replace sunflower $\left\{Z_1, \ldots, Z_p\right\}$ by its core $Z$ (see \Cref{fig:pluck-stage}).
 
-By \Cref{eq:991:24}: $Y_i$'s and $X_i$'s are all non-cliques.
-Thus, by \Cref{eq:960:30}, $Z$ \emph{is} a clique
-and for every $i\in[p]$, the petal of $Z_i$ contains two nodes with the \emph{same colour} (otherwise, there would have been a clique on some $Z_i$ in contrast to \Cref{eq:991:24}).
+By \Cref{eq:991:24}: $Y_i$'s and $X_i$'s are all non-cliques in $G$.
+Thus, by \Cref{eq:960:30}, $Z$ \emph{is} a new  clique
+identified by the approximation and for every $i\in[p]$, the petal of $Z_i$ contains two nodes with the \emph{same colour} in $G$ (otherwise, there would have been a clique on some $Z_i$ in contrast to \Cref{eq:991:24}).
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=.6\linewidth]{images/clique3.png}
     \caption{Example}
-    \label{fig:enter-label}
+    \label{fig:pluck-stage}
 \end{figure}
 
 
 We estimate the number of such $(k-1)$-colourings, using simple probability.
-Choosing a $(k-1)$-colouring of the nodes randomly and independently. 
-
-What is the probability that every (petal of) $Z_i$ has repeated colours but the core $Z$ does not?
+For this purpose we consider the following question:\ choosing a $(k-1)$-colouring of the nodes randomly and independently, \emph{what is the probability that every (petal of) $Z_i$ has repeated colours but the core $Z$ does not}?
 
 As before, let $R(X)$ be the probability that $X$ has repeated colours.
 
@@ -1035,16 +1028,17 @@ $$
 & =\prod_{i=1}^p \operatorname{Pr}\left[R\left(Z_i\right) \mid \neg R(Z)\right] 
 \intertext{($Z_i$'s do not have common nodes, except those in $Z$, so given $\neg R(Z)$ the events $R(Z_i)$ are independent)}
 & \leq \prod_{i=1}^p \operatorname{Pr}\left[R\left(Z_i\right)\right]\\
-\intertext{(that probability of repetition of colours is increased if we do not restrict ourselves to colourings with no repetitions in the core $Z \subseteq Z_i$)}
+\intertext{(the probability of repetition of colours is increased if we do not restrict ourselves to colourings with no repetitions in the core $Z \subseteq Z_i$)}
 & \leq \frac{1}{2^p}
 \end{align*}
 (because as we have seen before 
 $\operatorname{Pr}[R(X)] \leq \frac{1}{2}$, for $|X|\le \ell$).
 
 
-Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $\mathrm{p}-1$, and there are no more than $2M$ sets when we start), the lemma holds for the $\lor$ approximation step: because 
+Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $\mathrm{p}-1$, and there are no more than $2M$ sets when we start), the lemma holds for the $\lor$ approximation step,  because (recall the total number of $(k-1)$-colouring is  $(k-1)^n$) 
 $$
-M^2 \cdot \frac{(k-1)^n}{2^p} \geq \frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p}.
+\frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p} \leq
+M^2 \cdot \frac{(k-1)^n}{2^p}  .
 $$
 
 
@@ -1052,13 +1046,19 @@ $$
 
 First, we form $\APPX(\{X \cup Y: X \in \cX, Y \in \cY\})$; this introduces no false positives, because any graph in which $X \cup Y$ is a clique must have a clique in both $X$ and $Y$, and thus it was accepted by both constituent approximators. 
 
-The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$), and can therefore introduce no false positives. 
+The second phase omits from the approximator circuit several sets (those of cardinality larger than $\ell$), and can therefore introduce no false positives (because even less graphs are identified as having cliques). 
 
 The third phase entails a sequence of fewer than $M^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-p}(k-1)^{n}$ false positives are introduced. 
 
 The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
 
 \newpage
+
+
+
+% Enable watermark from this point onward
+\newpage\SetWatermarkText{DRAFT}
+
 
 \para{Proof of Lemma \Cref{lem:new-false-negatives}}
 

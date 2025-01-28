@@ -511,7 +511,7 @@ Note that $x_{ij}$ is indeed an OR of (a single) AND, namely $x_{ij}=\APPX(\{x_{
 
 \item[\textbf{Induction  Approximator Step}:]\
 
-\case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $\gapx(g_1),\gapx(g_2)$, respectively. Using these, we construct an approximation of $g_1\lor g_2$ denoted $\gapx(g_1\lor g_2)$  (we shall show how to define this approximator as $\APPX(\cX)$ in the  sequel).
+\case 1 OR gate $g_1\lor g_2$. By induction hypothesis we already built the approximators of $g_1,g_2$, $\gapx(g_1),\gapx(g_2)$, respectively. Using these, we construct an approximation of $g_1\lor g_2$ denoted $\gapx(g_1\lor g_2)$  (we shall show how to define this approximator as $\APPX(\cX)$, for some $\cX$, in the  sequel).
 
 \case 2 AND gate $g_1\land g_2$. 
 By induction hypothesis we already built the approximators 
@@ -525,7 +525,7 @@ $\gapx(g_1\land g_2)$ from these (again, we shall do this in the sequel).
  %We call the two cases of the induction step above \emph{the approximator steps}. Namely, we have an approximator step for an OR gate and an AND gate, respectively. 
 
 
-\begin{definition}[Introducing new false positives and false negatives]
+\begin{definition}[Introducing new false positives and false negatives]\label{def:new-errors}
 Let $g_1\circ g_2$ be an $\lor$ or $\land$ gate with two incoming subcircuits $g_1$ and $g_2$, respectively (i.e., $\circ\in\{\lor,\land\}$). And let $x_{ij}$ be in input node in the circuit (with no incoming edges).
 \begin{itemize}
 \item 
@@ -598,7 +598,7 @@ If $\operatorname{\APPX}\left(X_1 \ldots X_m\right)$ is not identically 0 (namel
 In Figure \ref{fig:R(xi)}  we see an example. The subset $X_i$ is circled in green and contain four nodes. To fool the approximator to accept a $k-1$-colouring, the $k-1$-colouring should contain a clique on the four nodes in $X_i$, which means that each node in $X_i$ is assigned a different colour and hence sent to a distinct independent set. The figure shows an example where this happens: the five independent sets are circled in red, and no two nodes in $X_i$ live in the same independent set. Hence, there is a clique on all nodes in $X_i$.
 \begin{figure}[H] 
     \centering
-    \includegraphics[scale=0.35]{images/R(Xi)-lemma-cliques.png}
+    \includegraphics[width=.6\linewidth]{images/R(Xi)-lemma-cliques.png}
         \caption{Example of a $k-1$-colouring that fools an approximator that checks for a clique on  the set $X_i$. The red sets are the independent sets, the green set is $X_i$ and the blue edges are the clique formed on $X_i$ that fools the approximator $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$.}
     \label{fig:R(xi)}
 \end{figure}
@@ -617,7 +617,7 @@ Then,
 $$
 \operatorname{Pr}\left[R\left(X_i\right)\right] \leq \frac{\binom{|X_i |}{2}}{k-1} \leq \frac{\binom{l}{2}}{k-1} \leq \frac{1}{2}.
 $$
-The first inequality from the left holds using the union bound and the fact that there are $\binom{\mid X_i |}{2}$ pairs
+The first inequality from the left holds using the \emph{union bound} and the fact that there are $\binom{\mid X_i |}{2}$ pairs
 of nodes in $X_i$. See below for a recap of the union bound and basic notions from discrete probability we shall use throughout this book.
 The rightmost inequality holds because 
 $ \frac{\binom{\sqrt[8]{n}}{2}}{\sqrt[4]{n}-1}
@@ -632,13 +632,15 @@ This means that out of all negative instances to CLIQUE $(n, k)$ (namely, all $(
 
 
 
-\begin{tcolorbox}[colframe=white, colback=green!4, boxrule=0mm, sharp corners]
+\begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
 \textbf{Union Bound}: if in a random experiment
 there are $m$ possible ``bad'' events, each with probability at most $\alpha$, then the probability that at least one of the ``bad'' events occurred is at most $m\alpha$.
+\end{tcolorbox}
 
+\begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
 \small
-\medskip 
----
+%\medskip 
+%---
 
 We recall some  basic notions from  \textbf{discrete (finite) probability}, and explain more formally the union bound in what follows.
 
@@ -753,8 +755,9 @@ It is left to prove the two lemmas  \ref{lem:new-false-positives} and \ref{lem:n
 \subsection{Proofs of Lemma \ref{lem:new-false-positives} and Lemma \ref{lem:new-false-negatives}: the Approximator Steps}
 %_______________________________________________________________________
 
-
-
+Recall (see \Cref{def:new-errors}) that we aim to show that for each input gate $x_{ij}$ and each two internal gates $g_1$, $g_2$, the approximators $\gapx(x_{ij})$, 
+$\gapx(g_1\lor g_2)$ and $\gapx(g_1\land g_2)$, all defined as $\APPX(\cX)$ for some families $\cX$'s, well 
+approximate $x_{ij}$, $\gapx(g_1)\lor\gapx(g_2)$ and $\gapx(g_1)\lor\gapx(g_2)$, respectively (where, by induction, $\gapx(g_1)$ and $ \gapx(g_2)$ were already defined by $\APPX(\cX)$ and $\APPX(\cY)$, for some two families $\cX,\cY$).
 
 We prove the base  case of  both lemmas in one shot, as the argument is the same.  
 
@@ -794,7 +797,7 @@ This is immediate because the approximator for the input gate $x_{ij}$ is $x_{ij
 
 
 \begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
-\textbf{Gaol to prove:}
+\textbf{Goal to prove:}
 Let $\operatorname{\APPX}(\mathcal X)$ and 
 $\operatorname{\APPX}(\mathcal Y)$ be 
 two approximators,
@@ -803,6 +806,7 @@ $\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \
 We wish to construct   two approximators that do not introduce too many errors over  $\APPX(\mathcal{X}) \vee \APPX(\mathcal{Y})$, and $\operatorname{\APPX}(\mathcal X) \wedge 
 \operatorname{\APPX}(\mathcal Y)$, respectively,
 in the sense that they introduce at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ new false positives and at most $M^2 \cdot\binom{n-l-1}{k-l-1}$  new false negatives.\end{tcolorbox}
+
 
 % In other words, our goal is to prove the following inductive statement.
 %  Let $\APPX(g_1),\APPX(g_2)$ be two approximators for the two gates $g_1,g_2$, respectively, and let $\circ$ be either a ``$\lor$'' gate or a ``$\land$'' gate. 
@@ -894,7 +898,7 @@ Hence, $\left\{P_1 \cup\{d\}, \ldots, P_p \cup\{d\}\right\}$ is a sunflower in $
 $l=\sqrt[8]{n}$, $p =\sqrt[8]{n}\cd\log n$ and $M=(p-1)^l \cdot \ell!$.
 
 By \emph{plucking a sunflower} we mean the process of replacing all petals by their core, as in the following figure. 
-\includegraphics[scale=0.7]{images/pluck.png}
+\includegraphics[width=.6\linewidth]{images/pluck.png}
 
 
 \begin{corollary}[Repeated plucking]

@@ -124,11 +124,13 @@ $
 
 Equivalently, $\Parity$ is defined as the XOR of the input bits, denoted $x_1\parity\cdots\parity x_n$. Another equivalent definition is using modulus: $x_1+\cdots+x_n = 1 \mod 2$.
 
+We denote by $\Parity_n$ the \Parity\ function restricted to inputs of length precisely $n$.
+
 The main result in this chapter is the following:
 
 \begin{theorem}[\ACZ\ lower bound for \Parity]
 \label{thm:ACZ-lower bound}
-Every circuit family of depth-$d$ computing the \Parity\ function requires size $2^{\Omega\left(n^{\nicefrac{1}{d+1}}\right)}$.
+Every circuit family of depth-$d$ computing the $\Parity_n$ function requires size $2^{\Omega\left(n^{\nicefrac{1}{d+1}}\right)}$.
 \end{theorem}
 
 
@@ -138,18 +140,41 @@ Note: this means that if $d$ is constant, then the size lower bound is exponenti
 The theorem is a consequence of the fact that every function in \ACZ\ can be reduced to a constant function by setting relatively few variables to constants.
 The proof uses the Random Restriction Method.
 
-\
+\subsection{The Skeleton of the Argument: Random Restrictions}
 
 \textbf{Upshot of argument}: The idea is to randomly restrict (assign) the variables of the circuit (of which we want to show it cannot compute \Parity). If the circuit is small, such restriction collapses (gradually) the depth of the circuit to a depth-2 circuit. If the depth of the initial circuit was constant, this gradual step-by-step depth reduction needs to be done only for a constant many times. If we made random assignments (restrictions) only for a constant many times, we can rest assure that we have not assigned (i.e., fixed) too many variables. Hence, the function $\Parity$ under these restrictions still has a lot of free variables. But such $\Parity$ with sufficiently many free variables cannot have small depth 2 circuits (this we show by an auxiliary elementary argument).
 \includegraphics[width=0.9\textwidth]{image007.png}
 
 
+Note the similarity with the monotone circuit lower bound proof: we use structural induction on the circuit purported to correctly compute \Parity. 
 
-Note the similarity with the monotone circuit lower bound proof: we use structural induction on the circuit purported to correctly compute \Parity. If the 
+Here are the main steps of the argument in slightly more detail.
 
+\para{Random Restriction Method}
 
+\begin{enumerate}
+\item By  way of contradiction, start with a purported small depth-$d$ circuit $C$ for $\Parity_n$.
+We are going to assign to the circuit $C$ as well as to the function $\Parity_n$ it is supposed to compute random 0,1 values, showing the results of these assignments leads to conflicting effects: while the circuit restricted to these assignments becomes a circuit that computes a very simple function with high probability, the function $\Parity_n$ is still a rather complicated function to compute even after all this restriction, with high probability.
+\item Let $\overline x$ be $n$ variables $x_1,\dots,x_n$. Pick a random assignment $\rho_0: \overline x \rightarrow\{0,1, *\}^n$ with ``$x_i \rightarrow *$'' meaning that $x_i$ is \emph{un-assigned}, namely, stays a \emph{free} variable. We make sure that enough $x_i$'s stay  free.
 
+\item Depth Reduction Step: 
+%\item   $f$ is resilient in the sense that $f\rst\rho
+%%\not\equiv 0$;
 
+If $C$ is a small circuit then the \emph{function} computed by $C\rst\rho_0$, namely the restriction of $C$ to the assignment $\rho_0$, has a depth  $d-1$ circuit of small size. 
+
+\item
+Sequentially we assign new random restrictions $\rho_1,\dots,\rho_{d-3}$
+ (extending $\rho_0$) so that we reduce the depth of $C$ by 1 each time, until the depth is 2.
+
+\item 
+At this point, we end up with a circuit $C^{\prime}$ of depth 2 that computes the function 
+$\Parity_n\rst\rho_0\rho_2\ldots\rho_{d-3}$.
+
+\item
+We now use an auxiliary statement to reach a contradiction: since we made sure that each assignment $\rho_i$ leaves enough variables free, $\Parity_n\rst\rho_0\rho_2\ldots\rho_{d-3}$
+is still a relatively "complex" function, with high probability. In particular, we show that there are no \emph{small} depth $2$ circuits (i.e., OR of ANDs or ANDs of ORs) that compute $\Parity_n\rst\rho_0\rho_2\ldots\rho_{d-3}$.
+\end{enumerate}
 
 
 % \textcolor{red}{

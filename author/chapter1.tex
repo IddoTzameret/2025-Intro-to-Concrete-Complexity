@@ -59,7 +59,7 @@ Other approaches to the fundamental hardness questions are usually more intrinsi
 % use \sectionmark{}
 % to alter or adjust the section heading in the running head
 
-\begin{definition}[Boolean Circuit]
+\begin{definition}[Boolean circuit]\label{def:boolean-circuit}
 Let $n \in \mathbb{N}$ and $x_1, \ldots, x_n$ be $n$ variables. A Boolean Circuit $C$ with $n$ inputs is a directed acyclic graph. It contains $n$ nodes with no incoming edges, called the \emph{input nodes} and a single node with no outgoing edges, called the \emph{output node}.
 All other nodes are \emph{internal nodes} or \emph{gates}, and
 are labelled by the logical gates $\lor, \land,\neg$ (i.e., logical OR, AND, NOT, resp.). The $\lor,\land$ nodes have fan-in (i.e., number of incoming nodes) 2, and $\neg$ has fan-in 1. The \emph{size of $C$}, denoted $|C|$, is the number of nodes in the underlying graph.

@@ -128,13 +128,17 @@ We denote by $\Parity_n$ the \Parity\ function restricted to inputs of length pr
 
 The main result in this chapter is the following:
 
+
+\begin{tcolorbox}[colframe=white, colback=blue!11, boxrule=0mm, sharp corners]
 \begin{theorem}[\ACZ\ lower bound for \Parity]
 \label{thm:ACZ-lower bound}
-Every circuit family of depth-$d$ computing the $\Parity_n$ function requires size $2^{\Omega\left(n^{\nicefrac{1}{d+1}}\right)}$.
+Every circuit family of depth-$d$ computing the $\Parity_n$ function requires size $2^{\Omega\left(n^{\nicefrac{1}{(d-1)}}\right)}$.
 \end{theorem}
+\end{tcolorbox}
 
 
-Note: this means that if $d$ is constant, then the size lower bound is exponential: $2^{\Omega\left(n^{\nicefrac{1}{d+1}}\right)}=
+
+Note: this means that if $d$ is constant, then the size lower bound is exponential: $2^{\Omega\left(n^{\nicefrac{1}{(d-1)}}\right)}=
 2^{\Omega\left(n^k\right)}$, for some constant $0<k<1$.
 
 The theorem is a consequence of the fact that every function in \ACZ\ can be reduced to a constant function by setting relatively few variables to constants.
@@ -168,13 +172,170 @@ Sequentially we assign new random restrictions $\rho_1,\dots,\rho_{d-3}$
  (extending $\rho_0$) so that we reduce the depth of $C$ by 1 each time, until the depth is 2.
 
 \item 
-At this point, we end up with a circuit $C^{\prime}$ of depth 2 that computes the function 
+At this point, we end up with a circuit $C^{\prime}$ of depth 2, namely a $k$-DNF or $k$-CNF, for some small $k$ that computes the function 
 $\Parity_n\rst\rho_0\rho_2\ldots\rho_{d-3}$.
 
 \item
-We now use an auxiliary statement to reach a contradiction: since we made sure that each assignment $\rho_i$ leaves enough variables free, $\Parity_n\rst\rho_0\rho_2\ldots\rho_{d-3}$
-is still a relatively "complex" function, with high probability. In particular, we show that there are no \emph{small} depth $2$ circuits (i.e., OR of ANDs or ANDs of ORs) that compute $\Parity_n\rst\rho_0\rho_2\ldots\rho_{d-3}$.
+We now use an auxiliary statement to reach a contradiction: since we made sure that each assignment $\rho_i$ leaves enough variables free, $\Parity_n\rst_{\rho_0\rho_2\ldots\rho_{d-3}}$
+is still a relatively "complex" function, with high probability. 
+In particular, it is a very simple argument to show that there are no $k$-CNF formulas for $\Parity_{k'}$, whenever $k'>k$.
 \end{enumerate}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/hastad-sitter-600.jpg}
+    \caption{Johan H\aa stad}
+\end{figure}
+
+
+\subsection{Depth Reduction Step: the Switching Lemma}
+
+We shall use the following notation.
+\begin{itemize}
+    \item \textbf{Boolean (propositional) Variables:} \(x_1, x_2, \ldots \) for some \(i\).
+    \item \textbf{Literal:} \(x_i\) or \(\neg x_i\) (i.e., variables or their negation).\\
+    Negation of \(x_i\) (written also by \(\neg x_i\), or $\overline {x_i}$).
+    \item \textbf{Clause:} A disjunction of literals.\\
+    Example: \((x_1 \lor \neg x_2 \lor x_3)\)
+    \item \textbf{CNF:} Conjunction of Clauses.\\
+    Example: \((x_1 \lor \neg x_2 \lor x_3) \land (x_1 \lor x_4 \lor x_5) \land (x_2 \lor \neg x_7 \lor \neg x_{20} \lor \neg x_{102})\)
+    \item \textbf{DNF:} Disjunction of AND's.\\
+    Example: \((x_1 \land x_4 \land x_7) \lor (x_8 \land \neg x_9 \land x_{10}) \lor (x_3 \lor \neg x_2)\)
+    \item \textbf{t-clause:} A clause with at most \(t\) literals.\\
+    Example: 3-clause: \((x_1 \lor \neg x_2 \lor x_7)\)
+    \item \textbf{t-CNF:} A CNF with all clauses being \(t\)-clauses.
+    \item \textbf{s-DNF:} A DNF with all AND's having at most \(s\) literals.
+\end{itemize}
+
+
+Illustrating a single Depth Reduction Step (i.e., ``Switching''):
+
+\includegraphics[width=0.7\textwidth]{image008.png}
+
+\noindent\textbf{Note:} We can always turn a $t$-CNF into an $s$-DNF for some \textit{big} $s$ (by distributing out \(\lor, \land\) using de Morgan's rules).
+But then we've not maintained the invariant that the bottom level has fan-in \(\leq s\) (namely, \(s\) is small enough).
+In other words, we will end up with a depth-2 circuit, but of huge size computing \(f\rst_\rho\). This will not give us a contradiction since every function is computable by an exponential-size circuit.
+
+
+\bigskip
+
+How can we then turn a $t$-CNF into an $s$-DNF with $s$ small?
+
+We can turn the $t$-CNF to a DNF using de Morgan rules (just distribute $\wedge$ over $\vee$):
+
+\textbf{Example:} 
+\[
+(x_1 \vee \bar{x}_2) \wedge (x_3 \vee \bar{x}_4) \equiv (x_1 \wedge x_3) \vee (x_1 \wedge \bar{x}_4) \vee (\bar{x}_2 \wedge x_3) \vee (\bar{x}_2 \wedge \bar{x}_4)
+\]
+
+and then try to \underline{eliminate literals} in big ANDs.
+
+\textbf{Example:} Consider the DNF below. We can assign $1$ to $x_2$ and $1$ to $x_9$. In the first AND (i.e., "Conjunct") it results in $x_2$ deletion. In the second conjunct, it results in deletion of the conjunct:
+
+\textbf{DNF:} 
+\[
+(x_1 \wedge x_2 \wedge \bar{x}_3 \wedge \bar{x}_5 \wedge \bar{x}_8) \vee ( \dots \wedge \bar{x}_9 \wedge \dots )
+\]
+Assigning $1$ to $x_2$:
+\[
+(x_1 \wedge x_3 \wedge \bar{x}_5 \wedge \bar{x}_8) \vee ( \dots \wedge \bar{x}_9 \wedge \dots )
+\]
+Assigning $1$ to $x_9$:
+\[
+(x_1 \wedge x_3 \wedge \bar{x}_5 \wedge \bar{x}_8) \vee \underbrace{( \dots\wedge 0 \wedge \dots)}_{\text{false}} 
+\]
+
+
+
+
+
+\begin{note}\
+\begin{enumerate}
+    \item Literal $l_j \from 0$ (i.e., assigning $0$ to literal $l_j$)
+    \[
+        (l_j \wedge D) \equiv \text{False}
+    \]
+    So the whole AND disappears.
+    
+    \item Literal $l_j \from 1$:
+    \[
+        (l_j \wedge D) \equiv D
+    \]
+    So we reduced the size of the AND by $1$.
+\end{enumerate}
+\end{note}
+
+\noindent\fbox{\textbf{Q:}}  But how can we choose the assignment of $0_i$ to variables that guarantees eliminating all the large ANDs, without fixing all the variables in $F$ (recall that by 2.) above we need to keep sufficiently many variables $x_i$ free)?
+
+\bigskip
+
+\noindent\fbox{\textbf{Answer:}} The \textbf{Probabilistic Method}: Choosing a random $g: \overline x \to \{0,1, *\}^n$ will lead with \textbf{positive} probability to an assignment that eliminates \textbf{all} large ANDs.
+
+\bigskip 
+
+\begin{definition}
+[Random Restriction]
+ Let $0< p<\frac{1}{9}$.
+Let $\cR$ be a distribution on partial restrictions $\rho$ to the variables $\bar{x}$ with $|\bar{x}|=n$ , as follows.
+
+$$
+\begin{aligned}
+& ~~~~~~~~~~~ \quad \operatorname{Pr}\left[\rho\left(x_i\right)=*\right]=p \\
+& \operatorname{Pr}\left[\rho\left(x_i\right)=0\right]=\operatorname{Pr}\left[\rho\left(x_i\right)=1\right]=\frac{1-p}{2}
+\end{aligned}
+$$
+\end{definition}
+
+
+\textbf{Notation:} 
+\begin{enumerate}
+\item 
+ An \textit{assignment} $\rho$ for $l$ variables in $\bar{x}$ is thus a function $\rho: \bar{x} \to \{0,1, *\}$, where $\rho(x_i) = *$ means that $x_i$ is \textit{unassigned} by $\rho$.
+
+ 
+\item For a function $f: \{0,1\}^n \to \{0,1\}$ and restriction $\rho: \bar{x} \to \{0,1, *\}$, we write $f\upharpoonright \rho$ to denote the function $f$ where the variables are set according to $\rho$.
+%and $\rho(x_i)$ means $x_i$ is \textit{left unassigned}.
+
+If we then apply another restriction $\tau$ to the variables in $f\upharpoonright \rho$, we 
+write $f\upharpoonright_{\rho\tau}$ to denote $(f\upharpoonright \rho)\upharpoonright \tau$. In other words,
+\[
+f\upharpoonright_{\rho\tau} = f\upharpoonright_{\rho \cup \tau}
+\]
+where $\rho \cup \tau$ is the union of two functions.
+\end{enumerate}
+
+\begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
+\begin{theorem}[Switching Lemma]
+If $f$ is an $r$-DNF with $n$ variables and $\rho$ is a random restriction as above with $\rho \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\rst_\rho$ \emph{cannot} be written as an $s$-CNF.
+\end{theorem}
+\end{tcolorbox}
+
+\textbf{Exercise}: Show that by applying the Switching Lemma to the function $\neg f$ we can get the same result with the terms DNF and CNF interchanged.
+
+\subsection{Proof that PARITY does not have small circuits, using the Switching Lemma}
+
+Recall we want to prove the following: Every circuit family of depth $d$ computing the PARITY function requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$.
+(We use an exposition of this proof by Valentine Kabanets.) 
+
+
+Given an AC\textsuperscript{0} circuit of depth $d$ and size $s$, computing some boolean function $f(x_1, \dots, x_n)$, we will apply a number of random $p$-restrictions (for a parameter $p$ to be determined), and argue that, with high enough probability, the resulting restriction of $f$ will become a depth-2 AC\textsuperscript{0} circuit (either CNF or DNF).
+
+Consider the bottom two levels of the given AC\textsuperscript{0} circuit. Since we assume that the levels of AC\textsuperscript{0} circuit always alternate between ANDs and ORs, the depth-2 sub-circuits at these bottom two levels are all either CNFs or DNFs. To apply the Switching Lemma to them, we need to make them into $k$-CNFs (or $k$-DNFs) first, for some small $k$.
+
+\textbf{Bounding the bottom fan-in.} Suppose these are all CNFs. We can view a given CNF $\phi$ on $n$ variables as a depth-3 circuit AND of ORs of ANDs, with the bottom AND gates of fan-in exactly $2$, where each bottom AND gate takes as inputs two copies of the same variable. (For example, a CNF
+\[
+(x \vee y) \wedge (z \vee w)
+\]
+can be viewed as a depth-3 circuit
+\[
+((x \wedge x) \vee (y \wedge y)) \wedge ((z \wedge z) \vee (w \wedge w)).)
+\]
+
+Consider the bottom two levels of this depth-3 circuit. It is a 2-DNF. If we apply a random $p_0$-restriction with $p_0 = 1/20$, we get by the Switching Lemma that this 2-DNF will simplify (after the restriction) to a $k$-CNF, with all but at most $2^{-k}$ probability. Pick $k = 2 \cdot \log s$. Then the probability of not switching becomes at most $1/(s^2)$. We can merge these $k$-CNFs with the top AND gate of our original CNF $\phi$, still getting a $k$-CNF after the merge.
+
+Thus, after this $p_0$-restriction, we get each bottom CNF of our original depth-$d$ AC\textsuperscript{0} circuit is likely to become a $k$-CNF. By the Union Bound, the probability that some of at most $s$ bottom CNFs does not become a $k$-CNF after a random $p_0$-restriction is at most $s \cdot 1/s^2 = 1/s$.
+
 
 
 % \textcolor{red}{

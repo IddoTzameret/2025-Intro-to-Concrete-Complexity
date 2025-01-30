@@ -47,9 +47,7 @@ whose number of inputs bits $n$ grows, their size $|C_n|$ grows polynomially whi
 %We can consider circuits of constant depth. This means that the depth of the circuit is \emph{independent of the number of inputs} $n$. In other words,  while $n$ the number of input gates can grow to infinity in the Boolean circuit family $\{C_n\}_{n=1}^\infty$, the depth of each circuit $C_n$ stays the same!
 
 
-\begin{note}
 If the depth of the circuit is constant and the fan-in of gates is at most two, then the number of functions we can compute with such constant-depth circuits is constant. For example, the number of variables (appearing as leaves, i.e., input nodes) is constant that way, so for a large enough number of inputs $n$, we will not be able to compute functions that read all the $n$ inputs. This means that the model is \emph{not  complete}: for a constant $d$, a depth-$d$ circuit cannot compute all Boolean functions over $n$ inputs for every $n \in \mathbb{N}$.
-\end{note}
 
 To solve this problem and make the model of constant-depth
 circuits meaningful we allow \textbf{\textit{unbounded} \emph{fan-in}} gates: unbounded fan-in AND gates: $\left(\varphi_1 \wedge \varphi_2 \wedge \ldots \wedge \varphi_\ell\right)$, and unbounded fan-in OR gates
@@ -85,7 +83,6 @@ A Boolean circuit is said to be an \emph{alternating  formula} if it is a formul
 Here is an illustration:
 \includegraphics[width=0.3\textwidth]{image004.png}
 
-We shall assume that all \ACZ\ circuits are alternating formulas:
 
 % Always give a unique label
 % and use \ref{<label>} for cross-references
@@ -93,9 +90,18 @@ We shall assume that all \ACZ\ circuits are alternating formulas:
 % use \sectionmark{}
 % to alter or adjust the section heading in the running head
 
-\begin{svgraybox}
-\textbf{Important:} From now on, when speaking about constant-depth circuits (i.e., \ACZ\ circuits), we assume by default the fan-in of $\lor, \land$ gates  is \emph{unbounded} ($\neg$ has fan-in one), and the circuits are \emph{alternating formulas}. 
-\end{svgraybox}
+For simplicity, we can assume that a constant-depth circuit has two types of inputs: every variables $x_i$ has a negative copy $\overline x_i$ (thus, getting rid of the need to specify a negation gate explicitly).  
+
+Note that in an alternating formula every \emph{layer} (equivalently, \emph{level}) of the circuit, namely, nodes of a given depth $l$, are all of the same type: either all $\land$, all $\lor$ or all input variables (positive or negative).
+
+
+
+We shall assume that all \ACZ\ circuits are alternating formulas:
+
+
+\begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
+ \textbf{Important:} From now on, when speaking about constant-depth circuits (i.e., \ACZ\ circuits), we assume by default the fan-in of $\lor, \land$ gates  is \emph{unbounded} ($\neg$ has fan-in one), and the circuits are \emph{alternating formulas}, and the \textbf{depth} is defined as maximal number of alternations between $\land$ and $\lor$ gates (or vice versa), namely the number of layers in the formula  excluding the bottom layer which contains only the input variables (positive or negative).  
+\end{tcolorbox}
 
 \begin{exercise}
 Show that every depth-$d$ circuit can be transformed into an alternating formula of depth-$O(d)$ circuit and with all negation gates on the leaves, with a polynomial size increase only.
@@ -105,6 +111,8 @@ Show that every depth-$d$ circuit can be transformed into an alternating formula
 \noindent{\small Hint: we can "unwind" the circuit into a formula (a tree; that is, if we used a subcircuit more than once [namely, it has out-degree more than 1], we copy this subcircuit for each such usage). Because the depth is constant this will increase the size of the circuit by at most a polynomial (exponential in a constant---i.e., polynomial). To make the formula alternating, first push all the negation to the bottom, using \emph{de Morgan rules}. And then, add dummy edges and gates to make every path from leaf to the output gate alternating between OR and AND. These all incur a polynomial increase in size.
 }
 \end{exercise}
+
+
 
 \newcommand{\Parity}{\ensuremath{\operatorname{PARITY}}}
 
@@ -233,7 +241,7 @@ In other words, we will end up with a depth-2 circuit, but of huge size computin
 
 \para{Examples of Assignments and their Consequences}
 \emph{How can we  turn a $t$-CNF into an $s$-DNF while keeping $s$ small}?
-We can turn the $t$-CNF to a DNF using de Morgan rules (just distribute $\wedge$ over $\vee$), for example
+We can turn the $t$-CNF to a (general) DNF using de Morgan rules (just distribute $\wedge$ over $\vee$), for example
 \[
 (x_1 \vee \bar{x}_2) \wedge (x_3 \vee \bar{x}_4) \equiv (x_1 \wedge x_3) \vee (x_1 \wedge \bar{x}_4) \vee (\bar{x}_2 \wedge x_3) \vee (\bar{x}_2 \wedge \bar{x}_4),
 \]
@@ -283,7 +291,7 @@ The idea is to use the \emph{probabilistic method}: choosing a \emph{random} $g:
 \textbf{Notation:} 
 \begin{enumerate}
 \item 
- An \textit{assignment} $\rho$ for $l$ variables in $\bar{x}$ is  a function $\rho: \bar{x} \to \{0,1, *\}$, where $\rho(x_i) = *$ means that $x_i$ is \textit{unassigned} (or ``free'') by $\rho$.
+ A \textit{restriction} $\rho$ for $l$ variables in $\bar{x}$ is a function $\rho: \bar{x} \to \{0,1, *\}$, assigning either 0, 1 values to the variables or leaving them free, namely $\rho(x_i) = *$ means that $x_i$ is \textit{unassigned} (or ``free'') according to $\rho$.
 
  
 \item For a function $f: \{0,1\}^n \to \{0,1\}$ and a   restriction $\rho: \bar{x} \to \{0,1, *\}$, we write $f\upharpoonright \rho$ to denote the function $f$ where the variables are set according to $\rho$.
@@ -321,8 +329,10 @@ If $f$ is an $r$-DNF with $n$ variables and $\rho$ is a random restriction as ab
 \end{theorem}
 \end{tcolorbox}
 
-The Switching Lemma thus shows that the ``bad'' event of a function computed by an $r$-DNF formula not being able to ``switch'' to a function that can be computed by an $s$-CNF, is small. This would mean that with high enough probability the ``good'' event happens: a random assignment switches an $r$-DNF to an $s$-CNF.
-We note that this would \emph{not} be enough to conclude the argument. We shall also need to make sure that such a ``good'' random assignment exists  moreover \emph{leaves many variables free}. For this purpose, we shall use a common tool in probabilistic analysis and concrete complexity: \emph{concentration bounds} (in our case it will be Chernoff Bound; see below).
+The Switching Lemma thus shows that the ``bad'' event of a function computed by an $r$-DNF formula not being able to switch, under  a random restriction,  to a function that can be computed by an $s$-CNF, is small. This would mean that with high enough probability the ``good'' event happens: a random assignment switches an $r$-DNF to an $s$-CNF.
+In practice, we usually need to have the probability of the bad event to be \emph{really} small, in this case  exponentially small, so that the probability that \emph{none} of a collection of bad events happens in the random experiment is small (using the union bound), and specifically smaller than 1, to be able to claim there exists an object with the required properties (in our case, an assignment that would switch exponentially many $r$-DNFs).  
+
+However, we note that this probabilistic argument via the union bound  is  \emph{not} sufficient to conclude the argument. We shall also need to make sure that such a ``good'' random assignment  \emph{leaves many variables free}. For this purpose, we will use a common tool in probabilistic analysis and concrete complexity: \emph{concentration bounds} (in our case it will be the Chernoff Bound). We  explain this point in the the next section when proving the lower bound.
 
 
 \begin{exercise} Show that by applying the Switching Lemma to the function $\neg f$ we can get the same result with the terms ``DNF'' and ``CNF'' interchanged. Namely, the probability that an $r$-CNF does not switches to an $s$-DNF is at most $(9pr)^s$.
@@ -330,11 +340,29 @@ We note that this would \emph{not} be enough to conclude the argument. We shall 
 
 \section{Proof that PARITY does not have small circuits, using the Switching Lemma}
 
-Recall we want to prove \Cref{thm:ACZ-lower bound} that stating that every circuit family of depth $d$ computing the PARITY function requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$.
+Recall that we want to prove \Cref{thm:ACZ-lower bound}  stating that every circuit family of depth-$d$ computing the PARITY function requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$.
 
-Consider the bottom two levels of the given AC\textsuperscript{0} circuit. Since we assume that the levels of AC\textsuperscript{0} circuit always alternate between ANDs and ORs, the depth-2 sub-circuits at these bottom two levels are all either CNFs or DNFs. To apply the Switching Lemma to them, we need to make them into $k$-CNFs (or $k$-DNFs) first, for some \emph{small} $k$, since the formulation of the lemma assumes $k$ to be ... But why? what is the precise k t we need? We shall need it to be small for the probabilistic computation: namely, we need to bound the probability of failure, to be able to apply the union bound.  
+So, suppose  that $C$ is a depth-$d$ alternating formula circuit of size $s$ computing $\Parity_n$. We are going to show that $s= 2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$, since assuming otherwise would lead to a contradiction.
 
-\textbf{Bounding the bottom fan-in.} Suppose these are all CNFs. We can view a given CNF $\phi$ on $n$ variables as a depth-3 circuit AND of ORs of ANDs, with the bottom AND gates of fan-in exactly $2$, where each bottom AND gate takes as inputs two copies of the same variable. (For example, a CNF
+
+Recall that we assume that $C$ is an alternating formula, with $d$ layers, where in each layer all gates are either $\land$ or $\lor$.  The proof proceeds by first a ``preprocessing step'' in which we use the Switching Lemma to decrease the fan-in of the \emph{bottom} layer gates, followed by   $d-2$ depth reduction steps using the Switching Lemma in which we gradually reduce the depth of the circuit, from bottom to top, by one depth, until we reach a depth-$2$ circuit.
+
+
+
+
+
+% Enable watermark from this point onward
+\SetWatermarkText{DRAFT}
+
+
+
+\para{Preprocessing Step: Decreasing Bottom Layer Fan-in}
+
+This step is needed in order to optimise the lower bound, namely to reach the tight lower bound of $2^{\Omega(n^{1/d-1})}$. \textcolor{green}{We may explain this point later.}
+
+Consider the bottom two layers of the given constant-depth circuit. We assumed that the layers alternate between $\land$ and $\lor$, thus the depth-2 sub-formulas  at these bottom two layers are all either DNFs or CNFs. Let us assume for simplicity that they are all CNFs. The bottom fan-in of these CNFs may be large, namely, it may be $r$-CNFs for a large $r$. 
+
+****We can view a given CNF $\phi$ on $n$ variables as a depth-3 circuit AND of ORs of ANDs, with the bottom AND gates of fan-in 1 (since we assumed an AND gate has unbounded fan-in, it is legitimate to consider the fan-in of an AND gate to be of fan-in one, in which case it computes its incoming function). For example, a CNF
 \[
 (x \vee y) \wedge (z \vee w)
 \]

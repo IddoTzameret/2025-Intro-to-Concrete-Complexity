@@ -376,6 +376,199 @@ Consider the bottom two levels of this depth-3 circuit. It is a 2-DNF. If we app
 Thus, after this $p_0$-restriction, we get each bottom CNF of our original depth-$d$ AC\textsuperscript{0} circuit is likely to become a $k$-CNF. By the Union Bound, the probability that some of at most $s$ bottom CNFs does not become a $k$-CNF after a random $p_0$-restriction is at most $s \cdot 1/s^2 = 1/s$.
 
 
+---------
+
+\newpage
+
+----
+
+
+\textbf{My proof:} 
+
+\textbf{Bottom layer Switching} 
+
+Assume wlog that the bottom level is $V$. Then the penultimate layer (2) is $\Lambda$. Namely, the gates in layer \textbf{2} are all $\ell$-CNFs. However, we don’t have control over this $\ell$. 
+
+It might be that $\ell$ is very high, and using the Switching Lemma to turn this $\ell$-CNF to an $s$-DNF will be too expensive, in the sense that applying the Switching Lemma with this $\ell$ would give us probability of $\leq (9p\ell)^s$, but with \underline{large} $\ell$, which later would mean we get a weaker lower bound 
+\[
+2^{\Omega(n^{\frac{1}{d+1}})}
+\]
+when we do the union bound computations (we explain this after we finish the proof).
+
+
+
+For this reason, we shall reduce the fan-in of the bottom layer (\emph{layer 1}) directly using the Switching Lemma (while maintaining a lower probability of failure).
+
+\textbf{Claim:} An $\ell$-CNF doesn't turn into a $k$-CNF under a random restriction $\rho$ with probability $\leq (9p)^k$, for $p_0$ the probability a variable is free in the random restriction $\rho$. Specifically, if we choose $p_0 = \frac{1}{18}$, probability of failure is $\leq \frac{1}{S^2}$, when $k = 2 \cdot \log S$.
+
+\textbf{Proof of Claim:} 
+
+The below figure explains the simple argument:
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{figure_placeholder}
+\end{center}
+
+In particular, we switch the lower 1-DNFs (\emph{in red}) into $k$-CNF with a random restriction, so by the Switching Lemma, the probability the switching fails is 
+\[
+\leq (9 p_0 1)^k = (9 \cdot \frac{1}{18})^{2 \cdot \log S} = \frac{1}{2^{2 \log S}} = \frac{1}{S^2}.
+\]
+\(\square\)
+
+By the claim, and using the union bound, the probability that at least one $\ell$-CNF in...
+
+
+
+We now start from a circuit $C_{|\rho_1}$ with $k$-CNF at the bottom, for $k = 2 \log S$.
+
+\textbf{Induction Statement:}  
+If $C$ is a depth-$d$ circuit of size $S$ with $n$ input variables  
+$x$ (positive and negative copies), then there exists a restriction $\rho$  
+of $x$—choosing at most $p = \frac{p_0}{2}$ free variables and $p_0 = \frac{1}{18}$—such that  
+the function computed by $C_{|\rho}$ for every gate in layer $d$ is a $k$-DNF  
+with $k = 2 \log S$ (resp. a $k$-CNF).  
+
+We prove it for the case $\land$ in layer $d$. The $\lor$ case is similar.  
+
+\textbf{Base Case:} $d = 2$. Since the bottom layer is assumed to be of fan-in $\leq k$,  
+this case holds immediately.  
+
+\textbf{Induction Step:}  
+We assume the induction statement holds for layer $d-1$, and prove it for $d$.  
+
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{figure_placeholder}
+\end{center}
+
+In circuit (3) we have (by induction hypothesis) $C_{|\rho_1}$, a layer of $k$-CNFs,  
+with $\rho_1$ having $\geq \frac{p_0^{d-3} \cdot n}{2^{d-3}}$ free variables.  
+
+We apply the Switching Lemma:
+
+\begin{theorem}[Switching Lemma]
+For every positive integer $r$ and $k$ and $n$,  
+if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF  
+and $\rho$ is a random restriction as above with $0 < p \leq \frac{1}{9}$,  
+then with probability at most $(9pr)^k$, $f_{|\rho}$ cannot be computable  
+by an $s$-CNF.
+\end{theorem}
+
+
+
+With \( r = s = k = 2 \log p^t \), so with probability \( \leq (9pk)^k \), a simple k-CNF in layer \( d \) does not switch to a k-DNF.
+By the union bound, with probability \( \leq S(9pk)^k \), at least one k-CNF in layer \( d \) doesn’t switch to a k-DNF.
+Then, by Chernoff bound, we add to this the probability of the event that the restriction has too few free variables.
+
+\[
+\textbf{Chernoff Concentration Bound:}
+\]
+
+Random variables and expectations: A random variable \( X \) is a mapping from the sample probability space of elementary outcomes to the real line, \( X: \Omega \to \mathbb{R} \). For example, consider a random variable with \( X_i = 1 \) if \( E_i \) occurs, and \( 0 \) otherwise. (For example, a random event is flipped as “heads.”) The indicator variable \( X \) taking values in \( [0, 1] \), with \( X_i = 1 \) if \( E_i \) happened, \( 0 \) otherwise.
+
+If a random variable \( X \) takes its values from a set \( A \), we define the expectation of \( X \) as follows:
+\[
+\mathbb{E}[X] = \sum_a Pr[X = a]a
+\]
+
+Linearity of expectation: For random variables \( X_1, X_2, ..., X_n \), (not necessarily independent), we have:
+\[
+\mathbb{E} \left[ \sum_{i=1}^{n} X_i \right] = \sum_{i=1}^{n} \mathbb{E}[X_i]
+\]
+
+Concentration around the expectation: Markov's inequality above is a simplest bound for how likely a given random variable is to assume a value close to the expectation. It says, for example, that a random variable can be more than twice its value expectation at most with probability \( 1/2 \).
+
+For a random variable \( X = \sum X_i \), that is a sum of independent random variables (say each \( X_i \) takes values in \( \{0, 1\} \)), a much stronger bound is given by the Chernoff inequality. In particular, it says that the probability that this \( X \) is at least twice the expectation is inversely-exponentially small in the expectation.
+
+\textbf{Theorem 3 (Chernoff bound):} Let \( X_1, X_2, ..., X_n \) be independent identically distributed random variables such that \( Pr[X_i = 1] = p \) and \( Pr[X_i = 0] = 1 - p \), for some \( 0 \leq p \leq 1 \).
+Consider the new random variable \( X = \sum X_i \), with expectation \( \mu = pn \). Then, for any \( 0 < \delta < 1 \),
+\[
+Pr[|X - p| > \delta p] \leq 2 e^{- \frac{\delta^2 \mu}{3}}.
+\]
+
+Now we can apply Chernoff bound to our case:
+
+Every single variable \( X_i \) has a probability \( p \) to stay free under \( \rho \).
+Hence, the expected number of free variables is \( pn \).
+
+Since the event that a variable stays free under \( \rho \) is independent from the events that other variables stay free, the expected value is achieved with high probability by the Chernoff Bound.
+
+
+
+
+2e^{-j^2 \cdot \frac{\mu}{3}}, \quad w/ \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}}.
+
+\text{We now upper bound the probability of all bad events:}
+
+\leq S(9pk)^k + 2e^{-j^2 \cdot \frac{\mu}{3}}, \quad w/ \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}}.
+
+\text{Union bound on all gates:}
+S \left( 9 \cdot \frac{1}{36 \cdot \log s} \cdot 2 \log s \right)^{2 \log s} \cdot e^{-\left( \frac{1}{36 \cdot \log s} \cdot 2 \log s \right)^{d-3} \cdot n} + 2e^{-j^2 \cdot \frac{\mu}{3}} = S \cdot \left( \frac{18}{36} \cdot \frac{2 \log s}{S} \right) + A
+= S \cdot \frac{1}{S^2} + A = \frac{1}{S} \cdot e^{\frac{2}{(36 \cdot \log s)^2 \cdot 2^{d-1} \cdot 2^{d-1}}}
+
+\text{This is the upper bound on the probability that at least one bad event occurs.}
+
+\text{We need to compute:}
+\frac{n}{(36 \cdot \log s)^2 \cdot 2^{d-1.3}} \geq 2 \Rightarrow n \geq (36 \cdot \log s)^d \cdot 2^{d-1} \cdot 6
+\Rightarrow \frac{d-3}{2^{d-1}} \frac{n}{2^{d-1}} \log s \Rightarrow S \leq \frac{2^{\frac{d-1}{36}}}{S}
+
+2 \cdot \left( 1 - \frac{1}{S} \right) \leq D
+
+\text{Oh! But this is correct! If } S > 2^{\frac{d-1}{n}} > \frac{2^{d-1}}{n}. \text{We finish the proof. Check } \frac{d-1}{2} = d-1 \text{ though! Yes, } d-1 = \log s^2 = 4! \quad \Box
+
+
+
+
+Using the Induction Statement together with the Bottom switching step,
+we can now conclude the proof of the lower bound.
+
+Given a circuit of depth $d$ with $m$ variables,
+we first apply the Bottom Layer Switching (the sufficiently big k product, k-DNF)
+using Chernoff's bound. The number of free variables after this step
+are at least $\frac{p - n}{2}$ in size (by union computation).
+
+Then, we have a circuit $C$ of depth $d$ with layer 2 being k-CNF gates.
+We can then apply the Induction Statement. We reach a circuit $C_{\beta}$ of depth $d-2$,
+namely a k-CNF (or k-DNF) with $\beta$ being a restriction.
+
+$$ g: \bar{x} = (x_1, x_2, \dots, x_n), \text{ with } p = \frac{p^2 - n}{2} \text{ free variables and } p = 2^{6-logs} $$
+
+such that the function computed by $C_{\beta}$ for every gate in layer $d$
+is a k-DNF with $k = 2 \log s$ (respectively, a k-CNF).
+
+\textbf{And specifically}, when $d$ is the depth of $C$, we know that $C_{\beta}$ as a whole is computed by a k-CNF.
+
+But now we get a contradiction if $k$ is less than the number of free variables, which is:
+
+$$ k \geq \frac{p^2 - n}{2} $$
+
+This is because every k-CNF can be made a constant function (1) with $k$ assignments of 0/1 values to its variables:
+pick one clause, i.e., $x_1 \vee \bar{x_2} \vee x_3 \vee \bar{x_4}$,
+assign the literals in the clause all zero: $x_1 = 0, x_2 = 1, x_3 = 0, x_4 = 1$.
+
+However, Parity for $k \geq k$ cannot be made a constant function without assigning all its variables.
+Hence, when the number of free variables:
+
+$$ \frac{p^2 - n}{2} \geq k = 2 \log s $$
+
+we get a contradiction.
+
+In other words, we have:
+
+$$ \log s \geq \frac{p^2 - n}{2} $$
+
+We now compute to find out what is the lower bound for $s$:
+
+$$ 2 \log s > \frac{p^{d-2} n}{2^{d-2}} \Rightarrow s > \frac{2^{p^{d-2} n}}{2^{2^{d-2}}} = 2 $$
+
+$$ \Rightarrow \frac{1}{36 \log s}^{d-2} \cdot n $$
+
+$$ \Rightarrow 2 \log s > \frac{1}{36^{d-2} (\log s)^{d-2}} \cdot n \cdot c $$
+
+$$ \Rightarrow (\log s)^{d-1} > n \cdot c $$
+
+$$ \Rightarrow \log s > \sqrt[d-1]{n \cdot c} $$
+
+$$ \Rightarrow s > 2^{(n^{\frac{1}{d-1}})} $$
 
 % \textcolor{red}{
 % \begin{Huge}

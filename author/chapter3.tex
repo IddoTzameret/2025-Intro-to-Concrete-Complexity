@@ -100,7 +100,7 @@ We shall assume that all \ACZ\ circuits are alternating formulas:
 
 
 \begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
- \textbf{Important:} From now on, when speaking about constant-depth circuits (i.e., \ACZ\ circuits), we assume by default the fan-in of $\lor, \land$ gates  is \emph{unbounded} ($\neg$ has fan-in one), and the circuits are \emph{alternating formulas}, and the \textbf{depth} is defined as maximal number of alternations between $\land$ and $\lor$ gates (or vice versa), namely the number of layers in the formula  excluding the bottom layer which contains only the input variables (positive or negative).  
+ \textbf{Important:} From now on, when speaking about constant-depth circuits (i.e., \ACZ\ circuits), we assume by default the fan-in of $\lor, \land$ gates  is \emph{unbounded} ($\neg$ has fan-in one), and the circuits are \emph{alternating formulas}, and the \textbf{depth} is defined as maximal number of alternations between $\land$ and $\lor$ gates (or vice versa), namely the number of layers in the formula,  excluding the bottom layer which contains only the input variables (positive or negative).  
 \end{tcolorbox}
 
 \begin{exercise}
@@ -152,14 +152,14 @@ Note: this means that if $d$ is constant, then the size lower bound is exponenti
 2^{\Omega\left(n^k\right)}$, for some constant $0<k<1$.
 
 The theorem is a consequence of the fact that every function in \ACZ\ can be reduced to a constant function by setting relatively few variables to constants.
-The proof uses the Random Restriction Method described in the seuquel.
+The proof uses the Random Restriction Method described in the sequel.
 
 \section{The Skeleton of the Lower Bound Argument}
 
 
 
 \begin{tcolorbox}[colframe=white, colback=gray!5, boxrule=0mm, sharp corners]
-\textbf{Upshot of argument}: The idea is to randomly restrict (assign) the variables of the circuit (of which we want to show it cannot compute \Parity). If the circuit is small, such restriction collapses (gradually) the depth of the circuit to a depth-2 circuit. If the depth of the initial circuit was constant, this gradual step-by-step depth reduction needs to be done only for a constant many times. If we made random assignments (restrictions) only for a constant many times, we can rest assure that we have not assigned (i.e., fixed) too many variables. Hence, the function $\Parity$ under these restrictions still has a lot of free variables. But such $\Parity$ with sufficiently many free variables cannot have small depth 2 circuits (this we show by an auxiliary elementary argument).
+\textbf{Upshot of argument}: The idea is to randomly restrict (assign) the variables of the circuit (of which we want to show it cannot compute \Parity). If the circuit is small, such a restriction collapses (gradually) the depth of the circuit to a depth-2 circuit. If the depth of the initial circuit was constant, this gradual step-by-step depth reduction needs to be done only for a constant many times. If we made random assignments (restrictions) only for a constant many times, we can rest assure that we have not assigned (i.e., fixed) too many variables. Hence, the function $\Parity$ under these restrictions still has a lot of free variables. But such $\Parity$ with sufficiently many free variables cannot have small depth 2 circuits (this we show by an auxiliary elementary argument).
 \end{tcolorbox}
 
 \includegraphics[width=0.9\textwidth]{image007.png}
@@ -325,7 +325,7 @@ In other words, we pick randomly and independently for each variable $x_i$ with 
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \begin{theorem}[Switching Lemma]
-If $f$ is an $r$-DNF with $n$ variables and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be written as an $s$-CNF.
+For every positive integers $r$ and $k$ and $n$, if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be computable by as an $s$-CNF.
 \end{theorem}
 \end{tcolorbox}
 

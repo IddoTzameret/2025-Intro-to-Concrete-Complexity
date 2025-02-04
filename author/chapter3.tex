@@ -389,24 +389,25 @@ In particular, we switch the lower 1-DNFs (\emph{in red}) into $k$-CNF with a ra
 
 By this claim, and using the union bound, the probability that at least one $\ell$-CNF in layer 2 does not switch is at most $ S\cd 1/S^2 = 1/S$.
 
-\bigskip
 
 
-
+\para{Repeated Depth Reduction Steps}
 We now start from a circuit $C{\rst}_{\rho_1}$ with $k$-CNF at the bottom, for $k = 2 \log S$.
-We go by induction on depth.
+We go by induction on depth, to prove the following.
 
 
 \begin{tcolorbox}[colframe=white, colback=red!11, boxrule=0mm, sharp corners]
-\textbf{Induction Statement:}  
+\begin{lemma}[Induction Statement]\label{lem:induction-switch}
 Let $C$ be a depth at least $d$ circuit of size $S$ 
 with layer-1 (bottom) gates all of fan-in  $ \leq k=2 \log S$ (either  $\land$ or $\lor$),
 with $n$ input variables  
 $\overline x$ (with positive and negative copies). Assume that the gates in layer $d$ are all $\land$ gates (resp., $\lor$ gates). 
 Then, there exists a restriction $\rho: \overline {x} \rightarrow\{0,1, *\} $ with at least  $\frac{p^{d-2} \cdot n}{2^{d-2}} $ free variables, where $ p=\frac{1}{36 \cdot \log S}$, such that  
-the function computed by $g{\rst}_{\rho}$ for every $\land$ (resp. $\lor$) gate in layer $d$ is computable by a $k$-DNF (resp., a $k$-CNF).  
+the function computed by $g{\rst}_{\rho}$ for every $\land$ (resp. $\lor$) gate in layer $d$ is computable by a $k$-DNF (resp., a $k$-CNF). 
+\end{lemma} 
 \end{tcolorbox}
 
+\begin{proof}[\Cref{lem:induction-switch}]
 We prove it for the case $\land$ in layer $d$. The $\lor$ case is similar.  
 
 \Base $d = 2$. Since the bottom layer is assumed to be of fan-in $\leq k$,  
@@ -414,10 +415,24 @@ this case holds immediately.
 
 \Induction   
 We assume the induction statement holds for layer $d-1$, and prove it for $d$. The following figure illustrates the argument. 
-\begin{center}
+
+
+
+
+\begin{figure}[H]\label{fig:depth-reduction-use}
+    \begin{center}
     \includegraphics[width=\textwidth]{switchinginduc.png}
-\end{center}
-In (1) in the figure  we have (by induction hypothesis) a depiction of part of the circuit $C$, showing a single $\land$ gate in layer $d$ (there  may be other $\land$ gates in this layer, and there may be other gates above it in layers higher than $d$). In (2) we see the $\land$ gate in layer $d$ under the restriction $\rho'$, i.e., $C\rst_{\rho'}$, with $\rho'$ having $\geq \frac{p_0^{d-3} \cdot n}{2^{d-3}}$ free variables. Hence, its children, which are $\lor$ gates, have turned under $\rho'$ to  $k$-CNFs. (3) simply merged the $\land$ gate in layer $d$ to its children in layer $d-1$, all of which turned to $\land$ gates themselves. Our goal is to get to circuit (4), by applying the Switching Lemma, and then compute an upper bound on the probability that such a switch to $k$-DNF occurs for \emph{all} the gates in layer $d$. We explain this now.
+    \end{center}
+\end{figure}
+
+
+\textit{The setup of the induction step}: In (\textbf{1}) in the figure,  we have (by induction hypothesis) a depiction of part of the circuit $C$, showing a single $\land$ gate in layer $d$ (there  may be other $\land$ gates in this layer, and there may be other gates above it in layers higher than $d$). 
+In (\textbf{2}) we see the $\land$ gate in layer $d$ under the restriction $\rho'$, i.e., $C\rst_{\rho'}$, with $\rho'$ having $\geq \frac{p_0^{d-3} \cdot n}{2^{d-3}}$ free variables. Hence, its children, which are $\lor$ gates, have turned under $\rho'$ to  $k$-CNFs.
+ (\textbf{3}) simply merged the $\land$ gate in layer $d$ to its children in layer $d-1$, all of which turned to $\land$ gates themselves. 
+Our goal is to get to circuit (\textbf{4}), by applying the Switching Lemma with a random restriction $\rho''$ and then compute an upper bound on the probability that such a switch to $k$-DNF occurs for \emph{all} the gates in layer $d$. We explain this now.
+
+
+\smallskip 
 
 % \begin{theorem}[Switching Lemma]
 % For every positive integer $r$ and $k$ and $n$,  
@@ -430,17 +445,11 @@ In (1) in the figure  we have (by induction hypothesis) a depiction of part of t
 
 Using the Switching Lemma with the parameters \( r = s = k = 2 \log S \), with probability \( \leq (9pk)^k \), a \emph{single} $k$-CNF in layer \( d \) does not switch to a $k$-DNF.
 By the union bound, with probability \( \leq S\cd(9pk)^k \) the bad event that \emph{at least one} $k$-CNF in layer \( d \) does \emph{not} switch to a $k$-DNF occurs.
-Then, by Chernoff bound (explained below), and the union bound, we add to this the probability of the event that the restriction has too few free variables.
-Doing a bit of computation we will then prove our induction statement for layer $d$.
-
+We now use another bound to estimate the probability of the event that a random restriction has too few free variables. The tool we use is the Chernoff bound.
 
 
 \begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
-
-\[
-\textbf{Chernoff Concentration Bound:}
-\]
-
+\textbf{Chernoff Concentration Bound}.
 Random variables and expectations: A random variable \( X \) is a mapping from the sample probability space of elementary outcomes to the real line, \( X: \Omega \to \mathbb{R} \). For example, consider a random variable with \( X_i = 1 \) if \( E_i \) occurs, and \( 0 \) otherwise. (For example, a random event is flipped as ``heads'') The indicator variable \( X \) taking values in \( [0, 1] \), with \( X_i = 1 \) if \( E_i \) happened, \( 0 \) otherwise.
 
 If a random variable \( X \) takes its values from a set \( A \), we define the expectation of \( X \) as follows:
@@ -469,31 +478,35 @@ Pr[|X - p| > \delta p] \leq 2 e^{- \frac{\delta^2 \mu}{3}}.
 \
 \
 
-Now we can apply Chernoff bound to our case as follows.
+We apply Chernoff bound to our case as follows.
 Every single variable \( x_i \) has a probability \( p \) to stay free under our new restriction  \( \rho'' \).
 Hence, the expected number $\mu$ of free variables is \( pN \), where $N$ is the number of (free) variables in $C\rst_{\rho'}$ which is $\ge \frac{p^{d-3} \cdot n}{2^{d-3}}$ by induction hypothesis. Hence, the expected number of free variables is $\mu\ge pN= \frac{p^{d-2} \cdot n}{2^{d-3}}$. 
 (Since the event that a variable stays free under \( \rho'' \) is independent from the events that other variables stay free, the expected value is achieved with high probability by the Chernoff bound.)
-
  In other words, the bad event that the number of free variables are less than half of the expected value $\mu$ is at most $
 2e^{-\delta^2 \cdot \frac{\mu}{3}}$, with $\delta = \frac{1}{2}$ and  $\mu = \frac{p^{d-3} \cdot n}{2^{d-2}}.$
 
-We now upper bound the probability of all bad events:
+The following is thus the upper bound on the probability that at least one bad event happened (using the union bound): 
+\begin{equation}\label{eq:487:28}
+ S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad with \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}},
+\end{equation}
+where the left most term is by a union bound on all gates, and the rightmost term is the bad event estimated by the  Chernoff bound.\footnote{%
+Note that we have used the union bound on the following bad events, given a random pick of a single assignment $\rho$: $S$ many potential bad events that a gate in layer $d$ does not switch, together with a single event that the number of free variables in $\rho$ falls below half the expected number of free variables.
+}
 
-\[
-\leq S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad with \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}}.
-\]
-where that left most term is by a union bound on all gates.
-This is equivalent to 
+
+All that is left is to make some computations to get a lower bound on the parameter $S$. 
+
+\Cref{eq:487:28} is equivalent to 
 \[
 S \left( 9 \cdot \frac{1}{36 \cdot \log s} \cdot 2 \log s \right)^{2 \log s} + 
 2 e^{-\frac{\left(\frac{1}{36 \cdot \log S }\right)^{d-3} \cdot n}{2^{d-1} \cdot 3}}.
 \]
 
-This is the upper bound on the probability that at least one bad in layer $d$ event occurs.
-Let's denote the right summand above by $A$. 
+
+Let us denote the right summand above by $B$. 
 We get:
 $$
-=S \cdot\left(\frac{18}{36}\right)^{2 \cdot \log S}+A =S \cdot \frac{1}{S^2}+A =
+=S \cdot\left(\frac{18}{36}\right)^{2 \cdot \log S}+B =S \cdot \frac{1}{S^2}+B =
 \frac{1}{S}+
 \underbrace{
     e^{
@@ -502,38 +515,64 @@ $$
 }_B
 $$
 
-
 \includegraphics[width=\textwidth]{image010.png}
 
-
-
 (Note: \includegraphics[width=0.3\textwidth]{image011.png})
-$\Box$
+\mbox{}
+\end{proof} % Induction step of Switching
 
-\
 
-\
-
-Using the Induction Statement together with the Bottom switching step,
+\para{Concluding the proof}
+Using the Induction Statement together with the Bottom Switching Step,
 we can now conclude the proof of the lower bound.
-
 Given a circuit of depth $d$ with $n$ variables,
 we first apply the Bottom Layer Switching (with sufficiently high probability using Chernoff's bound, the number of free variables after this step
 are at least $(1/36)\cd n$; we skip this computation).
 
-Then, we have a circuit $C$ of depth-d with lager 2 being k-CNF gates. We can then apply the Induction statement. We reach a circuit $C \rst_\rho$ of depth-2, namely a $k-C N F$ (or $\left.k-D N F\right)$ with
-$\rho$ being a restriction:
+Then, we have a circuit $C$ of depth-$d$ with layer 2 consisting of  $k$-CNF gates. We  then apply the Induction Statement. We reach a circuit $C \rst_\rho$ of depth-2, namely a $k$-CNF (or $k$-DNF) with
+$\rho: \bar{x} \rightarrow\{0,1, *\}$ being a restriction
+with $\geq \frac{p^{d-2} \cdot n}{2^{d-2}}$ free variables and $p=\frac{1}{36 \cdot \log S}$, such that the function computed by $g\rst_\rho$ for every $\land$ gate $g$ in layer $d$ (resp., $\lor$ gate) can be computed by a $k$-DNF, with $k=2 \log S$ (resp. a $k$-CNF).
+And specifically, when $d$ is the depth of $C$, we know that $C\rst_\rho$ as a whole is computed by a $k$-CNF (in this case $d$ is a layer with a single gate). 
 
 
-$\rho: \bar{x} \rightarrow\{0,1, *\}$, with $\geqslant \frac{p^{d-2} \cdot n}{2^{d-2}}$ free variables and $p=\frac{1}{36 \cdot \log S}$ such that the function computed by $g\rst_\rho$ for every $\land$ gate $g$ in layer $d$ (resp.V gate) can be computed by a $k-D N F$, with $k=2 \log S$ (resp. a $k$-CNF).
-And specifically, when $d$ is the depth of $C$, we know that $C_\rho$ as a whole is computed by a k-CNF.
+But now we get a contradiction if \( k \) is less than the number of free variables, which is 
+\[
+\frac{p^{d-2} \cdot n}{2^{d-2}}.
+\]
+This is because every \( k \)-CNF can be made the  constant function 0 with \( k \) assignments of 0/1 values to its variables: Pick one \( k \)-clause, e.g.,
+\[
+x_1 \lor \overline{x_2} \lor x_3 \lor \overline{x_4},
+\]
+assign the literals in the clause all zero: 
+\[
+x_1 = 0, \ x_2 = 1, \ x_3 = 0, \ x_4 = 1.
+\]
+However, Parity for \( r > k \) cannot be made a constant function without assigning all its \( r \) variables. Hence, when the number of free variables
+\[
+\frac{p^{d-2} \cdot n}{2^{d-2}} > k = 2 \log S,
+\]
+we get  a contradiction.
+In other words, we have:
+\[
+2 \log S \geq \frac{p^{d-2} \cdot n}{2^{d-2}}.
+\]
+We now compute to find out what is the lower bound for $S$:
+\begin{align*}
+    2 \log S &> \frac{p^{d-2} \cdot n}{2^{d-2}} 
+ = \frac{\left(\frac{1}{36 \log S}\right)^{d-2} \cdot n}{2^{d-2}} 
+    & = \left(\frac{1}{\log S}\right)^{d-2} \cdot n \cdot \left(\frac{1}{72}\right)^{d-2}.
+\end{align*}
+Hence, 
+\begin{align*}
+    \left(\log S\right)^{d-1} &> \frac{1}{2} \left(\frac{1}{72}\right)^{d-2} \cdot n \implies \\
+    \log S &> \frac{1}{2} \left(\frac{1}{72}\right)^{\frac{d-2}{d-1}} \cdot n^{\frac{1}{d-1}} \implies \\
+    \log S &= \Omega \left(n^{\frac{1}{d-1}}\right) \implies 
+    S= 2^{\Omega ({\sqrt[d-1]{n}})}.
+\end{align*}
 
-\includegraphics[width=\textwidth]{image013.png}   \includegraphics[width=\textwidth]{image014.png}
-\includegraphics[width=\textwidth]{image012.png}
+ Concluding the proof. 
+ \hfill $\Box$
 
-
-
- 
 % 
 % \textbf{And specifically}, when $d$ is the depth of $C$, we know that $C_{\beta}$ as a whole is computed by a k-CNF.
 % 

@@ -450,23 +450,23 @@ We now use another bound to estimate the probability of the event that a random 
 
 \begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
 \textbf{Chernoff Concentration Bound}.
-Random variables and expectations: A random variable \( X \) is a mapping from the sample probability space of elementary outcomes to the real line, \( X: \Omega \to \mathbb{R} \). For example, consider a random variable with \( X_i = 1 \) if \( E_i \) occurs, and \( 0 \) otherwise. (For example, a random event is flipped as ``heads'') The indicator variable \( X \) taking values in \( [0, 1] \), with \( X_i = 1 \) if \( E_i \) happened, \( 0 \) otherwise.
+Random variables and expectations: A random variable \( X \) is a mapping from the sample probability space of elementary (or ``atomic'') outcomes to the real line, \( X: \Omega \to \mathbb{R} \). For example, consider a random variable with \( X_i = 1 \) if \( E_i \) occurs, and \( 0 \) otherwise. (For example, a random event is flipped as ``heads''). The indicator variable \( X \) taking values in \( [0, 1] \), with \( X_i = 1 \) if \( E_i \) happened, \( 0 \) otherwise.
 
 If a random variable \( X \) takes its values from a set \( A \), we define the expectation of \( X \) as follows:
 \[
-\mathbb{E}[X] = \sum_a Pr[X = a]a
+\mathbb{E}[X] = \sum_{a\in A} Pr[X = a]\cd a\,.
 \]
 
-Linearity of expectation: For random variables \( X_1, X_2, ..., X_n \), (not necessarily independent), we have:
+Linearity of expectation: For a collection of random variables \( X_1, X_2, ..., X_n \) (not necessarily independent), we have:
 \[
-\mathbb{E} \left[ \sum_{i=1}^{n} X_i \right] = \sum_{i=1}^{n} \mathbb{E}[X_i]
+\mathbb{E} \left[ \sum_{i=1}^{n} X_i \right] = \sum_{i=1}^{n} \mathbb{E}[X_i].
 \]
 
 Concentration around the expectation: 
-For a random variable \( X = \sum^n_{i=1} X_i \), that is a sum of independent random variables (say each \( X_i \) takes values in \( \{0, 1\} \)), a much stronger bound is given by the Chernoff inequality. In particular, it says that the probability that this \( X \) is at least twice the expectation is inversely-exponentially small in the expectation.
+For a random variable \( X = \sum^n_{i=1} X_i \), that is a sum of \emph{independent} random variables (say each \( X_i \) takes values in \( \{0, 1\} \)), a  strong bound is given by the Chernoff inequality. In particular, it says that the probability that this \( X \) is at least twice the expectation is inversely-exponentially small in the expectation.
 
 \begin{theorem}[Chernoff\,bound] Let \( X_1, X_2, ..., X_n \) be independent identically distributed random variables such that \( Pr[X_i = 1] = p \) and \( Pr[X_i = 0] = 1 - p \), for some \( 0 \leq p \leq 1 \).
-Consider the new random variable \( X = \sum X_i \), with expectation \( \mu = pn \). Then, for any \( 0 < \delta < 1 \),
+Consider the new random variable \( X = \sum_{i=1}^n X_i \), with expectation \( \mu = pn \). Then, for any \( 0 < \delta < 1 \),
 \[
 Pr[|X - p| > \delta p] \leq 2 e^{- \frac{\delta^2 \mu}{3}}.
 \]
@@ -547,7 +547,7 @@ assign the literals in the clause all zero:
 \[
 x_1 = 0, \ x_2 = 1, \ x_3 = 0, \ x_4 = 1.
 \]
-However, Parity for \( r > k \) cannot be made a constant function without assigning all its \( r \) variables. Hence, when the number of free variables
+However, Parity for \( r > k \) many inputs cannot be made a constant function without assigning all its \( r \) variables. Hence, when the number of free variables
 \[
 \frac{p^{d-2} \cdot n}{2^{d-2}} > k = 2 \log S,
 \]
@@ -558,19 +558,18 @@ In other words, we have:
 \]
 We now compute to find out what is the lower bound for $S$:
 \begin{align*}
-    2 \log S &> \frac{p^{d-2} \cdot n}{2^{d-2}} 
+    2 \log S &\ge  \frac{p^{d-2} \cdot n}{2^{d-2}} 
  = \frac{\left(\frac{1}{36 \log S}\right)^{d-2} \cdot n}{2^{d-2}} 
     & = \left(\frac{1}{\log S}\right)^{d-2} \cdot n \cdot \left(\frac{1}{72}\right)^{d-2}.
 \end{align*}
 Hence, 
 \begin{align*}
-    \left(\log S\right)^{d-1} &> \frac{1}{2} \left(\frac{1}{72}\right)^{d-2} \cdot n \implies \\
-    \log S &> \frac{1}{2} \left(\frac{1}{72}\right)^{\frac{d-2}{d-1}} \cdot n^{\frac{1}{d-1}} \implies \\
+    \left(\log S\right)^{d-1} &\ge \frac{1}{2} \left(\frac{1}{72}\right)^{d-2} \cdot n \implies \\
+    \log S &\ge \frac{1}{2} \left(\frac{1}{72}\right)^{\frac{d-2}{d-1}} \cdot n^{\frac{1}{d-1}} \implies \\
     \log S &= \Omega \left(n^{\frac{1}{d-1}}\right) \implies 
-    S= 2^{\Omega ({\sqrt[d-1]{n}})}.
+    S= 2^{\Omega ({\sqrt[d-1]{n}})},
 \end{align*}
-
- Concluding the proof. 
+concluding the proof. 
  \hfill $\Box$
 
 % 

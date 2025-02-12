@@ -467,7 +467,7 @@ Let $V$ be a set of $n$ nodes, and  $\APPX(\mathcal X)$ be an   approximator, wi
 
 
 %___________________________________________________________________
-\subsection{Concluding the Lower Bound using Structural Induction    }
+\subsection{Concluding the Lower Bound using Structural Induction}\label{sec:Concluding-monotone-lower-bound-str-ind}
 %___________________________________________________________________
 
 
@@ -588,7 +588,7 @@ We use the following claim.
 
 \begin{claim}\label{cla:internal-in-monotone-lower-bound}
  Every approximator  \APPX$\left(X_1, \ldots, X_m\right)$ with 
-  $\left|X_i\right| \leq l$ and $m \leq M$ is either identically 0, that is, an OR of \emph{zero} ANDs, which is the formula $0$ (and thus is wrong on all positive instances, namely all positive instances are false negatives in this case), or outputs 1 on at least half of the (extreme) negative instances (namely, at least half of the negative instances are false positives).
+  $\left|X_i\right| \leq l$ and $m \leq M$ is either identically 0, that is, an OR of \emph{zero} ANDs, which is the formula $0$ (and thus is wrong on all positive instances, namely all positive instances are false negatives in this case), or outputs 1 on at least half of the (extreme) negative instances (namely, at least half of the $(k-1)$-colouring  are false positives).
 
 \end{claim}
 \begin{proof}
@@ -1015,7 +1015,7 @@ identified by the approximation and for every $i\in[p]$, the petal of $Z_i$ cont
 
 
 We estimate the number of such $(k-1)$-colourings, using simple probability.
-For this purpose we consider the following question:\ choosing a $(k-1)$-colouring of the nodes randomly and independently, \emph{what is the probability that every (petal of) $Z_i$ has repeated colours but the core $Z$ does not}?
+For this purpose we consider the following question:\ choosing a $(k-1)$-colouring of the nodes randomly and independently, \emph{what is the probability that \uline{every} (petal of) $Z_i$ has repeated colours but the core $Z$ does not}?
 
 As before, let $R(X)$ be the probability that $X$ has repeated colours.
 
@@ -1026,7 +1026,7 @@ $$
 \ldots \wedge R\left(Z_p\right) \wedge \neg R(Z)
 \right] 
 \leq \operatorname{Pr}\left[R\left(Z_1\right) \wedge \ldots \wedge R\left(Z_p\right) \mid \neg R(Z)\right]$$
-(by definition of conditional probability $\operatorname{Pr}[A \land B]=\operatorname{Pr}[A \mid B] \cdot \operatorname{Pr}[B]$)
+(by the definition of conditional probability $\operatorname{Pr}[A \land B]=\operatorname{Pr}[A \mid B] \cdot \operatorname{Pr}[B]$)
 
 \begin{align*}
 & =\prod_{i=1}^p \operatorname{Pr}\left[R\left(Z_i\right) \mid \neg R(Z)\right] 
@@ -1035,7 +1035,7 @@ $$
 \intertext{(the probability of repetition of colours is increased if we do not restrict ourselves to colourings with no repetitions in the core $Z \subseteq Z_i$)}
 & \leq \frac{1}{2^p}
 \end{align*}
-(because as we have seen before 
+(because as we have seen before in \Cref{sec:Concluding-monotone-lower-bound-str-ind}, 
 $\operatorname{Pr}[R(X)] \leq \frac{1}{2}$, for $|X|\le \ell$).
 
 

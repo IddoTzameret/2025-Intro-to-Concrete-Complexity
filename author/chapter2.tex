@@ -108,7 +108,7 @@ We shall also use the abbreviated notation $\APPX(\mathcal X)$ for $\APPX(X_1,\d
 
 \begin{trailer}{Example of simple useful asymptotic computations}
 %\begin{note} 
-Note that when $k\in(\Omega(\log n),O(n-\log n))$, $\APPX\left(S_1, \ldots, S_{n\choose k}\right)$, where $S_1,\dots,S_{n\choose k}$ are all possible subsets of size $k$ from the set of $n$ nodes $V$, is of \emph{super-polynomial size}, because $ n\choose k$ is super polynomial for $k$ in this range. For the sake of getting used to asymptotic estimates such as these, it is helpful to go over the computations in more detail, as follows.
+Note that when $k\in(\Omega(\log n),O(n-\log n))$, $\APPX\left(S_1, \ldots, S_{n\choose k}\right)$, where $S_1,\dots,S_{n\choose k}$ are all possible subsets of size $k$ from the set of $n$ nodes $V$, is of \emph{super-polynomial size}, because $ n\choose k$ is super polynomial for $k$ in this range. For the sake of getting used to asymptotic estimates such as these, it is helpful to go over the computation in more detail, as follows.
 
 We shall estimate the asymptotic behaviour of $\binom{n}{\log n} $, showing it is superpolynomial, namely, $\binom{n}{\log n} =
 n^{\Omega(\log n)}$. First, we observe that
@@ -346,14 +346,12 @@ The \textbf{approximation} (i.e., construction of an approximator for CLIQUE(${n
 
 Recall we want to compute CLIQUE$(n, k)$
 with $n$ the number of nodes in the graph and $k$ the size of a clique within the graph. 
-Throughout the proof, from now on we set:
-$$
-k=\sqrt[4]{n}.
-$$
+From now on we set:
 
 
 $$
 \begin{aligned}
+& k=\sqrt[4]{n} \\
 & l=\sqrt[8]{n} \\
 & p \approx \sqrt[8]{n} \\
 & M=(p-1)^l \cdot l! & \approx(\sqrt[8]{n}-1)^{\sqrt[8]{n}} \cdot(\sqrt[8]{n})! \\
@@ -486,7 +484,7 @@ The approximation of the  monotone circuit $C$ that computes $\operatorname{CLIQ
 
 
 \begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
-\begin{note} Such an induction is usually called \emph{\textbf{induction on the structure of the circuit} $C$} (or \emph{structural induction}), since we are going to induce on subcircuits of $C$, assuming the induction hypothesis holds for them. Using the structure of the circuit, we shall conclude that the induction hypothesis  holds for the gate that connects those two subcircuits. The base case is showing that the induction statement holds for circuits of size 1 (i.e., singled variable circuits). The induction step is showing that the induction statement holds for $A\lor B$ assuming the induction statement holds for both $A$ and $B$. And similarly for the case of $A\land B$.     
+\begin{note} Such an induction is usually called \emph{\textbf{induction on the structure of the circuit} $C$} (or \emph{structural induction}), since we are going to induce on subcircuits of $C$, assuming the induction hypothesis holds for them. Using the structure of the circuit, we shall conclude that the induction hypothesis  holds for the gate that connects those two subcircuits. The base case is showing that the induction statement holds for circuits of size 1 (i.e., singled variable circuits). The induction step is showing that the induction statement holds for $A\lor B$ assuming the induction statement holds separately for both $A$ and $B$. And similarly for the case of $A\land B$.     
 \end{note}
 \end{tcolorbox}
 
@@ -529,17 +527,19 @@ $\gapx(g_1\land g_2)$ from these (again, we shall do this in the sequel).
 Let $g_1\circ g_2$ be an $\lor$ or $\land$ gate with two incoming subcircuits $g_1$ and $g_2$, respectively (i.e., $\circ\in\{\lor,\land\}$). And let $x_{ij}$ be in input node in the circuit (with no incoming edges).
 \begin{itemize}
 \item 
-For \emph{every} graph $G$, whether a positive or a  negative instance, 
-$\gapx(x_{ij})(G)=(x_{ij})(G)$, hence we say that \emph{neither a false positive nor a false negative was introduced}.  
+For \emph{every} graph $G$, whether a positive or a  negative instance, the approximator and the original function are the same:  
+$\gapx(x_{ij})(G)=(x_{ij})(G)$. Hence we say that \emph{neither a false positive nor a false negative was introduced}.   
  
 \item 
-Let the graph $G$ be a \emph{negative} input, i.e., a $(k-1)$-colouring. If $(\gapx(g_1)\circ \gapx(g_2))(G)=0$, namely, $\gapx(g_1)\circ \gapx(g_2)$ correctly identified $G$ as a negative input, 
-while $\gapx(g_1\circ g_2)(G)=1$, we say the approximator 
+Let the graph $G$ be a \emph{negative} input, i.e., a $(k-1)$-colouring. If 
+$$(\gapx(g_1)\circ \gapx(g_2))(G)=0,$$ namely, $\gapx(g_1)\circ \gapx(g_2)$ correctly identified $G$ as a negative input, 
+while $$\gapx(g_1\circ g_2)(G)=1,$$ we say the approximator 
 step \emph{\textbf{introduced $G$ as a new false positive}}. 
 
-\item Let the graph $G$ be a \emph{positive} input, i.e., a $k$-clique. If $(\gapx(g_1) \circ \gapx(g_2))(G)=1$, namely, $\gapx(g_1)\circ \gapx(g_2)$ correctly identified $G$ as a positive input, while 
-$\gapx(g_1\circ g_2)(G)=0$, we say the approximator 
-step \textbf{\emph{introduced $G$ as a new false negative}}.
+\item Let the graph $G$ be a \emph{positive} input, i.e., a $k$-clique. If 
+$$(\gapx(g_1) \circ \gapx(g_2))(G)=1,$$
+ namely, $\gapx(g_1)\circ \gapx(g_2)$ correctly identified $G$ as a positive input, while 
+$$\gapx(g_1\circ g_2)(G)=0,$$ we say the approximator step \textbf{\emph{introduced $G$ as a new false negative}}.
 \end{itemize}
 \end{definition}
 

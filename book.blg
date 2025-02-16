@@ -6,6 +6,7 @@ The top-level auxiliary file: book.aux
 A level-1 auxilliary file: author/chapter1.aux
 A level-1 auxilliary file: author/chapter2.aux
 A level-1 auxilliary file: author/chapter3.aux
+A level-1 auxilliary file: author/chapter4.aux
 The style file: plain.bst
 Database file #1: PrfCmplx-Bakoma.bib
 
@@ -13,6 +14,6 @@ Here's how much of BibTeX's memory you used:
  Cites:                 4 out of 7500
  Fields:               58 out of 125000
  Hash table:        34850 out of 35000
- Strings:             528 out of 30000
- String pool:        4588 out of 750000
+ Strings:             529 out of 30000
+ String pool:        4607 out of 750000
  Wizard functions:   2118 out of 10000

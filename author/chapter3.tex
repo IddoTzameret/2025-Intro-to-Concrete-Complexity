@@ -494,7 +494,7 @@ Note that we have used the union bound on the following bad events, given a rand
 }
 
 
-All that is left is to make some computations to get a lower bound on the parameter $S$. 
+%All that is left is to make some computations to get a lower bound on the parameter $S$. 
 
 \Cref{eq:487:28} is equivalent to 
 \[
@@ -547,7 +547,7 @@ assign the literals in the clause all zero:
 \[
 x_1 = 0, \ x_2 = 1, \ x_3 = 0, \ x_4 = 1.
 \]
-However, Parity for \( r > k \) many inputs cannot be made a constant function without assigning all its \( r \) variables. Hence, when the number of free variables
+However, Parity for \( r > k \) many inputs \emph{cannot} be made a constant function without assigning all its \( r \) variables. Hence, when the number of free variables
 \[
 \frac{p^{d-2} \cdot n}{2^{d-2}} > k = 2 \log S,
 \]
@@ -611,6 +611,610 @@ concluding the proof.
 % \textcolor{red}{
 % \begin{Huge}
 % To Be Completed!\end{Huge}}
+
+
+\section*{Proof of the Switching Lemma}
+
+\subsection*{Random Restriction}
+Let \( 0 < p < \frac{1}{q} \).
+
+Let \(\mathcal{R}\) be a distribution of partial restrictions
+\(\rho\) to the variables \( \bar{x} \) (where \( |\bar{x}| = n \)) as follows:
+\[
+\Pr[\rho(x_i) = *] = p
+\]
+\[
+\Pr[\rho(x_i) = 0] = \Pr[\rho(x_i) = 1] = \frac{1 - p}{2}
+\]
+
+\subsection*{Function Assumption}
+From now on, let \( f \) be an \textbf{r-DNF} with \( n \) variables.
+
+\subsection*{Order Assumption}
+Order: We assume a fixed order on conjuncts in \( f \),
+and a fixed order on literals in each conjunct.
+
+\subsection*{Canonical Tree \( T(f|_{\rho}) \)}
+
+A decision tree for \( f|_{\rho} \) is defined as follows:
+
+\begin{enumerate}
+    \item Look through \( f \) for a conjunct \( C \) such that \( C|_{\rho} \neq 0 \).
+    \begin{itemize}
+        \item If no such \( C \) exists, output "0" (i.e., the tree is the single node \( 0 \)).
+        \item Otherwise, let \( C_1 \) be the first such conjunct.
+    \end{itemize}
+    
+    \item Let \( \beta_1 \) be the variables that appear starred in \( C_1|_{\rho} \) (i.e., they are unassigned).
+    
+    Query all variables in \( \beta_1 \) in order. Denote by \( \Pi \) the assignment/path given to these variables.
+    
+    \item If \( C_1|_{\rho\Pi} = 1 \), output "1" (i.e., a node \( 1 \) in this leaf).
+    \begin{itemize}
+        \item If \( \beta_1 \) was empty (meaning \( C_1|_{\rho} = 1 \)), output "1" as well.
+    \end{itemize}
+    
+    \item Otherwise, \( C_1|_{\rho\Pi} = 0 \) and go to step (1), starting with \( \rho\Pi \) in place of \( \rho \), looking at conjunct \( C_2 \), which is the first one such that \( C_2|_{\rho\Pi} \neq 0 \).
+    
+    \item Continue in this manner until you run out of conjuncts.
+\end{enumerate}
+
+\subsection*{Example: (1)}
+
+\[
+F: \quad r\text{-DNF} \quad (x_1 \land x_2 \land x_4 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2 \land x_4) \lor \dots
+\]
+
+\[
+\rho: \quad 
+\begin{array}{ccccc}
+x_1 & x_2 & x_3 & x_4 & x_5 \\
+1 & * & * & 1 & *
+\end{array}
+\]
+
+\[
+F|_{\rho} = (x_2 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2) \lor \dots
+\]
+
+\noindent
+Start with the first (from left) conjuncts in \( F|_{\rho} \) that is not \( 0 \). In our case it's
+\[
+C_1|_{\rho} = (x_2 \land \bar{x}_3).
+\]
+
+\noindent
+Build query tree for \( C_1|_{\rho} \); i.e., query each variable in order they appear in \( C_1|_{\rho} \):
+ 
+ 
+ \includegraphics[width=0.3\textwidth]{images/1st-ex-dt.png}
+ 
+ 
+\noindent
+Note that the red path \((x_2 \gets 1, x_3 \gets 0)\) determines an assignment \( \Pi_1 \) (for \( x_2, x_3 \)) that satisfies \( 1 \), and hence satisfies \( F|_{\rho} \). Thus, we label the leaf of this path by \( 1 \) (and finish the path there, with no more queries).
+
+
+\[
+F: \quad r\text{-DNF} \quad (x_1 \land x_2 \land x_4 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2 \land x_4) \lor \dots
+\]
+
+\[
+\rho: \quad 
+\begin{array}{ccccc}
+x_1 & x_2 & x_3 & x_4 & x_5 \\
+1 & * & * & 1 & *
+\end{array}
+\]
+
+\[
+F|_{\rho} = (x_2 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2) \lor \dots
+\]
+
+\noindent 
+
+
+
+\includegraphics[width=0.3\textwidth]{images/ex2-sl-dt.png}
+
+\noindent
+Consider each leaf in the tree above. It determines a path \( \Pi_1 \) from the root to the leaf.
+
+\noindent
+Now, in each such leaf (except the ones labeled by \( 1 \)), we need to continue querying the variables to determine an \textit{extension} of the assignment \( \Pi_1 \), so that this extended assignment will either satisfy or falsify \( F|_{\rho} \).
+
+\[
+F: \quad r\text{-DNF} \quad (x_1 \land x_2 \land x_4 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2 \land x_4) \lor \dots
+\]
+
+\[
+\rho: \quad 
+\begin{array}{ccccc}
+x_1 & x_2 & x_3 & x_4 & x_5 \\
+1 & * & * & 1 & *
+\end{array}
+\]
+
+\[
+F|_{\rho} = (x_2 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2) \lor \dots
+\]
+
+\includegraphics[width=0.3\textwidth]{images/ex3-sl-dt.png}
+\noindent
+Consider now the leftmost leaf. Then
+\[
+\Pi_1 = \{ x_2 = 0, x_3 = 0 \}
+\]
+We continue to build the tree from this leaf.
+
+\noindent
+The first (left-most) clause in \( F|_{\rho, \Pi_1} \) that is non-zero is
+\[
+C_2|_{\rho, \Pi_1} = x_5
+\]
+So we query \( x_5 \):
+
+\noindent
+\includegraphics[width=0.6\textwidth]{images/ex4-sl-dt.png}
+\noindent
+The pink path is \( \Pi_1 \), the green path is \( \Pi_2 \).
+
+\noindent
+Continue with \( F|_{\rho, \Pi_1, \Pi_2} \).
+
+\noindent
+Note that each layer in a DT can contain queries related to different clauses.
+This can happen for instance if \( \Pi_i \) on one node makes 0 the next clause \( C_j \), 
+while \( \Pi_i \) on a different node in the same layer doesn't nullify \( C_j \):
+ 
+\includegraphics[width=0.2\textwidth]{images/ex5-sl-dt.png}
+\begin{claim}
+Let \( g \) be a DNF and assume that the height of \( T(g) \leq s \).
+Then \( g \) can be written as an \( s \)-CNF as well as an \( s \)-DNF.
+\end{claim}
+
+\begin{proof}
+Each leaf of \( T(g) \) determines an assignment \( \pi \) that fixes \( g \) to either 1 or 0 
+(i.e., \( g|_{\pi} \in \{0,1\} \)).
+
+Thus, for every assignment \( \pi \) to the variables, \( g|_{\pi} = 0 \) \( \Leftrightarrow \) 
+\( \pi \) leads to a 0-leaf in \( T(g) \).
+
+Let \( A_{\pi} \) be the AND determined by an assignment \( \pi \):
+if \( \pi(x_i) = 1 \) add \( x_i \), if \( \pi(x_i) = 0 \) add \( \neg x_i \).
+
+\[
+\bigvee_{ \pi \in J } A_{\pi}
+\]
+is an \( s \)-DNF computing the function \( \neg g \).
+
+Thus, 
+\[
+\neg \bigvee_{\pi \in J} A_{\pi} = \bigwedge_{\pi \in J} \neg A_{\pi}
+\]
+is an \( s \)-CNF computing \( \neg \neg g = g \).
+
+
+\end{proof}
+
+In other words, a canonical decision tree for \( F \) decides \( \neg F \),
+if we consider the assignments on 0-leafs.
+Thus, if we turn these ANDs corresponding to these assignments to OR of the negated literals, and AND all these ORs, 
+we get a CNF computing \( F \).
+
+
+\begin{theorem}[Switching Lemma]
+If \( f \) is an \( r \)-DNF with \( n \) variables 
+and \( \rho \) is a random restriction as above with 
+\( p < \frac{1}{q} \),
+then with probability \( \leq (9pq)^s \), the height of \( T(f|_{\rho}) \) 
+is bigger than \( s \).
+\end{theorem}
+
+This means that \( f|_{\rho} \) \textbf{cannot} be written as an \( s \)-CNF 
+with probability \( \leq (9pq)^s \), by the claim above.
+
+\section*{Discussion of the main idea behind the proof}
+
+Let \( \mathcal{R}_{\rho} \) be the distribution of random restrictions, 
+taken with probability \( P_{\rho}[X_i = *] = p \) as before.
+
+Let \( S \) be the set of ``bad'' restrictions \( \rho \in \mathcal{R}_{\rho} \).
+That is, restrictions for which \( T(f|_{\rho}) \) has height \( > s \).
+We wish to bound from above \( P_{\rho}[\rho \in S] \).
+
+A priori, we only have the trivial bound:
+\[
+P_{\rho \in \mathcal{R}_{\rho}}[\rho \in S] \leq 1,
+\]
+namely, 100\% of restrictions in \( \mathcal{R}_{\rho} \) are bad.
+
+We show how to reduce this probability by a factor of about \( \left( \frac{1}{4} \right)^s \).
+Namely, get:
+\[
+P_{\rho \in \mathcal{R}_{\rho}}[\rho \in S] \leq \left( \frac{1}{4} \right)^s \cdot (\text{small number}).
+\]
+
+But how can we show this?
+
+\subsection*{(cont.) Discussion of the main idea of the proof}
+
+The idea is to show that the probability of the event of picking a bad restriction 
+is bounded from above by the probability of picking a restriction from a \emph{different} 
+set of restrictions, denoted \( T \).
+
+If \( S \) contained a \emph{single} restriction \( \rho \), this would be easy to achieve:
+\[
+\Pr_{\mathcal{R}}[S] \leq \frac{1}{4^s}, \quad \Pr_{\mathcal{R}}[\{\rho\}] \leq \frac{1}{4^s} 
+\quad \text{(because trivially \( \Pr_{\mathcal{R}}[\{\rho\}] \leq 1\))}
+\]
+for every restriction \( \rho \) to \( s \) additional variables.
+
+The first inequality follows by the fact that making a restriction \emph{longer} 
+only \emph{increases} its probability, since fixing a \emph{single} variable 
+to \( \{0,1\} \) has probability 
+\[
+\frac{1 - p}{2} > \frac{8p}{2} = \frac{4}{9},
+\]
+while fixing a variable to \( * \) has probability only \( < \frac{1}{9} \).
+
+Here is a simple example when extending the assignment by one bit:
+\[
+\Pr_{\mathcal{R}}[S] = \frac{1}{1 - p} \cdot p \cdot \Pr_{\mathcal{R}}[S_0] 
+< 2 \cdot \frac{1}{9} \cdot \frac{1}{9} \Pr_{\mathcal{R}}[S_0] 
+= \frac{1}{9^2} \Pr_{\mathcal{R}}[S_0].
+\]
+
+\begin{figure}
+\centering
+\textbf{Distribution \( \mathcal{R} \)}
+\[
+\rho \longrightarrow \rho_0
+\]
+\caption{Mapping a single restriction \( \rho \) to a restriction \( \rho_0 \) with bigger probability.
+The event (of picking) \( \rho \) is depicted as a smaller size circle than the event (of picking) \( \rho_0 \),
+to represent their respective probabilities (weight or ``mass'' in the probability distribution \( \mathcal{R} \)).}
+\end{figure}
+
+\subsection*{(cont.)}
+
+But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S' \).
+To show that the sum of the probabilities of \emph{all} of the restrictions in \( S' \) is at most 
+\(\frac{1}{4^s} \cdot (\text{small number})\), we can try showing that \emph{each} \( \rho \in S' \) can be mapped to a 
+\emph{distinct} restriction \( \rho_0 \) as above. 
+
+If the mapping, denoted \( \Theta \), is done to \emph{distinct} restrictions, that is, the mapping is 
+\emph{one-to-one} (\emph{``injective''}), then we know that the sum of all probabilities of picking bad restrictions, 
+namely the event of picking a restriction from \( S' \), is mapped to the event of picking a restriction in the 
+\emph{image} of \( \Theta \).
+
+But because every event has probability smaller than one we finish. We explain it as follows:
+\[
+\Pr_{\mathcal{R}}[S'] = \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\rho] = 
+\sum_{\rho \in S'} \left(\frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[\Theta(\rho)]\right) =
+\frac{1}{4^s} \cdot \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)].
+\]
+
+Now, we'd like to claim that 
+\[
+\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
+\]
+and finish. But this is not necessarily true for every sum of probabilities: if the map \( \Theta \) is 
+not one-to-one we may end up adding an event with a very large probability more than once, for example, 
+hence exceeding one. The way to ensure...
+\subsection*{(cont.)}
+
+But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S' \).
+To show that the sum of the probabilities of \emph{all} of the restrictions in \( S' \) is at most 
+\(\frac{1}{4^s} \cdot (\text{small number})\), we can try showing that \emph{each} \( \rho \in S' \) can be mapped to a 
+\emph{distinct} restriction \( \rho_0 \) as above. 
+
+If the mapping, denoted \( \Theta \), is done to \emph{distinct} restrictions, that is, the mapping is 
+\emph{one-to-one} (\emph{``injective''}), then we know that the sum of all probabilities of picking bad restrictions, 
+namely the event of picking a restriction from \( S' \), is mapped to the event of picking a restriction in the 
+\emph{image} of \( \Theta \).
+
+But because every event has probability smaller than one we finish. We explain it as follows:
+\[
+\Pr_{\mathcal{R}}[S'] = \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\rho] = 
+\sum_{\rho \in S'} \left(\frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[\Theta(\rho)]\right) =
+\frac{1}{4^s} \cdot \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)].
+\]
+
+Now, we'd like to claim that 
+\[
+\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
+\]
+and finish. But this is not necessarily true for every sum of probabilities: if the map \( \Theta \) is 
+not one-to-one we may end up adding an event with a very large probability more than once, for example, 
+hence exceeding one. The way to ensure...
+
+\[
+\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
+\]
+is by making sure \( \Theta \) is one-to-one, 
+hence we don't count probabilities more than once.
+
+Or in other words, picking restrictions from \(\text{Image}(\Theta(S'))\) 
+is an \emph{event} of our probability distribution, 
+and so an event has always probability at most one.
+
+\section*{Constructing the one-to-one map}
+
+\subsection*{The upshot of argument}
+\begin{itemize}
+    \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S' \) to some \emph{longer} restrictions \( \rho_\delta \). 
+
+    \textcolor{red}{Bad: restriction whose \( T(f\restriction \rho) \) has depth \( > s \).}
+
+    \item Thus, we get that the event \( \Pr_{\mathcal{R}}[ \rho \in S' ] \leq \frac{1}{4^s} \cdot (\text{small}) \).
+    
+    \item To show the mapping is \emph{one-to-one}, we build a map from \( \rho \in S' \) to longer restrictions \( \rho_\delta \) such that given \( \rho_\delta \), we can \emph{(uniquely) recover} \( \rho \). (Hence, the map is one-to-one).
+    
+    \item The map is defined as encoding \( \rho \) by \( \rho_\delta \) + \emph{(small helper code)}.
+
+    \item \textbf{Note:} If I know \( \rho_\delta \), it does not \emph{a priori} mean I can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'_\delta = \rho_\delta \) (\emph{the domain of 0/1 assignment in \( \rho \) and \( \rho' \) may be different}).
+    
+    \item The idea to recover \( \rho \), given \( \rho_\delta \), is to map \( \rho \) to \( \rho_\delta \) + helper code. The helper code will be small but allow us to recover \( \rho \) given \( \rho_\delta \).
+
+    \item The helper code is built based on the following idea: Consider \( \rho \in S' \), and let \( \Pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
+    
+    \textcolor{gray}{(We shall prune this path to length \( s \)).}
+\end{itemize}
+
+\begin{itemize}
+    \item Then, given \( \rho_\delta \) and the helper code, we will be able to recover which variables were assigned in \( \rho_\delta \) by that path \( \Pi \).
+    
+    \item This means we are able to distinguish between \( \rho_\delta \) and \( \rho \), hence recover \( \rho \) \emph{(uniquely)}.
+\end{itemize}
+
+\section*{Proof of the Switching Lemma}
+
+\subsection*{Proof}
+Let \( \rho \in S' \). \\
+Let \( \Pi \) be the \fbox{first} path in \( T(f_{\rho}) \) with length \( > s \).
+
+\subsection*{We use the following notation:}
+\begin{itemize}
+    \item \( C_1, \dots, C_k \) : conjuncts.
+    \item \( \beta_1, \dots, \beta_k \) : unset variables.
+    \item \( \pi_1, \dots, \pi_k \) : assignments to \( \beta_i \) according to \( \Pi \).
+    \item \( \Theta_1, \dots, \Theta_k \) : unique assignments to \( \beta_i \) that is \fbox{consistent} with \( C_i |_{\rho, \Pi_1, \dots, \Pi_{i-1}} \).
+\end{itemize}
+These terms in \( f \) were queried along \( \Pi \), in order.
+
+\subsection*{Helper Code}
+\begin{itemize}
+    \item \( \beta_i \) is coded by string \( \beta_i' \), of \( |\beta_i| \) numbers, each \( \leq 2r \) (recording for each var in \( \beta_i \): its location in \( C_i \) (number \( \leq r \)), and whether it is the last var in \( \beta_i \) (one bit)).
+    \item \( \beta := \beta_1' \dots \beta_k' \)
+    \item \( |\{\rho_{\beta'} : \rho \in S' \}| \leq (2r)^s \).
+    \item \( \Pi_i \) is coded as a string \( \pi_i' \) of \( |\beta_i| \) bits.
+    \item \( \Pi := \Pi_1' \Pi_2' \dots \Pi_k' \), where the number of possible \( \Pi' \) strings is \( 2^s \).
+\end{itemize}
+
+
+\section*{Example of Coding}
+
+\subsection*{Example:}
+\[
+f := (x_1 \wedge x_2 \wedge x_4 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2 \wedge x_4) \vee (\bar{x}_3 \wedge x_4 x_7) \vee (x_6 \wedge \bar{x}_5) \vee \dots
+\]
+
+\[
+\rho \in S' : \quad x_1 \quad x_2 \quad x_3 \quad x_4 \quad x_5 \quad x_6 \quad x_7
+\]
+
+\[
+\rho = (1 \quad * \quad * \quad 1 \quad * \quad * \quad *)
+\]
+
+\[
+f_{\rho} = (x_2 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2) \vee (x_6 \wedge x_5) \vee \dots
+\]
+
+\subsection*{Tree Representation \(T(f_{\rho})\)}
+
+\begin{itemize}
+    \item First path (to the left) with length \( > s \).
+    \item Trimmed to length precisely \( s \).
+\end{itemize}
+
+
+
+\includegraphics[width=\textwidth]{images/coding-sl-ex1.png}
+
+
+\subsection*{Coding Table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\( C_i \)'s (Conjuncts on yellow path) & \( \beta_i \) (Unset variables) & \( \pi_i \) (Partial \( \Pi \) Assignment) & \( \Theta_i \) \\ 
+\hline
+\( C_1 \) & \( \beta_1 = \{x_2, x_3\} \) & \( \pi_1 = 00 \) & \( \Theta_1 = 10 \) \\
+         & \( \beta_1' = \{r_2, r_7, r_7\} \) & & \( \Rightarrow \) satisfies \( C_1 \) \\
+\hline
+\( C_2 \) & \( \beta_2 = \{x_5\} \) & \( \pi_2 = 1 \) & \( \Theta_2 = 0 \) \\
+         & \( \beta_2' = \{r_1, r_7\} \) & & \\
+\hline
+\( C_3 \) & \( \beta_3 = \{x_7\} \) & \( \pi_3 = 1 \) & \( \Theta_3 = 1 \) \\
+         & \( \beta_3' = \{r_7\} \) & & \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Notes:}
+\begin{itemize}
+    \item On the same depth (but different paths) in the tree, different variables can be queried.
+    \item Here, at depth 3, we query \( x_7 \) and \( x_6 \) at different paths.
+\end{itemize}
+
+\subsection*{Continuation}
+
+\noindent
+\textbf{The Coding Map} \( \Theta \) is a function:
+\[
+\Theta: S \to \mathcal{R} \times (2r)^s \times 2^s
+\]
+defined by:
+\[
+\Theta: \rho \mapsto (\rho\delta, \beta', \pi')
+\]
+
+\subsection*{Notes}
+\noindent
+Only given \( \rho\delta \), we don't know how to find \( \rho \) because we don't know what's the domain of \( \rho \) and what's the domain of \( \rho\delta \). We only know the domain of \( \rho\delta \).
+
+\subsection*{Claim}
+\noindent
+\textbf{\(\Theta\) is one-to-one.} Namely, given \( (\rho\delta, \beta', \pi') \) we can \underline{recover} (uniquely) \( \rho \).
+
+\noindent
+(Recall \( C_1, C_2, \dots \) are the clauses we query along the left-most path of length \( >s \) in \( T(f_{\rho}) \).)
+
+\subsection*{Proof}
+\noindent
+\textbf{We claim that this is an injection.} To see this, suppose we are given \( (\rho\delta, \beta', \pi') \). We may recover \( \rho \) as follows:
+
+\begin{itemize}
+    \item First, we can easily recover all strings \( \beta_i' \) and \( \pi_i' \).
+    \item Now let \( C_1' \) be the first term in \( F \) such that \( C_1' | \rho\delta \neq 0 \).
+    \item \( C_1' \) cannot come before \( C_1 \), and by construction \( C_1 \) is not falsified by \( \rho\delta \).
+    \item So we must have \( C_1' = C_1 \).
+    \item From \( \beta_1' \) and \( C_1 \) we can recover \( \beta_1 \), and from this and \( \pi_1' \) we can recover \( \pi_1 \).
+    \item \( \sigma_1 \) and \( \pi_1 \) were assignments to the same variables, so we can construct a restriction \( \rho\sigma_1[\pi_1/\sigma_1] = \pi_1\sigma_2 \dots \sigma_k \).
+    \item Let \( C_2' \) be the first term in \( F \) such that \( C_2' | \rho\pi\sigma_2 \dots \sigma_k \neq 0 \).
+    \item Then as above, \( C_2' \) must equal \( C_2 \), and we can recover \( \beta_2 \) and \( \pi_2 \) and carry on in the same way.
+\end{itemize}
+
+\noindent
+Once we have recovered all the \( \beta_i \)'s, we know exactly what changed between \( \rho \) and \( \rho\delta \) and can recover \( \rho \).
+
+\[
+\qed \quad \text{claim}
+\]
+
+\noindent
+\textbf{Note:} \( \rho\delta \) is not necessarily a bad restriction.
+
+\subsection*{Note on defining sigma to be consistent with the conjuncts in F}
+\noindent
+The point is that we want to avoid a situation in which \( C_i | \rho \not\equiv 0 \) but \( C_i | \rho\delta \equiv 0 \). If this happens, then we can't know what was the clause queried by \( \pi_i \); it might have been \( C_i \), but because we ask for the first term in \( F \) such that \( C_i' | \rho\delta \neq 0 \), we don't get to \( C_i \).
+
+
+\section*{Decode}
+\noindent
+\( \rho \) is mapped to \( \rho_{\delta} \) with helper codes \( \beta_1', \beta_2', \beta_3', \dots \), \( \pi_1', \pi_2', \pi_3', \dots \).
+
+\[
+\rho_{\delta} : x_1, x_2, x_3, x_4, x_5, x_6, \dots
+\]
+
+\[
+1 \quad 1 \quad 0 \quad 1 \quad 0 \quad * \quad 1
+\]
+
+\noindent
+We want to recover \( \rho \) given \( \rho_{\delta} \) and helper codes.
+
+\begin{itemize}
+    \item Consider the first AND clause \( C_1 \) in \( f | \rho_{\delta} \) such that \( C_1' | \rho_{\delta} \neq 0 \).
+    \item Since \( \delta \) never falsifies an AND in \( f \) by \textbf{construction}, then \( C_1' = C_1 \) (i.e., the first AND such that \( f | \rho \neq 0 \)).
+    \item \( C_1' \) cannot come before \( C_1 \) (in \( f \)) because \( C_1' | \rho_{\delta} \neq 0 \Rightarrow C_1' | \rho \neq 0 \), since \( \rho_{\delta} \) extends \( \rho \).
+    \item Thus, we know that \( C_1 \) was the first queried AND when we constructed \( T(f | \rho_{\delta}) \).
+    \item We know \( \beta_1' = \{ x_2, x_3 \} \), the position in \( C_1 \) of the literals queried. So we can find out they were \( x_2, x_3 \). Hence, we also know \( \pi_1 \).
+    \item So we can change \( \rho_{\delta} \): instead of \( \delta \), assigning \( x_2, x_3 \) assign \( \pi_1 \) to \( x_2, x_3 \). In symbols, we get:
+    \[
+    \rho_{\delta} [\delta \to \pi_1]
+    \]
+    \item Now, we do the same decoding procedure with \( T(f | \rho_{\delta} [\delta \to \pi_1]) \), which is precisely the decision tree rooted at the third layer of the tree, left-most node (rooted at $x_5$).
+    \item At the end, we know what is:
+    \[
+    \rho_{\delta} [\delta \to \pi_1, \dots, \delta_k \to \pi_k]
+    \]
+    Since we know all \( \pi_1, \dots, \pi_k \), we now know what was \( \rho \): We take \( \rho_{\delta} \) and assign stars to all variables queried on the path \( \pi_C \).
+\end{itemize}
+
+We now can finish the proof of the Switching Lemma
+
+
+Let \( \Theta_1 \) be the projection of \( \Theta \) to the first coordinate (\(\rho_{\delta}\)).
+
+\begin{center}
+    \colorbox{yellow}{\textbf{When we fix helper codes, \( \Theta_1 \) is one-to-one.}}
+\end{center}
+
+\subsection*{Explanation:}
+Fix some helper codes \( \beta_1', \pi_1' \) and let \( S_{\beta_1', \pi_1'} \) be all \( \rho \in S \) such that \( \Theta(\rho) = (\rho_{\delta}, \beta', \pi') \) for some \( \delta \). That is, all bad assignments with helper codes \( \beta_1', \pi_1' \).
+
+Consider the projection of \( \Theta \) to the first component:
+\[
+\Theta: S \to \mathcal{R} \times (2r)^s \times 2^s \quad \text{(Recall definition)}
+\]
+\[
+\Theta: \rho \mapsto (\rho_{\delta}, \beta', \pi')
+\]
+\[
+\Theta_1: \rho \mapsto \rho_{\delta}
+\]
+
+By Claim, \( \Theta_1 \circ S_{\beta_1',\pi_1'} \to \mathcal{R} \) is one-to-one.
+
+\subsection*{Bounding Probability}
+We want to bound from above the probability that a \textit{random} restriction in \( S_{\beta_1', \pi_1'} \) is chosen.
+
+Namely, bound
+\[
+\Pr_{\mathcal{R}} [\rho \in S_{\beta_1', \pi_1'}]
+\]
+
+\subsubsection*{By definition:}
+\[
+\Pr_{\mathcal{R}} [\rho \in S_{\beta_1', \pi_1'}] = \sum_{\rho \in S_{\beta_1', \pi_1'}} \Pr_{\mathcal{R}} [\rho] = \sum_{\rho \in S_{\beta_1', \pi_1'}} \left( \frac{2p}{1-p} \right)^s \Pr_{\mathcal{R}} [\Theta_1(\rho)]
+\]
+
+\textit{i.e., the probability (in \( \mathcal{R} \)) of choosing the past \( \Theta_1(\rho) \), which is \( \rho_{\delta} \) for some \( \delta \) of size \( s \) with helper codes \( \beta_1', \pi_1' \).}
+
+\subsection*{Probability of \( \rho_{\delta} \)}
+Since \( \rho_{\delta} \) sets exactly \( s \) variables that were unset in \( \rho \), we have:
+
+\[
+\textcolor{red}{\Pr_{\mathcal{R}} [\rho_{\delta}]} = p^{-s} \cdot \left( \frac{1-p}{2} \right)^s \cdot \Pr_{\mathcal{R}} [\rho]
+\]
+
+\textit{Unset \( S \) means setting the \( s \) variables that you just unset to \( p \) values.}
+
+By factoring out \( \left( \frac{2p}{1 - p} \right)^s \) we get from (1):
+
+\[
+\Pr \left[ \rho \in S_{\beta^{'},\pi^{'}} \right] = \sum_{\rho \in R} \left( \frac{2p}{1 - p} \right)^s \Pr_R [\Theta(\rho)]
+= \left( \frac{2p}{1 - p} \right)^s \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)]
+\]
+
+But \( \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)] \) is a probability of an \underline{event}, 
+
+namely it is \( \leq 1 \), because for \( \rho \in S_{\beta^{'},\pi^{'}} \), we never 
+\underline{repeat the same restriction}, namely, if \( \rho \neq \rho' \in S_{\beta^{'},\pi^{'}} \), then \( \Theta(\rho) \neq \Theta(\rho') \).
+
+(as was discussed above; otherwise we may have counted more than once the same restriction in \( \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)] \) ).
+
+So \( \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)] \leq 1 \) and we get:
+
+\[
+\Pr \left[ \rho \in S_{\beta^{'},\pi^{'}} \right] \leq \left( \frac{2p}{1 - p} \right)^s.
+\]
+
+Finally, \( S \) is the union of the sets \( S_{\beta^{'},\pi^{'}} \) over all possible strings \( \beta^{'},\pi^{'} \):
+
+\[
+\Pr \left[ \rho \in S \right] \leq (2r)^s \cdot 2^s \cdot \left( \frac{2p}{1 - p} \right)^s
+\]
+
+\[
+= \left( \frac{8 p r}{1 - p} \right)^s \leq (9 p r)^s, \quad \text{for } p < \frac{1}{q}.
+\]
+
+\[
+\Box_{\text{Switching Lemma}}
+\]
 
 
 

@@ -71,13 +71,51 @@ function we can compute it by a monotone Boolean circuit. But the question remai
 \begin{trailer}{Example of a monotone circuit computing CLIQUE$(n, k)$}
 Consider  all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one of those is a clique:
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.75\linewidth]{images/k-clique-simple-circuit.png}
-    \label{fig:clique-naive}
-    \caption{Naive way to compute CLIQUE}
-\end{figure}
-
+\begin{tikzpicture}[scale=1, every node/.style={scale=1}, ultra thick, blue]
+    % Define AND gates (larger and bold)
+    \node (and1) at (-3,0) {\textbf{\Huge $\land$}};
+    \node (and2) at (3,0) {\textbf{\Huge $\land$}};
+    
+    % Define OR gate (larger and bold)
+    \node (or) at (0,2) {\textbf{\Huge $\lor$}};
+    
+    % Connect AND gates to OR gate with ultra thick blue lines
+    \draw[ultra thick, blue] (and1) -- (or);
+    \draw[ultra thick, blue] (and2) -- (or);
+    
+    % Add horizontal ellipsis between AND gates and OR gate
+    \node (dots) at (0,0.6) {\Huge $\cdots$};
+    
+    % Define inputs to AND gates
+    \node (x1) at (-5,-1) {$x_{1,2}$};
+    \node (x2) at (-4,-1) {$x_{1,3}$};
+    \node (x3) at (-3,-1) {$x_{k-1}$};
+    \node (x4) at (-2,-1) {$x_{2,1}$};
+    \node (x5) at (-1,-1) {$x_{2,3}$};
+    
+    \node (y1) at (1,-1) {$x_{10,12}$};
+    \node (y2) at (2,-1) {$x_{10,23}$};
+    \node (y3) at (3,-1) {$x_{7,1}$};
+    \node (y4) at (4,-1) {$x_{7,100}$};
+    
+    % Connect inputs to AND gates with ultra thick blue lines
+    \draw[ultra thick, blue] (x1) -- (and1);
+    \draw[ultra thick, blue] (x2) -- (and1);
+    \draw[ultra thick, blue] (x3) -- (and1);
+    \draw[ultra thick, blue] (x4) -- (and1);
+    \draw[ultra thick, blue] (x5) -- (and1);
+    
+    \draw[ultra thick, blue] (y1) -- (and2);
+    \draw[ultra thick, blue] (y2) -- (and2);
+    \draw[ultra thick, blue] (y3) -- (and2);
+    \draw[ultra thick, blue] (y4) -- (and2);
+    
+    % Labels for sets S_1 and S_{(n/k)}
+    \node[red] at (-3,-2) {$S_1$};
+    \node[red] at (3,-2) {$S_{n\choose k}$};
+    
+\end{tikzpicture}
+ 
 $S_1, S_2, \ldots, S_{\binom{n}{k}}$ are the $\binom{n}{k}$ subgraphs in $G$ each of size $k$.
 Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.
 \end{trailer}
@@ -407,9 +445,48 @@ Thus, our focus is on ``extreme'' cases of inputs:
 There are $\binom{x}{k}$ positive-inputs, each one is clearly an accept input to \cliquenk.
 For simplicity, we shall call these positive inputs \emph{$k$-\textbf{cliques}} (although these are special extreme cases of $k$-cliques, since we assume that all edges outside the clique are absent.) 
 
+
+ 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=.5\linewidth]{images/clique1.png}
+    
+    
+\begin{tikzpicture}[scale=0.6] % Scale down the whole picture
+    % Draw the large outer set G
+    \draw[thick, blue] (0,0) ellipse (5cm and 3cm);
+    \node[blue, above left] at (-4,2.3) {\Large $G$};
+    
+    % Label n = 12
+    \node[green, left] at (-4,0) {\Large $n=12$};
+    
+    % Inner clique of k = 6 at the center
+    \def\radius{1.2}
+    \foreach \i in {0,1,2,3,4,5} {
+        \node (v\i) at ({\radius*cos(60*\i)},{\radius*sin(60*\i)}) [blue,fill, circle, inner sep=3pt] {};
+    }
+    
+    % Connect the clique with red edges
+    \foreach \i in {0,1,2,3,4,5} {
+        \foreach \j in {0,1,2,3,4,5} {
+            \ifnum \i<\j
+                \draw[ultra thick, red] (v\i) -- (v\j);
+            \fi
+        }
+    }
+    
+    % Label k = 6
+    \node[green, below] at (0,-1.7) {\Large $k=6$};
+    
+    % Outer scattered nodes randomly placed
+    \foreach \pos in {(2,2), (-2.5,1.8), (3,-1), (-3,-2), (1.5,-2.5), (-1,2.2)} {
+        \fill[blue] \pos circle (3pt);
+    }
+    
+\end{tikzpicture}
+
+    
+    
+%    \includegraphics[width=.5\linewidth]{images/clique1.png}
     \caption{Example of a \emph{positive input}: a graph whose only edges are part of a (single) $k$-clique.}
     \label{fig:enter-label}
 \end{figure}

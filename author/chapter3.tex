@@ -616,7 +616,7 @@ concluding the proof.
 \section*{Proof of the Switching Lemma}
 
 \subsection*{Random Restriction}
-Let \( 0 < p < \frac{1}{q} \).
+Let \( 0 < p < \frac{1}{9} \).
 
 Let \(\mathcal{R}\) be a distribution of partial restrictions
 \(\rho\) to the variables \( \bar{x} \) (where \( |\bar{x}| = n \)) as follows:
@@ -805,19 +805,18 @@ we get a CNF computing \( F \).
 \begin{theorem}[Switching Lemma]
 If \( f \) is an \( r \)-DNF with \( n \) variables 
 and \( \rho \) is a random restriction as above with 
-\( p < \frac{1}{q} \),
-then with probability \( \leq (9pq)^s \), the height of \( T(f|_{\rho}) \) 
+\( p < \frac{1}{9} \),
+then with probability \( \leq (9pr)^s \), the height of \( T(f|_{\rho}) \) 
 is bigger than \( s \).
 \end{theorem}
 
 This means that \( f|_{\rho} \) \textbf{cannot} be written as an \( s \)-CNF 
-with probability \( \leq (9pq)^s \), by the claim above.
+with probability \( \leq (9rq)^s \), by the claim above.
 
 \section*{Discussion of the main idea behind the proof}
 
 Let \( \mathcal{R}_{\rho} \) be the distribution of random restrictions, 
 taken with probability \( P_{\rho}[X_i = *] = p \) as before.
-
 Let \( S \) be the set of ``bad'' restrictions \( \rho \in \mathcal{R}_{\rho} \).
 That is, restrictions for which \( T(f|_{\rho}) \) has height \( > s \).
 We wish to bound from above \( P_{\rho}[\rho \in S] \).
@@ -835,23 +834,21 @@ P_{\rho \in \mathcal{R}_{\rho}}[\rho \in S] \leq \left( \frac{1}{4} \right)^s \c
 \]
 
 But how can we show this?
-
-\subsection*{(cont.) Discussion of the main idea of the proof}
-
 The idea is to show that the probability of the event of picking a bad restriction 
 is bounded from above by the probability of picking a restriction from a \emph{different} 
 set of restrictions, denoted \( T \).
 
-If \( S \) contained a \emph{single} restriction \( \rho \), this would be easy to achieve:
+For the sake of illustration, let's assume that  \( S \) contained a \emph{single} restriction \( \rho \). So our goal would be easy to achieve: we shall bound the probability of picking $\rho$ by the probability of picking a restriction that is longer by  $s$  
+
+ because we shall have 
 \[
-\Pr_{\mathcal{R}}[S] \leq \frac{1}{4^s}, \quad \Pr_{\mathcal{R}}[\{\rho\}] \leq \frac{1}{4^s} 
+\Pr_{\mathcal{R}}[S] \leq \frac{1}{4^s}\cd \Pr_{\mathcal{R}}[\{\rho\}] \leq \frac{1}{4^s} 
 \quad \text{(because trivially \( \Pr_{\mathcal{R}}[\{\rho\}] \leq 1\))}
 \]
 for every restriction \( \rho \) to \( s \) additional variables.
-
 The first inequality follows by the fact that making a restriction \emph{longer} 
-only \emph{increases} its probability, since fixing a \emph{single} variable 
-to \( \{0,1\} \) has probability 
+only \emph{increases} its probability; and  since fixing a \emph{single} variable 
+to \( \{0,1\} \) has probability (since $p<1/9)$: 
 \[
 \frac{1 - p}{2} > \frac{8p}{2} = \frac{4}{9},
 \]
@@ -874,8 +871,7 @@ Here is a simple example when extending the assignment by one bit:
 The event (of picking) \( \rho \) is depicted as a smaller size circle than the event (of picking) \( \rho_0 \),
 to represent their respective probabilities (weight or ``mass'' in the probability distribution \( \mathcal{R} \)).}
 \end{figure}
-
-\subsection*{(cont.)}
+ 
 
 But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S' \).
 To show that the sum of the probabilities of \emph{all} of the restrictions in \( S' \) is at most 
@@ -900,10 +896,9 @@ Now, we'd like to claim that
 \]
 and finish. But this is not necessarily true for every sum of probabilities: if the map \( \Theta \) is 
 not one-to-one we may end up adding an event with a very large probability more than once, for example, 
-hence exceeding one. The way to ensure...
-\subsection*{(cont.)}
+hence exceeding one.  
 
-But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S' \).
+ But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S' \).
 To show that the sum of the probabilities of \emph{all} of the restrictions in \( S' \) is at most 
 \(\frac{1}{4^s} \cdot (\text{small number})\), we can try showing that \emph{each} \( \rho \in S' \) can be mapped to a 
 \emph{distinct} restriction \( \rho_0 \) as above. 
@@ -940,32 +935,34 @@ and so an event has always probability at most one.
 
 \section*{Constructing the one-to-one map}
 
-\subsection*{The upshot of argument}
+
+\begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
+\textbf{The upshot of argument}
 \begin{itemize}
-    \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S' \) to some \emph{longer} restrictions \( \rho_\delta \). 
+    \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S' \) to some \emph{longer} restrictions \( \rho\sigma \). 
 
-    \textcolor{red}{Bad: restriction whose \( T(f\restriction \rho) \) has depth \( > s \).}
-
-    \item Thus, we get that the event \( \Pr_{\mathcal{R}}[ \rho \in S' ] \leq \frac{1}{4^s} \cdot (\text{small}) \).
+    Bad: restriction whose \( T(f\restriction \rho) \) has depth \( > s \). 
+    \item Thus, we get that the event \( \Pr_{\mathcal{R}}[ \rho \in S' ] \leq \frac{1}{4^s} \cdot (\text{small number}) \).
     
-    \item To show the mapping is \emph{one-to-one}, we build a map from \( \rho \in S' \) to longer restrictions \( \rho_\delta \) such that given \( \rho_\delta \), we can \emph{(uniquely) recover} \( \rho \). (Hence, the map is one-to-one).
+    \item To show the mapping is \emph{one-to-one}, we build a map from \( \rho \in S' \) to longer restrictions \( \rho\sigma \) such that given \( \rho\sigma \), we can \emph{(uniquely) recover} \( \rho \). (Hence, the map is one-to-one).
     
-    \item The map is defined as encoding \( \rho \) by \( \rho_\delta \) + \emph{(small helper code)}.
+    \item The map is defined as encoding \( \rho \) by \( \rho\sigma \) + \emph{(small helper code)}.
 
-    \item \textbf{Note:} If I know \( \rho_\delta \), it does not \emph{a priori} mean I can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'_\delta = \rho_\delta \) (\emph{the domain of 0/1 assignment in \( \rho \) and \( \rho' \) may be different}).
+    \item \textbf{Note:} If we know \( \rho\sigma \), it does not \emph{a priori} mean we can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'\sigma = \rho\sigma \) (\emph{the domain of 0/1 assignment in \( \rho \) and \( \rho' \) may be different}).
     
-    \item The idea to recover \( \rho \), given \( \rho_\delta \), is to map \( \rho \) to \( \rho_\delta \) + helper code. The helper code will be small but allow us to recover \( \rho \) given \( \rho_\delta \).
+    \item The idea to recover \( \rho \), given \( \rho\sigma \), is to map \( \rho \) to \( \rho\sigma \) plus some ``small helper code''. The helper code is small but will allow us to recover \( \rho \) given \( \rho\sigma \).
 
-    \item The helper code is built based on the following idea: Consider \( \rho \in S' \), and let \( \Pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
+    \item The code and its helper code is built based on the following idea: Consider \( \rho \in S' \), and let \( \Pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
     
     \textcolor{gray}{(We shall prune this path to length \( s \)).}
 \end{itemize}
 
 \begin{itemize}
-    \item Then, given \( \rho_\delta \) and the helper code, we will be able to recover which variables were assigned in \( \rho_\delta \) by that path \( \Pi \).
+    \item Then, given \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by that path \( \Pi \).
     
-    \item This means we are able to distinguish between \( \rho_\delta \) and \( \rho \), hence recover \( \rho \) \emph{(uniquely)}.
+    \item This means we are able to distinguish between \( \rho\sigma \) and \( \rho \), hence recover \( \rho \) \emph{(uniquely)}.
 \end{itemize}
+\end{tcolorbox}
 
 \section*{Proof of the Switching Lemma}
 

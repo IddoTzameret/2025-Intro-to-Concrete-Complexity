@@ -403,7 +403,7 @@ with layer-1 (bottom) gates all of fan-in  $ \leq k=2 \log S$ (either  $\land$ o
 with $n$ input variables  
 $\overline x$ (with positive and negative copies). Assume that the gates in layer $d$ are all $\land$ gates (resp., $\lor$ gates). 
 Then, there exists a restriction $\rho: \overline {x} \rightarrow\{0,1, *\} $ with at least  $\frac{p^{d-2} \cdot n}{2^{d-2}} $ free variables, where $ p=\frac{1}{36 \cdot \log S}$, such that  
-the function computed by $g{\rst}_{\rho}$ for every $\land$ (resp. $\lor$) gate in layer $d$ is computable by a $k$-DNF (resp., a $k$-CNF). 
+the function computed by $g{\rst}_{\rho}$ for every $\land$ (resp. $\lor$) gate in layer $d$ is computable by a $k$-DNF (resp., a $k$-CNF) formula. 
 \end{lemma} 
 \end{tcolorbox}
 
@@ -419,14 +419,13 @@ We assume the induction statement holds for layer $d-1$, and prove it for $d$. T
 
 
 
-\begin{figure}[H]\label{fig:depth-reduction-use}
+\begin{figure}[H]
     \begin{center}
     \includegraphics[width=\textwidth]{switchinginduc.png}
-    \end{center}
+    \end{center}\label{fig:depth-reduction-use}
+    \caption{The setup of the induction step.}
 \end{figure}
-
-
-\textit{The setup of the induction step}: In (\textbf{1}) in the figure,  we have (by induction hypothesis) a depiction of part of the circuit $C$, showing a single $\land$ gate in layer $d$ (there  may be other $\land$ gates in this layer, and there may be other gates above it in layers higher than $d$). 
+ In (\textbf{1}) in the  \Cref{fig:depth-reduction-use},  we have (by induction hypothesis) a depiction of part of the circuit $C$, showing a single $\land$ gate in layer $d$ (there  may be other $\land$ gates in this layer, and there may be other gates above it in layers higher than $d$). 
 In (\textbf{2}) we see the $\land$ gate in layer $d$ under the restriction $\rho'$, i.e., $C\rst_{\rho'}$, with $\rho'$ having $\geq \frac{p_0^{d-3} \cdot n}{2^{d-3}}$ free variables. Hence, its children, which are $\lor$ gates, have turned under $\rho'$ to  $k$-CNFs.
  (\textbf{3}) simply merged the $\land$ gate in layer $d$ to its children in layer $d-1$, all of which turned to $\land$ gates themselves. 
 Our goal is to get to circuit (\textbf{4}), by applying the Switching Lemma with a random restriction $\rho''$ and then compute an upper bound on the probability that such a switch to $k$-DNF occurs for \emph{all} the gates in layer $d$. We explain this now.
@@ -512,8 +511,9 @@ $$
     e^{
         \frac{2}{
         \frac{n}{{(36 \cdot \log S)^{d-3} \cdot 2^{d-1} \cdot 3}}}}
-}_B
+}_B.
 $$
+To prove the induction statement it thus suffices to show that $1/S+B<1$, hence the probability that none of the bad events occurred is positive. We are left to compute the following. 
 
 \includegraphics[width=\textwidth]{image010.png}
 

@@ -70,8 +70,8 @@ function we can compute it by a monotone Boolean circuit. But the question remai
 
 \begin{trailer}{Example of a monotone circuit computing CLIQUE$(n, k)$}
 Consider  all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one of those is a clique:
-
-\begin{tikzpicture}[scale=1, every node/.style={scale=1}, ultra thick, blue]
+\begin{figure}
+\begin{tikzpicture}[scale=1, every node/.style={scale=1}, ultra thick, blue]\label{fig:clique-naive}
     % Define AND gates (larger and bold)
     \node (and1) at (-3,0) {\textbf{\Huge $\land$}};
     \node (and2) at (3,0) {\textbf{\Huge $\land$}};
@@ -109,15 +109,16 @@ Consider  all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one o
     \draw[ultra thick, blue] (y2) -- (and2);
     \draw[ultra thick, blue] (y3) -- (and2);
     \draw[ultra thick, blue] (y4) -- (and2);
-    
+    %
     % Labels for sets S_1 and S_{(n/k)}
     \node[red] at (-3,-2) {$S_1$};
     \node[red] at (3,-2) {$S_{n\choose k}$};
     
 \end{tikzpicture}
- 
+\caption{
 $S_1, S_2, \ldots, S_{\binom{n}{k}}$ are the $\binom{n}{k}$ subgraphs in $G$ each of size $k$.
-Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.
+Size of this circuit: $O\left(k^2 \cdot\binom{n}{k}\right)$.}
+\end{figure}
 \end{trailer}
 
 

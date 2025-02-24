@@ -768,7 +768,7 @@ S(F \vdash \square) \geq
             \left(
                 \frac{
                     \left(
-                        W(F \vdash \square) - w(F)
+                        w(F \vdash \square) - w(F)
                     \right)^2
                     }
                     {n}
@@ -792,7 +792,7 @@ If $s = 1$, then $\square \in F$ and we are  done. We can thus assume  $s > 1$.
 
 \begin{tcolorbox}[colframe=white, colback=red!5, boxrule=0mm, sharp corners,breakable]
 \noindent \textbf{Upshot of the argument}:
-The idea is to do something similar to the tree-like case above, only that here we cannot recurse by partitioning the tree-like refutation into two \emph{disjoint} sub-refutations, of which one is at most $s/2$: the tree-likeness of the refutation before enabled us to partition the derivation of $\Box$ into two disjoint parts, the first deriving $x_i$ and the second $\neg x_i$, for some $i$. But for a DAG-like refutation there is no guarantee that the these two derivations are disjoint. The solution is to go by induction on the logarithm $b$ of the number of wide clauses, where the base of the logarithm is a number denoted $a$---this $a$ is the factor we are guaranteed to be able to shave off from the number of wide clauses in each induction step. Hence, in $b$ steps we reach the base case of the induction in which the number of wide clauses is zero. Specifically, in each step of the induction we pick the most popular literal within the set of wide clauses, which occurs in at least a $\delta$ fraction of wide clauses. Once we set this literal to 0 and 1, at most $(1-\delta)$ fraction of wide clauses remain. If we set $a=1/(1-\delta)$, it means that in each induction step we multiply the number of wide clauses by $(1-\delta)$ (namely, getting a $(1-\delta)$ fraction of them) means that we shaved off a factor of $a$ for this number. 
+The idea is to do something similar to the tree-like case above, only that here we cannot recurse by partitioning the tree-like refutation into two \emph{disjoint} sub-refutations, of which one is at most $s/2$: the tree-likeness of the refutation before enabled us to partition the derivation of $\Box$ into two disjoint parts, the first deriving $x_i$ and the second $\neg x_i$, for some $i$. But for a DAG-like refutation there is no guarantee that the these two derivations are disjoint. The solution is to go by induction on the logarithm $b$ of the number of wide clauses, where the base of the logarithm is a number denoted $a$---this $a$ is the factor we are guaranteed to be able to shave off from the number of wide clauses in each induction step. Hence, in $b$ steps we reach the base case of the induction in which the number of wide clauses is zero. Specifically, in each step of the induction we pick the most popular literal within the set of wide clauses, which occurs in at least a $\delta$ fraction of wide clauses. Once we set this literal to 0 or 1, at most $(1-\delta)$ fraction of wide clauses remain. If we set $a=1/(1-\delta)$, it means that in each induction step we multiply the number of wide clauses by $(1-\delta)$ (namely, getting a $(1-\delta)$ fraction of them) means that we shaved off a factor of $a$ for this number. 
 \end{tcolorbox}
 \bigskip
 
@@ -804,36 +804,40 @@ $$
     \[
     a = \frac{1}{\left(1 - \frac{d}{2n} \right)}.
     \]
-     
-We prove by induction on $b, n$ that if $|\pi^*| \leq a^b$ then 
+This  $d$ is chosen as to optimise the parameters. Let $b$ be the minimal integer such that $|\pi^*| \leq a^b$.
+We prove by (double) induction on $b$ and $n$ that  
     \[
-    w(F \vdash 0) \leq d + b + k.
+    w(F \vdash 0) \leq d + b + k
     \]
-    
-    \textbf{Base Case:} If $b = 0$, then $|\pi^*| < a^0 = 1$ and we're done. If $n = 1$, then $w(F \vdash 0) = 1$ and we're done.
+    which concludes the proof by the computations below.
 
-    \textbf{Induction Step:} By an \textit{averaging} argument: because every wide clause has $> d$ literals, there exists a literal $x_i$ (w.l.o.g.) that occurs in $> \frac{|\pi^*|\cd d}{2m}$ wide clauses.
+\Base  If $b = 0$, then $|\pi^*| < a^0 = 1$, hence the number of clauses of width at least $d$ is zero, i.e., $w(F\vdash\Box)<d$, and we are done.
+ If $n = 1$, then $F$ is either the empty clause, or contains the literals $x_1$ and $\neg x_i$. Thus $k=$ or $k=1$, and  $w(F \vdash 0) \le k$ and we are done.
+
+\induction By an \textit{averaging} argument:  What is the average number a literal, out of the $2n$ literals, occurs in the set $\pi^*$ of wide clauses? Every wide clause has $> d$ literals, and there are $|\pi^*|$ such clauses, so the answer is more than  $\frac{|\pi^*|\cd d}{2n}$. Since, each given literal occurs at most once in a clause, it means that this average number is also the average number of clauses in which each literal occurs. Therefore, there \emph{exists} at least one literal that occurs in $\ge \frac{|\pi^*|\cd d}{2n}$ many clauses. 
+Without loss of generality assume that this is a \emph{positive} literal $x_i$.
     
 \textit{Eliminate} this literal by setting $x_i = 0$. We get a refutation $\pi\rst_{x_i = 0}$ of $F\rst_{x_i = 0}$ such that:
     \[
-    \left|\pi^*\!\!\rst_{x_i = 0}\right| < (a^b) \left( 1 - \frac{d}{2m} \right) = \left( \frac{a^b}{a} \right) = a^{b-1}.
+    \left|\pi^*\!\!\rst_{x_i = 0}\right| < (a^b) \left( 1 - \frac{d}{2n} \right) = \left( \frac{a^b}{a} \right) = a^{b-1}.
     \]
 
     \begin{enumerate}
         \item By the induction hypothesis, we thus get
         \[
-        w(F_{x_i = 0} \vdash 0) \leq d + b + k - 1.
+        w(F\rst_{x_i = 0} \vdash 0) \leq d + b + k - 1.
         \]
         \item By the induction hypothesis, we also have
         \[
-        w(F_{x_i = 1} \vdash 0) \leq d + b + k.
+        w(F\rst_{x_i = 1} \vdash 0) \leq d + b + k.
         \]
     \end{enumerate}
 
-    Using the lemma from the previous page: $(1) + (2) \Rightarrow w(F \vdash 0) \leq d + b + k$.
+    Using the gluing lemma, 1 and 2 above imply 
+    $w(F \vdash 0) \leq d + b + k$.
 
 
-
+\bigskip 
 It remains to prove the following:
 
 
@@ -857,7 +861,7 @@ Since $|\pi^*|\le|\pi|$ we have
     \[
     \frac{1}{1 - \varepsilon} \ge  1 + \varepsilon,
     \]
-    to get:
+    to get that $d+b+k$
     \[
     \leq d + \log_{\left(1 + \frac{d}{2n} \right)} s + k.
     \]
@@ -865,7 +869,7 @@ We use another simple approximation (see also below):
 \[
  \quad \log_{1+\varepsilon} x \ge 2\cd \frac{1}{\varepsilon} \log x,
     \]
-to get
+(where we use ``$\log x$'' to mean logarithm in the base 2) to get
     \[
     \leq d + O\left(\frac{2n \log s}{d} \right) + k.
     \]
@@ -1189,10 +1193,10 @@ Thus, the inequality holds for **constant \( c = 2 \)**. This proof **only used 
 % -----------------------------
 
 \section{Feasible Interpolation for Resolution Refutations}
-We describe a different way to obtain resolution refutation size lower bounds via ``Feasible Interpolation.'' 
+We describe a different way to obtain resolution refutation size lower bounds via the notion of \emph{Feasible Interpolation}. 
 
 The idea is to take a short resolution refutation of a certain type of unsatisfiable formulas, and convert it to a Boolean circuit computing a certain function. If the function is hard for small Boolean circuits, then we could not have started from a short resolution refutation to begin with. In other words, \emph{there is no short resolution refutation of the unsatisfiable formula}.
-This section is based on Section 15.2.2 of \emph{Arora--Barak (2010)}.
+
 
 \bigskip
 
@@ -1217,6 +1221,12 @@ called the \emph{interpolant} of \(\varphi\) and \(\psi\) such that
 \]
 is unsatisfiable.
 \end{theorem}
+
+
+\includegraphics{image020.png}
+\includegraphics{image019.png}
+
+
 
 \begin{proof}
 For every assignment \(\mathbf{c} \in \{0,1\}^k\), either \(\varphi(\mathbf{x}, \mathbf{c})\) is unsatisfiable or \(\psi(\mathbf{y}, \mathbf{c})\) is unsatisfiable (or both are unsatisfiable). 
@@ -1254,7 +1264,7 @@ Therefore, \(I\) is well-defined completing the construction of the interpolant.
 
 
 \begin{theorem}
-[Interpolation Circuit Construction]
+[Interpolation Theorem for Resolution]
 \label{thm:interpolation-circuit}
 In the setting of the previous theorem, suppose 
 \(\varphi(\mathbf{x},\mathbf{z}) \wedge \psi(\mathbf{y},\mathbf{z})\) 
@@ -1270,8 +1280,6 @@ Similarly, if all \(\mathbf{x}\) variables in \(\varphi(\mathbf{x},\mathbf{z})\)
 appear in \emph{negative} form, the resulting circuit is also monotone.
 \end{theorem}
 
-\noindent
-\textit{Remark:} 
 Applying this theorem to derive a resolution refutation lower bound is now straightforward, as we can argue that any short resolution refutation would yield a small circuit for a function believed to be hard, leading to a contradiction.
 
 \begin{theorem}[Lower bounds on resolution refutations of the CLIQUE--COLOURING principle]
@@ -1302,4 +1310,5 @@ for some constant \(c>0\).
 \textbf{Exercise:}
 Show how to write \(\varphi_n\) and \(\psi_n\) using \(O(n^2)\) size, ensuring that all \(\mathbf{z}\) variables appear \emph{positively} in \(\varphi_n\) and \emph{negatively} in \(\psi_n\).
 
+\includegraphics{image021.png}
 

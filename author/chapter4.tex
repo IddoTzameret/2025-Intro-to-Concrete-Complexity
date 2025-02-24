@@ -1180,4 +1180,126 @@ We have **proved elementarily** that for \( 0 < \varepsilon < 1 \),
 Thus, the inequality holds for **constant \( c = 2 \)**. This proof **only used the Mean Value Theorem and elementary bounds**, without relying on any pre-established bounds for \( \ln(1+\varepsilon) \).
 } % commentout
 
+% ----------------
+% 
+
+
+% -----------------------------
+% Feasible Interpolation for Resolution Refutations
+% -----------------------------
+
+\section{Feasible Interpolation for Resolution Refutations}
+We describe a different way to obtain resolution refutation size lower bounds via ``Feasible Interpolation.'' 
+
+The idea is to take a short resolution refutation of a certain type of unsatisfiable formulas, and convert it to a Boolean circuit computing a certain function. If the function is hard for small Boolean circuits, then we could not have started from a short resolution refutation to begin with. In other words, \emph{there is no short resolution refutation of the unsatisfiable formula}.
+This section is based on Section 15.2.2 of \emph{Arora--Barak (2010)}.
+
+\bigskip
+
+\begin{theorem}[Interpolation Theorem]
+Let \(\varphi(\mathbf{x},\mathbf{z})\) be a propositional formula over variables \(x_{1},\dots,x_{m}, z_{1},\dots,z_{k}\), and let \(\psi(\mathbf{y},\mathbf{z})\) be a propositional formula over variables \(y_{1},\dots,y_{m}, z_{1},\dots,z_{k}\). 
+Suppose that the only shared variables between \(\varphi\) and \(\psi\) are \(\mathbf{z}\). 
+Assume that 
+\[
+\varphi(\mathbf{x},\mathbf{z}) \;\land\; \psi(\mathbf{y},\mathbf{z})
+\]
+is unsatisfiable.
+
+Then there is a Boolean function 
+\[
+I \colon \{0,1\}^k \;\to\;\{0,1\}
+\]
+called the \emph{interpolant} of \(\varphi\) and \(\psi\) such that
+\[
+\bigl(\varphi(\mathbf{x},\mathbf{z}) \;\land\; I(\mathbf{z})\bigr)
+\;\;\lor\;\;
+\bigl(\psi(\mathbf{y},\mathbf{z}) \;\land\;\neg I(\mathbf{z})\bigr)
+\]
+is unsatisfiable.
+\end{theorem}
+
+\begin{proof}
+For every assignment \(\mathbf{c} \in \{0,1\}^k\), either \(\varphi(\mathbf{x}, \mathbf{c})\) is unsatisfiable or \(\psi(\mathbf{y}, \mathbf{c})\) is unsatisfiable (or both are unsatisfiable). 
+
+ 
+ 
+This is because if both \(\varphi(\mathbf{x},\mathbf{c})\) and \(\psi(\mathbf{y},\mathbf{c})\) are satisfiable, then we could combine these two assignments for \(\mathbf{x}\) and \(\mathbf{y}\) (noting that \(\mathbf{x}\) and \(\mathbf{y}\) are disjoint) to obtain a satisfying assignment for \(\varphi \wedge \psi\). Hence \(\varphi \wedge \psi\) would not be unsatisfiable, contradicting our assumption.
+
+\begin{enumerate}[label=\textbf{(\alph*)}]
+    \item \textbf{Case 1:} \(\varphi(\mathbf{x},\mathbf{c})\) is satisfiable, which implies \(\psi(\mathbf{y},\mathbf{c})\) must be unsatisfiable. 
+
+    We define \( I(\mathbf{c}) := 0\). Then observe that
+    \[
+      \bigl(\underbrace{\overbrace{\varphi(\mathbf{x},\mathbf{c})}^{\rm satisfiable} \;\land\; \underbrace{I(\mathbf{c})}_{0}}_0\bigr)
+      \;\;\lor\;\;
+      \bigl(\overbrace{\psi(\mathbf{y},\mathbf{c}) }^{\rm unsatisfiable}\;\land\;\underbrace{\neg I(\mathbf{c})}_1\bigr)
+    \]
+    is unsatisfiable. 
+    %(1)
+
+    \item \textbf{Case 2:} Otherwise, \(\varphi(\mathbf{x},\mathbf{c})\) is unsatisfiable. We then set \(I(\mathbf{c}) := 1\). Hence
+    \[
+      \bigl(\varphi(\mathbf{x},\mathbf{c}) \;\land\; I(\mathbf{c})\bigr)
+      \;\;\lor\;\;
+      \bigl(\psi(\mathbf{y},\mathbf{c}) \;\land\;\neg I(\mathbf{c})\bigr)
+    \]
+    is unsatisfiable.
+
+\end{enumerate}
+
+\noindent
+Therefore, \(I\) is well-defined completing the construction of the interpolant.
+
+\end{proof}
+
+
+\begin{theorem}
+[Interpolation Circuit Construction]
+\label{thm:interpolation-circuit}
+In the setting of the previous theorem, suppose 
+\(\varphi(\mathbf{x},\mathbf{z}) \wedge \psi(\mathbf{y},\mathbf{z})\) 
+admits a resolution refutation of size \(s\). Then there is an interpolant function 
+\[
+I \colon \{0,1\}^k \to \{0,1\}
+\]
+that can be computed by a Boolean circuit of size \(O(s^2)\).
+
+Furthermore, if the variables \(\mathbf{z}\) appear all in \emph{positive} form in 
+\(\psi(\mathbf{y},\mathbf{z})\), then the above circuit is \emph{monotone}. 
+Similarly, if all \(\mathbf{x}\) variables in \(\varphi(\mathbf{x},\mathbf{z})\) 
+appear in \emph{negative} form, the resulting circuit is also monotone.
+\end{theorem}
+
+\noindent
+\textit{Remark:} 
+Applying this theorem to derive a resolution refutation lower bound is now straightforward, as we can argue that any short resolution refutation would yield a small circuit for a function believed to be hard, leading to a contradiction.
+
+\begin{theorem}[Lower bounds on resolution refutations of the CLIQUE--COLOURING principle]
+Let us define the following unsatisfiable CNF formulas \(\varphi_n(\mathbf{x},\mathbf{z})\) and \(\psi_n(\mathbf{y},\mathbf{z})\). Intuitively,
+\[
+\varphi_n(\mathbf{x},\mathbf{z}) = 1 \quad\text{iff}\quad \mathbf{x} \text{ encodes a }\sqrt[4]{n}\text{-clique in the graph on }n\text{ nodes represented by }\mathbf{z}.
+\]
+\[
+\psi_n(\mathbf{y},\mathbf{z}) = 1 \quad\text{iff}\quad \mathbf{y} \text{ encodes a }(\sqrt[4]{n}-1)\text{-colouring of that same graph.}
+\]
+Then 
+\[
+\varphi_n(\mathbf{x},\mathbf{z}) \;\wedge\; \psi_n(\mathbf{y},\mathbf{z})
+\]
+is unsatisfiable, and the smallest resolution refutation of \(\varphi_n \wedge \psi_n\) has size at least
+\[
+2^{\,c\sqrt[8]{n}}
+\]
+for some constant \(c>0\).
+\end{theorem}
+
+\medskip
+\noindent
+\textbf{Note:} Indeed, \(\varphi_n \wedge \psi_n\) is unsatisfiable because no graph on \(n\) nodes can simultaneously contain a \(\sqrt[4]{n}\)-clique and admit a \((\sqrt[4]{n}-1)\)-colouring.
+
+\medskip
+\noindent
+\textbf{Exercise:}
+Show how to write \(\varphi_n\) and \(\psi_n\) using \(O(n^2)\) size, ensuring that all \(\mathbf{z}\) variables appear \emph{positively} in \(\varphi_n\) and \emph{negatively} in \(\psi_n\).
+
 

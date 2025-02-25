@@ -1222,6 +1222,7 @@ called the \emph{interpolant} of \(\varphi\) and \(\psi\) such that
 is unsatisfiable.
 \end{theorem}
 
+Illustration of the simple argument :
 
 \includegraphics{image020.png}
 \includegraphics{image019.png}
@@ -1259,7 +1260,6 @@ This is because if both \(\varphi(\mathbf{x},\mathbf{c})\) and \(\psi(\mathbf{y}
 
 \noindent
 Therefore, \(I\) is well-defined completing the construction of the interpolant.
-
 \end{proof}
 
 
@@ -1282,7 +1282,7 @@ appear in \emph{negative} form, the resulting circuit is also monotone.
 
 Applying this theorem to derive a resolution refutation lower bound is now straightforward, as we can argue that any short resolution refutation would yield a small circuit for a function believed to be hard, leading to a contradiction.
 
-\begin{theorem}[Lower bounds on resolution refutations of the CLIQUE--COLOURING principle]
+\begin{theorem}[Lower bounds on resolution refutations of the CLIQUE--COLOURING principle]\label{thm:interpolation-lower-bound}
 Let us define the following unsatisfiable CNF formulas \(\varphi_n(\mathbf{x},\mathbf{z})\) and \(\psi_n(\mathbf{y},\mathbf{z})\). Intuitively,
 \[
 \varphi_n(\mathbf{x},\mathbf{z}) = 1 \quad\text{iff}\quad \mathbf{x} \text{ encodes a }\sqrt[4]{n}\text{-clique in the graph on }n\text{ nodes represented by }\mathbf{z}.
@@ -1306,9 +1306,245 @@ for some constant \(c>0\).
 \textbf{Note:} Indeed, \(\varphi_n \wedge \psi_n\) is unsatisfiable because no graph on \(n\) nodes can simultaneously contain a \(\sqrt[4]{n}\)-clique and admit a \((\sqrt[4]{n}-1)\)-colouring.
 
 \medskip
-\noindent
-\textbf{Exercise:}
-Show how to write \(\varphi_n\) and \(\psi_n\) using \(O(n^2)\) size, ensuring that all \(\mathbf{z}\) variables appear \emph{positively} in \(\varphi_n\) and \emph{negatively} in \(\psi_n\).
 
-\includegraphics{image021.png}
+To be precise, we now show how to encode 
+$ \varphi_n(\mathbf{x},\mathbf{z}) \;\wedge\; \psi_n(\mathbf{y},\mathbf{z})$ formally, with a CNF of total size \(O(n^2)\) size, ensuring that all \(\mathbf{z}\) variables appear \emph{positively} in \(\varphi_n\) and \emph{negatively} in \(\psi_n\).
+This formulation is taken from Raz-Tzameret \cite{RT07}. 
+
+
+
+
+Let $G=(V,E)$ be an undirected graph with $n$ vertices and let $k'<k$ be
+two integers.
+Then, one of the following must hold:
+\begin{description}
+\item[(i)] The graph $G$ does not contain a \emph{clique with $k$ vertices};
+
+\item[(ii)] The graph $G$ is not a \emph{complete $k'$-partite graph}.
+In other words, there is no way to partition $G$ into $k'$ subgraphs
+$G_1\dots G_{k'}$,
+such that every $G_i$ is an independent set, and for all $i\ne j \in[k']$,
+all the vertices in $G_i$ are connected by edges (in $E$) to all the vertices in $G_j$.
+\end{description}
+
+Obviously, if Item (ii) above is false
+(that is, if $G$ is a complete $k'$-partite graph),
+then there exists a $k'$-coloring of
+the vertices of $G$; hence the name \emph{clique-coloring} for the principle.
+
+The propositional formulation of the (negation of the)
+clique-coloring principle is as follows.
+Each variable $z_{ij}$, for all $i\ne j \in [n]$,
+is an indicator variable for the fact that there is an edge in $G$
+between vertex $i$ and vertex $j$.
+Each variable $x_{\ell i}$, for all $\ell\in[k]$ and all $i\in[n]$,
+is an indicator variable for the fact that the vertex $i$ in $G$
+is the $\ell$th vertex in the $k$-clique.
+Each variable $ y_{\ell i}$, for all $\ell\in[k']$ and all $i\in[n]$,
+is an indicator variable for the fact that the vertex $i$ in $G$
+pertains to the independent set $G_\ell$.
+
+\begin{definition}\label{def-clique-color}
+The negation of the clique-coloring principle consists of the following
+unsatisfiable collection of clauses:
+
+$\varphi_n(\mathbf{x,z})$:
+\renewcommand{\theenumi}{\roman{enumi}}   % change temporarily to Roman items
+\begin{enumerate}
+\item $x_{\ell,1}\lor\dots\lor x_{\ell,n}, \mbox{ for all } \ell\in[k]$
+
+(expresses that there exists at least one vertex in $G$ which constitutes
+the $\ell$th vertex of the $k$-clique); \label{eq-clique-q-pigeons}%\vspace{-6pt}
+
+\item $\neg x_{\ell,i}\lor \neg x_{\ell,j},  \mbox{ for all } i\ne j \in [n],\;
+          \ell\in[k]$
+
+(expresses that there exists at most one vertex in $G$ which constitutes
+the $\ell$th vertex of the $k$-clique); \label{eq-clique-functional-q}%\vspace{-6pt}
+
+\item $\neg x_{\ell,i}\lor \neg x_{\ell',i}, \mbox{ for all } i\in [n],\;
+          \ell\ne \ell'\in[k]$
+
+(expresses that the $i$th vertex of $G$ cannot be both the $\ell$th
+and the $\ell'$th vertex of the $k$-clique);\label{eq-clique-holes-q}%\vspace{-6pt}
+
+\item $\neg x_{\ell,i}\lor \neg x_{\ell',j}\lor z_{i,j}, \mbox{ for all }
+\ell\ne\ell'\in[k], i\ne j\in[n]$
+
+(expresses that if both the vertices $i$ and $j$ in $G$ are in the $k$-clique,
+then there is an edge in $G$ between $i$ and $j$).
+\label{eq-clique-p-and-q-vars}%\vspace{-6pt}
+\end{enumerate}
+
+$\psi_n(\mathbf{y},\mathbf{z})$:
+
+\begin{enumerate}
+
+
+\item $y_{1,i}\vee \dots \vee y_{k',i}, \mbox{ for all } i\in[n]$
+
+(expresses that every vertex of $G$ pertains to at least one independent set);
+\label{eq-clique-r-pigeons}%\vspace{-6pt}
+
+\item  $\neg y_{\ell,i}\lor \neg y_{\ell',i}, \mbox{ for all } \ell\ne\ell\in[k'], i\in[n]$
+
+(expresses that every vertex of $G$ pertains to at most one independent set);
+\label{eq-clique-holes-r}%\vspace{-6pt}
+
+\item $\neg z_{i,j}\lor \neg y_{t,i}\lor \neg y_{t,j}, \mbox{ for all } i\ne j\in[n],
+t\in[k']$
+
+(expresses that if there is an edge between vertex $i$ and $j$ in $G$, then
+$i$ and $j$ cannot be in the same independent set);
+\label{eq-clique-final-contradictory-clauses}
+\end{enumerate}
+\renewcommand{\theenumi}{(\Roman{enumi})}   % change back to Roman items
+\end{definition}
+
+
+
+\begin{proof}[of \Cref{thm:interpolation-lower-bound}]
+By the feasible interpolation theorem, if there exists a resolution refutation of 
+\(\varphi_n(\mathbf{x},\mathbf{z}) \;\wedge\; \psi_n(\mathbf{y},\mathbf{z})\)
+of size smaller than \(2^{c\sqrt[8]{n}}\) (for sufficiently small \(c\)), then there is an interpolant 
+\[
+I_n : \{0,1\}^{n \choose 2} \;\longrightarrow\; \{0,1\}
+\]
+for \(\varphi_n \wedge \psi_n\) that can be computed by a \emph{monotone} circuit of size less than \(2^{2\,c\sqrt[8]{n}}\).
+
+But this interpolant \(I_n\) then decides the function 
+\(\textsc{CLIQUE}(n,\sqrt[4]{n})\), thus contradicting the monotone circuit lower bound we proved earlier!
+
+\medskip
+
+\noindent
+\textbf{Why does \(I_n\) compute \(\textsc{CLIQUE}(n,\sqrt{n})\)?}
+Consider the ``extreme'' positive or negative assignments to \(\mathbf{z}\). By definition:
+\begin{enumerate}[label=\textbf{(\alph*)}]
+    \item If \(I_n(\mathbf{z}) = 1\), then \(\varphi_n(\mathbf{x},\mathbf{z})\) is unsatisfiable.
+    \item If \(I_n(\mathbf{z}) = 0\), then \(\varphi_n(\mathbf{x},\mathbf{z})\) is satisfiable, which forces \(\psi_n(\mathbf{y},\mathbf{z})\) to be unsatisfiable.
+\end{enumerate}
+
+Thus, for \(\mathbf{z}\) that encodes either a \(\sqrt[4]{n}\)-clique or a \((\sqrt[4]{n}-1)\)-colouring in the underlying graph,
+\[
+I_n(\mathbf{z}) = 
+\begin{cases}
+1, & \text{if }\mathbf{z}\text{ encodes a }(\sqrt[4]{n}-1)\text{-colouring},\\
+0, & \text{if }\mathbf{z}\text{ encodes a }\sqrt[4]{n}\text{-clique}.
+\end{cases}
+\]
+Hence \(I_n\) distinguishes between \(\sqrt[4]{n}\)-cliques and \((\sqrt[4]{n}-1)\)-colourings, which is exactly the \(\textsc{CLIQUE}(n,\sqrt{n})\) function, contradicting the known monotone circuit lower bound. 
+\end{proof}
+
+\bigskip 
+
+
+\begin{proof}[of \Cref{thm:interpolation-circuit}]
+Given an assignment \(\mathbf{c} \in \{0,1\}^k\), we explain how to compute \(I(\mathbf{c})\) by transforming a size-\(s\) resolution refutation of
+\[
+\varphi(\mathbf{x},\mathbf{z}) \;\wedge\; \psi(\mathbf{y},\mathbf{z})
+\]
+into a refutation of either \(\varphi(\mathbf{x}, \mathbf{c})\) (meaning \(\varphi(\mathbf{x}, \mathbf{c})\) is unsatisfiable, so \(I(\mathbf{c}) = 1\)) or \(\psi(\mathbf{y}, \mathbf{c})\) (meaning \(I(\mathbf{c}) = 0\)). We accomplish this in time \(O(s^2)\).
+Since this algorithm is computed in time $O(s^2)$ there is also a Boolean circuit, that by inspection of the algorithm is also a monotone one. 
+
+
+
+\paragraph{Size of the new refutation}
+The resulting refutation has size \(O(s)\). Concretely, we take the original resolution refutation and, using the assignment \(\mathbf{c}\), \emph{discard} all \(\mathbf{z}\) variables from every clause in the proof. By doing so, we obtain a refutation of
+\[
+\varphi(\mathbf{x},\mathbf{c}) \;\wedge\; \psi(\mathbf{y},\mathbf{c}),
+\]
+which must end in a contradiction.
+
+\paragraph{Maintaining the structure}
+We ensure that each clause in the modified refutation:
+\begin{enumerate}
+\item 
+  contains \emph{only} \(\mathbf{x}\)-variables or \emph{only} \(\mathbf{y}\)-variables; and 
+
+\item  is derived correctly from previous (already modified) clauses, or is an axiom; and
+
+\item we do not remove $\overline x$-variables 
+ from $\overline x$-clauses and  
+we do not remove $\overline y$-variables 
+ from $\overline y$-clauses.
+ 
+\end{enumerate}
+
+Symbolically, we map every original clause
+\[
+C_i \quad\longmapsto\quad \widetilde{C_i},
+\]
+where \(\widetilde C_i\) is the version of \(C_i\) with all \(\mathbf{z}\) variables removed, leaving either only \(\mathbf{x}\) or only \(\mathbf{y}\).
+
+\paragraph{Conclusion}
+Since the final line \(\widetilde C_m\) in the refutation is false (denoted by \(\Box\)), and by induction statement is derived correctly from previous clauses, we derive a contradiction in either \(\varphi(\mathbf{x}, \mathbf{c})\) or \(\psi(\mathbf{y}, \mathbf{c})\). 
+
+
+
+
+
+
+
+\paragraph{Inductive Argument on Resolution Refutation Length.}
+
+\noindent
+\textbf{Base Case:} 
+Every axiom clause in \(\varphi(\overline{x}, \overline{c})\) or \(\psi(\overline{y}, \overline{c})\) is already an \(\overline{x}\)-clause or a \(\overline{y}\)-clause (i.e., it contains only \(\overline{x}\) variables or only \(\overline{y}\) variables).
+
+\medskip
+
+\noindent
+\textbf{Induction Step:} 
+Suppose \(C_1, \dots, C_{j-1}\) have already been transformed so that each is an \(\overline{x}\)-clause or a \(\overline{y}\)-clause, yielding transformed clauses \(\widetilde{C_1}, \dots, \widetilde{C_{j-1}}\). Now assume the next derived clause 
+\[
+C_j \;=\; C \;\lor\; D
+\]
+came from two prior clauses:
+\[
+C' \;=\; w \;\lor\; C
+\quad\quad\text{and}\quad\quad
+D' \;=\; \neg w \;\lor\; D
+\]
+by a resolution step.
+By the induction hypothesis, we already have transformed versions \(\widetilde{C'}, \widetilde{D'}\), each of which is either an \(\overline{x}\)-clause or a \(\overline{y}\)-clause. We consider three cases:
+
+\begin{description}
+\item[Case 1:] 
+\(\widetilde{C'}, \widetilde{D'}\) are both \(\overline{x}\)-clauses. Then \(w\) must be an \(\overline{x}\)-variable common to both (because we maintain the invariant that we do not remove $\overline x$-variables from $\overline x$-clauses or $\overline y$-variables from $\overline y$-clauses). We thus apply the usual resolution rule on \(\widetilde{C'}, \widetilde{D'}\).
+
+\item[Case 2:]
+\(\widetilde{C'}, \widetilde{D'}\) are both \(\overline{y}\)-clauses. This is analogous to Case 1, but with a \(\overline{y}\)-variable \(w\).
+
+\item[Case 3:]
+\(\widetilde{C'}\) is an \(\overline{x}\)-clause, whereas \(\widetilde{D'}\) is a \(\overline{y}\)-clause, or vice versa. In this scenario, \(w\) must be a \(\overline{z}\)-variable. According to the assignment \(\overline{c}\), we fix the value of \(w\) (it cannot be in \(\overline{x}\) or \(\overline{y}\), so it must be in \(\overline{z}\)). If \(w = 0\), we  define \(\widetilde{C_j} := \widetilde{C'}\). 
+If \(w = 1\), we set \(\widetilde{C_j} := \widetilde{D'}\).
+
+
+% 
+% \item[Case 4:]
+% \(\widetilde{C'}\) is a \(\overline{y}\)-clause, whereas \(\widetilde{D'}\) is an \(\overline{x}\)-clause. Similarly to Case 3, \(w\) must be a \(\overline{z}\)-variable and according to the assignment \(\overline{c}\), we fix the value of \(w\). If \(w = 0\), we  define \(\widetilde{C_j} := \widetilde{C'}\). 
+% If \(w = 1\), we set \(\widetilde{C_j} := \widetilde{D'}\).
+
+\end{description}
+
+\noindent
+%In each case, the transformed clause \(\widetilde{C_j'} = \widetilde{C} \lor \widetilde{D}\) remains an \(\overline{x}\)-clause or \(\overline{y}\)-clause or is made into a contradiction (if the variable assignments lead to \(\Box\)). Thus, by induction, all clauses in the resolution refutation can be converted into either \(\overline{x}\)- or \(\overline{y}\)-clauses, completing the step.
+
+
+
+
+\medskip
+Note that the last line \(C_m\) of the original resolution refutation is \(\Box\) (i.e.\ false). Hence in our new refutation (possibly ending earlier than the \(m\)-th clause), we must also reach \(\Box\). Starting from the axioms, we obtain a refutation of either \(\varphi(\overline{x},\overline{c})\) or \(\psi(\overline{y},\overline{c})\). 
+Thus, the proof concludes with the desired contradiction in one of these formulas. 
+
+
+\bigskip 
+
+To prove that the same algorithm can be implemented with a \emph{monotone} circuit in case the $\overline z$-variables all appear positive in $\psi$ or they all appear negative in $\varphi$, we notice the following:\ For every index \(j\), let \(d_j(\mathbf{c}) = 0\) if the \(j\)-th clause \(\widetilde{C_j}\) in the modified refutation can be derived using only the \(\mathbf{y}\) variables. It is possible to show that 
+ each \(d_j(\mathbf{c})\) can be computed by a monotone circuit of size \(O(s^2)\) in the variables \(\mathbf{c}\).
+
+Observe that \(I(\mathbf{c}) = d_m(\mathbf{c})\), namely $I(\mathbf c)$ is zero only if  $\psi(\mathbf y,\mathbf c)$ is unsatisfiable, and otherwise it is 1, as desired. 
+\end{proof}
+
 

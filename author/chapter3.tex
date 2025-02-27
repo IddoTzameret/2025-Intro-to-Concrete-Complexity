@@ -880,10 +880,11 @@ To show that the sum of the probabilities of \emph{all} of the restrictions in \
 
 If the mapping, denoted \( \Theta \), is done to \emph{distinct} restrictions, that is, the mapping is 
 \emph{one-to-one} (\emph{``injective''}), then we know that the sum of all probabilities of picking bad restrictions, 
-namely the event of picking a restriction from \( S' \), is mapped to the event of picking a restriction in the 
+namely the event of picking a restriction from \( S' \), is mapped to the \emph{event} of picking a restriction in the 
 \emph{image} of \( \Theta \).
+because every event has probability smaller than one we finish. 
 
-But because every event has probability smaller than one we finish. We explain it as follows:
+We explain it as follows. We have the following 
 \[
 \Pr_{\mathcal{R}}[S'] = \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\rho] = 
 \sum_{\rho \in S'} \left(\frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[\Theta(\rho)]\right) =
@@ -898,40 +899,30 @@ and finish. But this is not necessarily true for every sum of probabilities: if 
 not one-to-one we may end up adding an event with a very large probability more than once, for example, 
 hence exceeding one.  
 
- But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S' \).
-To show that the sum of the probabilities of \emph{all} of the restrictions in \( S' \) is at most 
-\(\frac{1}{4^s} \cdot (\text{small number})\), we can try showing that \emph{each} \( \rho \in S' \) can be mapped to a 
-\emph{distinct} restriction \( \rho_0 \) as above. 
+ %But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S' \).
+%To show that the sum of the probabilities of \emph{all} of the restrictions in \( S' \) is at most \(\frac{1}{4^s} \cdot (\text{small number})\), we can try showing that \emph{each} \( \rho \in S' \) can be mapped to a \emph{distinct} restriction \( \rho_0 \) as above. 
 
-If the mapping, denoted \( \Theta \), is done to \emph{distinct} restrictions, that is, the mapping is 
-\emph{one-to-one} (\emph{``injective''}), then we know that the sum of all probabilities of picking bad restrictions, 
-namely the event of picking a restriction from \( S' \), is mapped to the event of picking a restriction in the 
-\emph{image} of \( \Theta \).
+%If the mapping, denoted \( \Theta \), is done to \emph{distinct} restrictions, that is, the mapping is \emph{one-to-one} (\emph{``injective''}), then we know that the sum of all probabilities of picking bad restrictions, namely the event of picking a restriction from \( S' \), is mapped to the event of picking a restriction in the \emph{image} of \( \Theta \).
 
-But because every event has probability smaller than one we finish. We explain it as follows:
-\[
-\Pr_{\mathcal{R}}[S'] = \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\rho] = 
-\sum_{\rho \in S'} \left(\frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[\Theta(\rho)]\right) =
-\frac{1}{4^s} \cdot \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)].
-\]
+%But because every event has probability smaller than one we finish. We explain it as follows:
+%\[
+%\Pr_{\mathcal{R}}[S'] = \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\rho] %= 
+%\sum_{\rho \in S'} \left(\frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[\Theta(\rho)]\right) %=
+%\frac{1}{4^s} \cdot \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)].
+%\]
 
-Now, we'd like to claim that 
-\[
-\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
-\]
-and finish. But this is not necessarily true for every sum of probabilities: if the map \( \Theta \) is 
-not one-to-one we may end up adding an event with a very large probability more than once, for example, 
-hence exceeding one. The way to ensure...
+%Now, we'd like to claim that 
+%\[
+%\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] %\leq 1
+%\]
+%and finish. But this is not necessarily true for %every sum of probabilities: if the map \( \Theta \) is not one-to-one we may end up adding an event with a very large probability more than once, for example, hence exceeding one. 
 
-\[
-\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
-\]
+The way to ensure
+$\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
+$
 is by making sure \( \Theta \) is one-to-one, 
 hence we don't count probabilities more than once.
-
-Or in other words, picking restrictions from \(\text{Image}(\Theta(S'))\) 
-is an \emph{event} of our probability distribution, 
-and so an event has always probability at most one.
+In other words, picking restrictions from \(\text{Image}(\Theta(S'))\) is an \emph{event} of our probability distribution, and so an event has always probability at most one.
 
 \section*{Constructing the one-to-one map}
 

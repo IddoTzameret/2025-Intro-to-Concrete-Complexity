@@ -1201,7 +1201,7 @@ The idea is to take a short resolution refutation of a certain type of unsatisfi
 \bigskip
 
 \begin{theorem}[Interpolation Theorem]
-Let \(\varphi(\mathbf{x},\mathbf{z})\) be a propositional formula over variables \(x_{1},\dots,x_{m}, z_{1},\dots,z_{k}\), and let \(\psi(\mathbf{y},\mathbf{z})\) be a propositional formula over variables \(y_{1},\dots,y_{m}, z_{1},\dots,z_{k}\). 
+Let \(\varphi(\mathbf{x},\mathbf{z})\) be a propositional formula over variables \(x_{1},\dots,x_{m}, z_{1},\dots,z_{m}\), and let \(\psi(\mathbf{y},\mathbf{z})\) be a propositional formula over variables \(y_{1},\dots,y_{m}, z_{1},\dots,z_{m}\). 
 Suppose that the only shared variables between \(\varphi\) and \(\psi\) are \(\mathbf{z}\). 
 Assume that 
 \[
@@ -1211,7 +1211,7 @@ is unsatisfiable.
 
 Then there is a Boolean function 
 \[
-I \colon \{0,1\}^k \;\to\;\{0,1\}
+I \colon \{0,1\}^m \;\to\;\{0,1\}
 \]
 called the \emph{interpolant} of \(\varphi\) and \(\psi\) such that
 \[
@@ -1230,7 +1230,7 @@ Illustration of the simple argument :
 
 
 \begin{proof}
-For every assignment \(\mathbf{c} \in \{0,1\}^k\), either \(\varphi(\mathbf{x}, \mathbf{c})\) is unsatisfiable or \(\psi(\mathbf{y}, \mathbf{c})\) is unsatisfiable (or both are unsatisfiable). 
+For every assignment \(\mathbf{c} \in \{0,1\}^m\), either \(\varphi(\mathbf{x}, \mathbf{c})\) is unsatisfiable or \(\psi(\mathbf{y}, \mathbf{c})\) is unsatisfiable (or both are unsatisfiable). 
 
  
  
@@ -1270,7 +1270,7 @@ In the setting of the previous theorem, suppose
 \(\varphi(\mathbf{x},\mathbf{z}) \wedge \psi(\mathbf{y},\mathbf{z})\) 
 admits a resolution refutation of size \(s\). Then there is an interpolant function 
 \[
-I \colon \{0,1\}^k \to \{0,1\}
+I \colon \{0,1\}^m \to \{0,1\}
 \]
 that can be computed by a Boolean circuit of size \(O(s^2)\).
 
@@ -1440,7 +1440,7 @@ Hence \(I_n\) distinguishes between \(\sqrt[4]{n}\)-cliques and \((\sqrt[4]{n}-1
 
 
 \begin{proof}[of \Cref{thm:interpolation-circuit}]
-Given an assignment \(\mathbf{c} \in \{0,1\}^k\), we explain how to compute \(I(\mathbf{c})\) by transforming a size-\(s\) resolution refutation of
+Given an assignment \(\mathbf{c} \in \{0,1\}^m\), we explain how to compute \(I(\mathbf{c})\) by transforming a size-\(s\) resolution refutation of
 \[
 \varphi(\mathbf{x},\mathbf{z}) \;\wedge\; \psi(\mathbf{y},\mathbf{z})
 \]

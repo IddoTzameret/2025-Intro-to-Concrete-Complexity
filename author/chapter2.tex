@@ -784,15 +784,21 @@ Thus, the number of \emph{false negatives} $\operatorname{\APPX}\left(X_1, \ldot
 By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  \emph{the number of gates in  $C$\ is lower bounded by the total number of new errors introduced across all the  gates in $C$ (which is $\binom{n}{k}$), divided by the maximal number of errors introduced by each gate (which is $\le M^2\cd\binom{n-l-1}{k-l-1}$).} In other words,
 \begin{align*}
 |C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}}
-& = \frac{1}{M^2}\cd\frac{n!}{k!(n-k)!} \cdot \frac{(k-l-1)!(n-l-k)!}{(n-l-1)!} \\
-& = \frac{1}{M^2}\cd \frac{n}{k} \cdot \frac{n-1}{k-1} \cdots \frac{n-l+1}{k-l+1},
+& = \frac{1}{M^2}\cd
+\frac{n!}{k! (n-k)!} \cd \frac{(k-l-1)! (n-l-1-k+l+1)!}{(n-l-1)!} \\
+    &=\frac{1}{M^2}\cd \frac{n! (k-l-1)!}{k! (n-l-1)!} \\
+    & =\frac{1}{M^2}\cd  \frac{n! }{k!(n-l-1)\cdots (k-l)} \\
+    &= \frac{1}{M^2}\cd\frac{n \cdots (n-l)\cdot (k-l-1)! }{k!} \\
+    &= \frac{1}{M^2}\cd\frac{n \cdots (n-l)}{k \cdots (k-l)}
+\\
+& = \frac{1}{M^2}\cd \frac{n}{k} \cdot \frac{n-1}{k-1} \cdots \frac{n-l}{k-l},
 \\
 \intertext{
 and since $\frac{n-i}{k-i} \geq \frac{n-l}{k}$
-for $i=0,\dots,l-1$ and by \Cref{eq:651:16}, we have 
+for $i=0,\dots,l$ and by \Cref{eq:651:16}, we have 
 }
  & \geq \frac{1}{M^2}
- \cd\left(\frac{n-l}{k}\right)^l \geq
+ \cd\left(\frac{n-l}{k}\right)^{l+1} \geq
   \frac{1}{n^{2/3\cd\sqrt[8]{n}}}\cd
   \left(\frac{n-\sqrt[8]{n}}{\sqrt[4]{n}}\right)^{\sqrt[8]{n}} \\
 & \ge
@@ -1133,61 +1139,57 @@ The second phase omits from the approximator circuit several sets (those of card
 The third phase entails a sequence of fewer than $M^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-p}(k-1)^{n}$ false positives are introduced. 
 
 The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
-
-\newpage
-
+ 
 
 
 % Enable watermark from this point onward
-\newpage\SetWatermarkText{DRAFT}
+%\newpage\SetWatermarkText{DRAFT}
 
 
 \para{Proof of Lemma \Cref{lem:new-false-negatives}}
 
-\begin{figure}[H] 
-    \centering
-    \includegraphics[width=.7\linewidth]{images/image007.jpg}
-    \includegraphics{images/image008.png}
-\end{figure}
 
 
 
-\newpage
+\case{$\lor$} Consider the following false negative: a $k$-clique $G = (V, E)$ such that 
+\begin{equation} \label{eq:or_case_1}
+(\text{APX}(\mathcal{X}) \vee \text{APX}(\mathcal{Y}))(G) = 1
+\end{equation}
+\begin{equation} \label{eq:or_case_2}
+\underbrace{
+\text{APX}(\text{pluck}(\mathcal{X} \cup \mathcal{Y}))}_{\text{$\lor$-approximator}}(G) = 0.
+\end{equation}
+But such a $G$ does not exist, because plucking only makes some sets smaller (a petal is discarded but is replaced by its core, which is its subset). Hence,
+if \Cref{eq:or_case_1} holds, then \Cref{eq:or_case_2} cannot.\footnote{When the core is empty, we get that the empty set is one of the sets in $\text{pluck}(\mathcal{X} \cup \mathcal{Y})$, which means that one of the AND gates in $\text{APX}(\text{pluck}(\mathcal{X} \cup \mathcal{Y}))$ is empty, namely the constant truth value 1.}
+\medskip 
 
-\iffalse
-We need to show that each approximation step introduces $\leq M^2\binom{n-l-1}{k-l-1}$ false negatives.
+\noindent\case{$\land$}
+Consider the following false negative: 
+a $k$-clique $G = (V, E)$ such that
+\begin{equation} \label{eq:lambda_case_1}
+(\text{APX}(\mathcal{X}) \wedge \text{APX}(\mathcal{Y}))(G) = 1
+\end{equation}
+\begin{equation} \label{eq:lambda_case_2}
+\underbrace{\text{APX} \left( \text{pluck} \left\{ X_i \cup Y_i : |X_i \cup Y_i| \leq l, X_i \in \mathcal{X}, Y_i \in \mathcal{Y} \right\} \right)}_{\land-\text{approximator}} (G)= 0
+\end{equation}
 
+In the first step, we replace $\text{APX}(\mathcal{X}) \wedge \text{APX}(\mathcal{Y})$ by $\text{APX}(X \cup Y : X \in \mathcal{X}, Y \in \mathcal Y)$. 
+Hence, if $G$ is a $k$-clique and both $\mathcal{X}$ and $\mathcal{Y}$ are each cliques in $G$, it must be that $X \cup Y$ is also a clique in $G$ (because $G$ contains a single $k$-clique in which no edge outside the clique is present, hence if there is a clique on both $X$ and $Y$, it must be that they are both a part of a single $k$-clique, meaning all edges between nodes in $X$ and $Y$ are also present). Thus, no false negatives are introduced in this step.
 
-Case $V_{:}$a false negative:
-A $k$-clique $G=(v, E)$ st.: $(\operatorname{cc}(x) \vee \operatorname{ccc}(y))(G)=1$ (
+\bigskip 
 
-$$
-\underbrace{\operatorname{colpluck}(x \cup y)(G)}_{V \text {-aproximator }}=0
-$$
+We next delete all sets $S=X_i \cup Y_i$ larger than $l$. This introduces some false negatives, namely all $k$-cliques $G$ that contain $S$. 
 
+We calculate an upper bound on these false negatives: There are precisely
+$\binom{n - |S|}{k - |S|}$
+$k$-cliques that contain $S$ (as part of the clique). Since $|S| > l$, the upper bound on the false negatives introduced by each deletion is
+\[
+\binom{n - l - 1}{k - l - 1}.
+\]
+Since there are $\leq M^2$ deletions of sets (because $|\mathcal X| = |\mathcal Y| \le  M$), we get that the number of false negatives introduced by a $\land$-approximation step is at most $\leq M^2 \cd\binom{n - l - 1}{k - l - 1}$.
+\mbox{}\qed
 
-This is impossible, because plucking only deletes sets and make them smaller; hence if (1) holds then (2) cannot.
-Case 1:
-A false negative:
-A $k$-clique $G=(v, E)$ st: : $(\operatorname{cc}(x) \wedge \operatorname{cc}(y))(G)=1$
-
-$$
-\left.c\left(P / \mid u c k\left\{x_i \cup Y_j:\left|x_i \cup Y_i\right| \leq l, x_i \in \chi_{,}, Y_i \in\right\}\right\}\right)=0 \text { (2) }
-$$
-
-
-In the first stop we replace $c a(x) \wedge c(y)$ by $\APPX(\{X \cup Y: x \in X, y \in Y\})$.
-Hence, if $G$ is a $K$-clique and both $X$ and $Y$ are each cliques in $G$, it must be that $X \cup Y$ is also a clique in $G(w h y$ ? ). Thus, no false negatives are introduced in this step.
-
-
-$\frac{\text { (cont.) }}{\text { We next delete all sets } \overbrace{X_i \cup Y_j}^{\text {denoted }} Z}$ larger than $l$. This introduce several false negatives:
-All $k$-cliques $G$ that contain $Z$.
-We calculate an upper bound on these false negatives: There are precisely $\binom{n-|z|}{k-|z|}$ k-cliques er that contain $z$ (as part of the clique). Since, $|z|>l$, the upper bound on the false negatives introduced by each deletion is $\binom{n-l-1}{k-l-1}$.
-
-Since there are $\leq M^2$ deletions of sets, (because $|\chi|=|y|=M$ ), we get that the number of false negatives introduced by $a_n 1$-approximation step is $\leq M^2 \cdot\binom{n-t-1}{k-l-1}$.
-\fi
-
-
+  
 % Diusable watermark from this point onward
  \SetWatermarkText{}
 

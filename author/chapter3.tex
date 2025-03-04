@@ -308,8 +308,7 @@ where $\rho \cup \tau$ is the union of two functions.
 
 
 \begin{tcolorbox}[colframe=white, colback=green!6, boxrule=0mm, sharp corners]
-\begin{definition}
-[Random Restriction]
+\begin{definition}[Random Restriction]\label{def:random-rest}
  Let $0< p<1$.
 Let $\cR$ be a distribution on partial restrictions $\rho$ to the variables $\overline{x}$ with $|\overline{x}|=n$ , as follows.
 $$
@@ -324,7 +323,7 @@ In other words, we pick randomly and independently for each variable $x_i$ with 
 
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
-\begin{theorem}[Switching Lemma]
+\begin{theorem}[Switching Lemma]\label{thm:Switching-Lemma}
 For every positive integers $r$ and $k$ and $n$, if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be computable by as an $s$-CNF.
 \end{theorem}
 \end{tcolorbox}
@@ -425,7 +424,7 @@ We assume the induction statement holds for layer $d-1$, and prove it for $d$. T
     \end{center}\label{fig:depth-reduction-use}
     \caption{The setup of the induction step.}
 \end{figure}
- In (\textbf{1}) in the  \Cref{fig:depth-reduction-use},  we have (by induction hypothesis) a depiction of part of the circuit $C$, showing a single $\land$ gate in layer $d$ (there  may be other $\land$ gates in this layer, and there may be other gates above it in layers higher than $d$). 
+ In (\textbf{1}) in the  Figure~\ref{fig:depth-reduction-use},  we have (by induction hypothesis) a depiction of part of the circuit $C$, showing a single $\land$ gate in layer $d$ (there  may be other $\land$ gates in this layer, and there may be other gates above it in layers higher than $d$). 
 In (\textbf{2}) we see the $\land$ gate in layer $d$ under the restriction $\rho'$, i.e., $C\rst_{\rho'}$, with $\rho'$ having $\geq \frac{p_0^{d-3} \cdot n}{2^{d-3}}$ free variables. Hence, its children, which are $\lor$ gates, have turned under $\rho'$ to  $k$-CNFs.
  (\textbf{3}) simply merged the $\land$ gate in layer $d$ to its children in layer $d-1$, all of which turned to $\land$ gates themselves. 
 Our goal is to get to circuit (\textbf{4}), by applying the Switching Lemma with a random restriction $\rho''$ and then compute an upper bound on the probability that such a switch to $k$-DNF occurs for \emph{all} the gates in layer $d$. We explain this now.
@@ -508,12 +507,42 @@ $$
 =S \cdot\left(\frac{18}{36}\right)^{2 \cdot \log S}+B =S \cdot \frac{1}{S^2}+B =
 \frac{1}{S}+
 \underbrace{
-    e^{
-        \frac{2}{
-        \frac{n}{{(36 \cdot \log S)^{d-3} \cdot 2^{d-1} \cdot 3}}}}
+2\cd
+e^{-\left(\frac{n}{{(36 \cdot \log S)^{d-3} \cdot 2^{d-1} \cdot 3}}\right)}
 }_B.
 $$
-To prove the induction statement it thus suffices to show that $1/S+B<1$, hence the probability that none of the bad events occurred is positive. We are left to compute the following. 
+To prove the induction statement it thus suffices to show that $1/S+B<1$, hence the probability that none of the bad events occurred is positive. We are left to compute the following:
+\[
+e^{\frac{n}{(36 \log s)^{d-3} \cdot 2^{d-1.3}}} \geq 2
+\]
+
+which implies:
+
+\[
+n \geq (36 \log s)^{d-3} \cdot 2^{d-1.3} \cdot 6
+\]
+
+Thus, taking the $(d-3)$th root:
+
+\[
+\sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}} \geq \frac{\log s}{36}
+\]
+
+which leads to:
+
+\[
+\log s \leq 2
+\]
+
+\textit{(since the function is increasing, the inequality holds)}.
+
+If \( s > 2^{d+3} \sqrt{n} > 2^{d/2} \sqrt{n} \), then we finish the proof because:
+
+\[
+2^{\frac{d-1}{d-3}} < 2^2 = 4.
+\]
+
+
 
 \includegraphics[width=\textwidth]{image010.png}
 
@@ -565,9 +594,9 @@ We now compute to find out what is the lower bound for $S$:
 Hence, 
 \begin{align*}
     \left(\log S\right)^{d-1} &\ge \frac{1}{2} \left(\frac{1}{72}\right)^{d-2} \cdot n \implies \\
-    \log S &\ge \frac{1}{2} \left(\frac{1}{72}\right)^{\frac{d-2}{d-1}} \cdot n^{\frac{1}{d-1}} \implies \\
-    \log S &= \Omega \left(n^{\frac{1}{d-1}}\right) \implies 
-    S= 2^{\Omega ({\sqrt[d-1]{n}})},
+    \log S &\ge \frac{1}{2} \left(\frac{1}{72}\right)^{\frac{d-2}{d-1}} \cdot n^{\frac{1}{d-1}}
+= \Omega \left(n^{\frac{1}{d-1}}\right)  \implies \\
+     S &=  2^{\Omega ({\sqrt[d-1]{n}})},
 \end{align*}
 concluding the proof. 
  \hfill $\Box$
@@ -613,12 +642,9 @@ concluding the proof.
 % To Be Completed!\end{Huge}}
 
 
-\section*{Proof of the Switching Lemma}
+\section{Proof of the Switching Lemma}
 
-\subsection*{Random Restriction}
-Let \( 0 < p < \frac{1}{9} \).
-
-Let \(\mathcal{R}\) be a distribution of partial restrictions
+Let \( 0 < p < \frac{1}{9} \), and recall that  \(\mathcal{R}\) is a distribution of partial restrictions
 \(\rho\) to the variables \( \bar{x} \) (where \( |\bar{x}| = n \)) as follows:
 \[
 \Pr[\rho(x_i) = *] = p
@@ -626,15 +652,14 @@ Let \(\mathcal{R}\) be a distribution of partial restrictions
 \[
 \Pr[\rho(x_i) = 0] = \Pr[\rho(x_i) = 1] = \frac{1 - p}{2}
 \]
+We make the following two assumptions.
 
-\subsection*{Function Assumption}
-From now on, let \( f \) be an \textbf{r-DNF} with \( n \) variables.
+Function Assumption: From now on, let \( f \) be an $r$-DNF with \( n \) variables.
 
-\subsection*{Order Assumption}
-Order: We assume a fixed order on conjuncts in \( f \),
+Order Assumption:  We assume a fixed order on conjuncts in \( f \),
 and a fixed order on literals in each conjunct.
 
-\subsection*{Canonical Tree \( T(f|_{\rho}) \)}
+\subsection{Canonical Tree \( T(f|_{\rho}) \)}
 
 A decision tree for \( f|_{\rho} \) is defined as follows:
 
@@ -647,14 +672,14 @@ A decision tree for \( f|_{\rho} \) is defined as follows:
     
     \item Let \( \beta_1 \) be the variables that appear starred in \( C_1|_{\rho} \) (i.e., they are unassigned).
     
-    Query all variables in \( \beta_1 \) in order. Denote by \( \Pi \) the assignment/path given to these variables.
+    Query all variables in \( \beta_1 \) in order. Denote by \( \pi \) the assignment/path given to these variables.
     
-    \item If \( C_1|_{\rho\Pi} = 1 \), output "1" (i.e., a node \( 1 \) in this leaf).
+    \item If \( C_1|_{\rho\pi} = 1 \), output "1" (i.e., a node \( 1 \) in this leaf).
     \begin{itemize}
         \item If \( \beta_1 \) was empty (meaning \( C_1|_{\rho} = 1 \)), output "1" as well.
     \end{itemize}
     
-    \item Otherwise, \( C_1|_{\rho\Pi} = 0 \) and go to step (1), starting with \( \rho\Pi \) in place of \( \rho \), looking at conjunct \( C_2 \), which is the first one such that \( C_2|_{\rho\Pi} \neq 0 \).
+    \item Otherwise, \( C_1|_{\rho\pi} = 0 \) and go to step (1), starting with \( \rho\pi \) in place of \( \rho \), looking at conjunct \( C_2 \), which is the first one such that \( C_2|_{\rho\pi} \neq 0 \).
     
     \item Continue in this manner until you run out of conjuncts.
 \end{enumerate}
@@ -691,24 +716,8 @@ Build query tree for \( C_1|_{\rho} \); i.e., query each variable in order they 
  
  
 \noindent
-Note that the red path \((x_2 \gets 1, x_3 \gets 0)\) determines an assignment \( \Pi_1 \) (for \( x_2, x_3 \)) that satisfies \( 1 \), and hence satisfies \( F|_{\rho} \). Thus, we label the leaf of this path by \( 1 \) (and finish the path there, with no more queries).
+Note that the red path \((x_2 \gets 1, x_3 \gets 0)\) determines an assignment \( \pi_1 \) (for \( x_2, x_3 \)) that satisfies \( 1 \), and hence satisfies \( F|_{\rho} \). Thus, we label the leaf of this path by \( 1 \) (and finish the path there, with no more queries).
 
-
-\[
-F: \quad r\text{-DNF} \quad (x_1 \land x_2 \land x_4 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2 \land x_4) \lor \dots
-\]
-
-\[
-\rho: \quad 
-\begin{array}{ccccc}
-x_1 & x_2 & x_3 & x_4 & x_5 \\
-1 & * & * & 1 & *
-\end{array}
-\]
-
-\[
-F|_{\rho} = (x_2 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2) \lor \dots
-\]
 
 \noindent 
 
@@ -717,54 +726,41 @@ F|_{\rho} = (x_2 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2) \lor \dots
 \includegraphics[width=0.3\textwidth]{images/ex2-sl-dt.png}
 
 \noindent
-Consider each leaf in the tree above. It determines a path \( \Pi_1 \) from the root to the leaf.
+Consider each leaf in the tree above. It determines a path \( \pi_1 \) from the root to the leaf.
 
 \noindent
-Now, in each such leaf (except the ones labeled by \( 1 \)), we need to continue querying the variables to determine an \textit{extension} of the assignment \( \Pi_1 \), so that this extended assignment will either satisfy or falsify \( F|_{\rho} \).
+Now, in each such leaf (except the ones labeled by \( 1 \)), we need to continue querying the variables to determine an \textit{extension} of the assignment \( \pi_1 \), so that this extended assignment will either satisfy or falsify \( F|_{\rho} \).
 
-\[
-F: \quad r\text{-DNF} \quad (x_1 \land x_2 \land x_4 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2 \land x_4) \lor \dots
-\]
-
-\[
-\rho: \quad 
-\begin{array}{ccccc}
-x_1 & x_2 & x_3 & x_4 & x_5 \\
-1 & * & * & 1 & *
-\end{array}
-\]
-
-\[
-F|_{\rho} = (x_2 \land \bar{x}_3) \lor (x_5 \land \bar{x}_2) \lor \dots
-\]
 
 \includegraphics[width=0.3\textwidth]{images/ex3-sl-dt.png}
 \noindent
+
 Consider now the leftmost leaf. Then
 \[
-\Pi_1 = \{ x_2 = 0, x_3 = 0 \}
+\pi_1 = \{ x_2 = 0, x_3 = 0 \}
 \]
 We continue to build the tree from this leaf.
 
 \noindent
-The first (left-most) clause in \( F|_{\rho, \Pi_1} \) that is non-zero is
+The first (left-most) clause in \( F|_{\rho, \pi_1} \) that is non-zero is
 \[
-C_2|_{\rho, \Pi_1} = x_5
+C_2|_{\rho, \pi_1} = x_5
 \]
 So we query \( x_5 \):
 
 \noindent
 \includegraphics[width=0.6\textwidth]{images/ex4-sl-dt.png}
 \noindent
-The pink path is \( \Pi_1 \), the green path is \( \Pi_2 \).
+
+The pink path is \( \pi_1 \), the green path is \( \pi_2 \).
 
 \noindent
-Continue with \( F|_{\rho, \Pi_1, \Pi_2} \).
+Continue with \( F|_{\rho, \pi_1, \pi_2} \).
 
 \noindent
 Note that each layer in a DT can contain queries related to different clauses.
-This can happen for instance if \( \Pi_i \) on one node makes 0 the next clause \( C_j \), 
-while \( \Pi_i \) on a different node in the same layer doesn't nullify \( C_j \):
+This can happen for instance if \( \pi_i \) on one node makes 0 the next clause \( C_j \), 
+while \( \pi_i \) on a different node in the same layer doesn't nullify \( C_j \):
  
 \includegraphics[width=0.2\textwidth]{images/ex5-sl-dt.png}
 \begin{claim}
@@ -801,8 +797,9 @@ if we consider the assignments on 0-leafs.
 Thus, if we turn these ANDs corresponding to these assignments to OR of the negated literals, and AND all these ORs, 
 we get a CNF computing \( F \).
 
+Given the  claim above, we can rephrase the switching (\Cref{thm:Switching-Lemma}) in the terminiology of decision tree height as follows: 
 
-\begin{theorem}[Switching Lemma]
+\begin{theorem}[Switching Lemma; Decision tree version]\label{thm:SL-DT-version}
 If \( f \) is an \( r \)-DNF with \( n \) variables 
 and \( \rho \) is a random restriction as above with 
 \( p < \frac{1}{9} \),
@@ -813,7 +810,7 @@ is bigger than \( s \).
 This means that \( f|_{\rho} \) \textbf{cannot} be written as an \( s \)-CNF 
 with probability \( \leq (9rq)^s \), by the claim above.
 
-\section*{Discussion of the main idea behind the proof}
+\subsection*{Discussion of the main idea behind the proof}
 
 Let \( \mathcal{R}_{\rho} \) be the distribution of random restrictions, 
 taken with probability \( P_{\rho}[X_i = *] = p \) as before.
@@ -943,40 +940,38 @@ In other words, picking restrictions from \(\text{Image}(\Theta(S'))\) is an \em
     
     \item The idea to recover \( \rho \), given \( \rho\sigma \), is to map \( \rho \) to \( \rho\sigma \) plus some ``small helper code''. The helper code is small but will allow us to recover \( \rho \) given \( \rho\sigma \).
 
-    \item The code and its helper code is built based on the following idea: Consider \( \rho \in S' \), and let \( \Pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
+    \item The code and its helper code is built based on the following idea: Consider \( \rho \in S' \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
     
     \textcolor{gray}{(We shall prune this path to length \( s \)).}
 \end{itemize}
 
 \begin{itemize}
-    \item Then, given \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by that path \( \Pi \).
+    \item Then, given \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by that path \( \pi \).
     
     \item This means we are able to distinguish between \( \rho\sigma \) and \( \rho \), hence recover \( \rho \) \emph{(uniquely)}.
 \end{itemize}
 \end{tcolorbox}
 
-\section*{Proof of the Switching Lemma}
+\subsection{Proof of the Switching Lemma}
+ 
+Let \( \rho \in S \) be a bad restriction, namely a restriction under which the decision tree height of $f\rst_\rho$ is more than $s$.  
+Let \( \pi \) be the \emph{first} path in \( T(f\rst_{\rho}) \) with length \( > s \).
 
-\subsection*{Proof}
-Let \( \rho \in S' \). \\
-Let \( \Pi \) be the \fbox{first} path in \( T(f_{\rho}) \) with length \( > s \).
-
-\subsection*{We use the following notation:}
+\para{Notation}
 \begin{itemize}
     \item \( C_1, \dots, C_k \) : conjuncts.
     \item \( \beta_1, \dots, \beta_k \) : unset variables.
-    \item \( \pi_1, \dots, \pi_k \) : assignments to \( \beta_i \) according to \( \Pi \).
-    \item \( \Theta_1, \dots, \Theta_k \) : unique assignments to \( \beta_i \) that is \fbox{consistent} with \( C_i |_{\rho, \Pi_1, \dots, \Pi_{i-1}} \).
+    \item \( \pi_1, \dots, \pi_k \) : assignments to \( \beta_i \) according to \( \pi \).
+    \item \( \sigma_1, \dots, \sigma_k \) : unique assignments to \( \beta_i \) that is consistent with \( C_i |_{\rho, \pi_1, \dots, \pi_{i-1}} \).
 \end{itemize}
-These terms in \( f \) were queried along \( \Pi \), in order.
+These terms in \( f \) were queried along \( \pi \), in order.
 
-\subsection*{Helper Code}
+\para{Helper Code}
 \begin{itemize}
-    \item \( \beta_i \) is coded by string \( \beta_i' \), of \( |\beta_i| \) numbers, each \( \leq 2r \) (recording for each var in \( \beta_i \): its location in \( C_i \) (number \( \leq r \)), and whether it is the last var in \( \beta_i \) (one bit)).
-    \item \( \beta := \beta_1' \dots \beta_k' \)
-    \item \( |\{\rho_{\beta'} : \rho \in S' \}| \leq (2r)^s \).
-    \item \( \Pi_i \) is coded as a string \( \pi_i' \) of \( |\beta_i| \) bits.
-    \item \( \Pi := \Pi_1' \Pi_2' \dots \Pi_k' \), where the number of possible \( \Pi' \) strings is \( 2^s \).
+    \item \( \beta_i \) is coded by string \( \beta_i' \), of \( |\beta_i| \) numbers, each \( \leq 2r \) (recording for each variable in \( \beta_i \): its location in \( C_i \) (number \( \leq r \)), and whether it is the last variable in \( \beta_i \) (one bit)).
+    \item \( \beta' := \beta_1' \dots \beta_k' \). Note that the number of possible codes $\beta'$ is at most $ (2r)^s $.
+    \item \( \pi_i \) is coded as a string \( \pi_i' \) of \( |\beta_i| \) bits.
+    \item \( \pi' := \pi_1' \pi_2' \dots \pi_k' \), where the number of possible \( \pi' \) codes is \( 2^s \).
 \end{itemize}
 
 
@@ -1015,7 +1010,7 @@ f_{\rho} = (x_2 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2) \vee (x_6 \wedge x
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
-\( C_i \)'s (Conjuncts on yellow path) & \( \beta_i \) (Unset variables) & \( \pi_i \) (Partial \( \Pi \) Assignment) & \( \Theta_i \) \\ 
+\( C_i \)'s (Conjuncts on yellow path) & \( \beta_i \) (Unset variables) & \( \pi_i \) (Partial \( \pi \) Assignment) & \( \Theta_i \) \\ 
 \hline
 \( C_1 \) & \( \beta_1 = \{x_2, x_3\} \) & \( \pi_1 = 00 \) & \( \Theta_1 = 10 \) \\
          & \( \beta_1' = \{r_2, r_7, r_7\} \) & & \( \Rightarrow \) satisfies \( C_1 \) \\
@@ -1076,9 +1071,8 @@ Only given \( \rho\delta \), we don't know how to find \( \rho \) because we don
 \noindent
 Once we have recovered all the \( \beta_i \)'s, we know exactly what changed between \( \rho \) and \( \rho\delta \) and can recover \( \rho \).
 
-\[
-\qed \quad \text{claim}
-\]
+This concludes the proof of the claim. \qed 
+\bigskip 
 
 \noindent
 \textbf{Note:} \( \rho\delta \) is not necessarily a bad restriction.
@@ -1120,6 +1114,7 @@ We want to recover \( \rho \) given \( \rho_{\delta} \) and helper codes.
     \]
     Since we know all \( \pi_1, \dots, \pi_k \), we now know what was \( \rho \): We take \( \rho_{\delta} \) and assign stars to all variables queried on the path \( \pi_C \).
 \end{itemize}
+\bigskip 
 
 We now can finish the proof of the Switching Lemma
 

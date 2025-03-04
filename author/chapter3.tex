@@ -1030,7 +1030,7 @@ f_{\rho} = (x_2 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2) \vee (x_6 \wedge x
     \item Here, at depth 3, we query \( x_7 \) and \( x_6 \) at different paths.
 \end{itemize}
 
-\subsection*{Continuation}
+\subsection*{ }
 
 \noindent
 \textbf{The Coding Map} \( \Theta \) is a function:
@@ -1053,9 +1053,9 @@ Only given \( \rho\delta \), we don't know how to find \( \rho \) because we don
 \noindent
 (Recall \( C_1, C_2, \dots \) are the clauses we query along the left-most path of length \( >s \) in \( T(f_{\rho}) \).)
 
-\subsection*{Proof}
-\noindent
-\textbf{We claim that this is an injection.} To see this, suppose we are given \( (\rho\delta, \beta', \pi') \). We may recover \( \rho \) as follows:
+
+\begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
+\textbf{Proof the coding map is an injection.} Suppose we are given \( (\rho\delta, \beta', \pi') \). We may recover \( \rho \) as follows:
 
 \begin{itemize}
     \item First, we can easily recover all strings \( \beta_i' \) and \( \pi_i' \).
@@ -1071,8 +1071,8 @@ Only given \( \rho\delta \), we don't know how to find \( \rho \) because we don
 \noindent
 Once we have recovered all the \( \beta_i \)'s, we know exactly what changed between \( \rho \) and \( \rho\delta \) and can recover \( \rho \).
 
-This concludes the proof of the claim. \qed 
-\bigskip 
+ \qed 
+\end{tcolorbox}
 
 \noindent
 \textbf{Note:} \( \rho\delta \) is not necessarily a bad restriction.
@@ -1082,7 +1082,7 @@ This concludes the proof of the claim. \qed
 The point is that we want to avoid a situation in which \( C_i | \rho \not\equiv 0 \) but \( C_i | \rho\delta \equiv 0 \). If this happens, then we can't know what was the clause queried by \( \pi_i \); it might have been \( C_i \), but because we ask for the first term in \( F \) such that \( C_i' | \rho\delta \neq 0 \), we don't get to \( C_i \).
 
 
-\section*{Decode}
+\section*{Decode (continue with our running example)}
 \noindent
 \( \rho \) is mapped to \( \rho_{\delta} \) with helper codes \( \beta_1', \beta_2', \beta_3', \dots \), \( \pi_1', \pi_2', \pi_3', \dots \).
 

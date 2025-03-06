@@ -324,7 +324,7 @@ In other words, we pick randomly and independently for each variable $x_i$ with 
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \begin{theorem}[Switching Lemma]\label{thm:Switching-Lemma}
-For every positive integers $r$ and $k$ and $n$, if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be computable by as an $s$-CNF.
+For every positive integers $r$ and $k$ and $n$, if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be computable by  an $s$-CNF.
 \end{theorem}
 \end{tcolorbox}
 
@@ -341,7 +341,8 @@ However, we note that this probabilistic argument via the union bound  is  \emph
 
 Recall that we want to prove \Cref{thm:ACZ-lower bound}  stating that every circuit family of depth-$d$ computing the PARITY function requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$.
 
-So, suppose  that $C$ is a depth-$d$ alternating formula circuit of size $s$ computing $\Parity_n$. We are going to show that $s= 2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$, since assuming otherwise would lead to a contradiction.
+So, suppose  that $C$ is a depth-$d$ alternating formula circuit of size $S$ computing $\Parity_n$. We can assume that 
+$S< 2^{ n^{\nicefrac{1}{d-1}}}$, as otherwise we finish the proof.
 
 
 Recall that we assume that $C$ is an alternating formula, with $d$ layers, where in each layer all gates are either $\land$ or $\lor$.  The proof proceeds by first a ``preprocessing step'' in which we use the Switching Lemma to decrease the fan-in of the \emph{bottom} layer gates, followed by   $d-2$ depth reduction steps using the Switching Lemma in which we gradually reduce the depth of the circuit, from bottom to top, by one depth, until we reach a depth-$2$ circuit.
@@ -397,7 +398,11 @@ We go by induction on depth, to prove the following.
 
 \begin{tcolorbox}[colframe=white, colback=red!11, boxrule=0mm, sharp corners]
 \begin{lemma}[Induction Statement]\label{lem:induction-switch}
-Let $C$ be a depth at least $d$ circuit of size $S$ 
+Let $C$ be a depth at least $d$ circuit of size 
+$S<
+2^{
+\sqrt[d-1]{n}
+}$ 
 with layer-1 (bottom) gates all of fan-in  $ \leq k=2 \log S$ (either  $\land$ or $\lor$),
 with $n$ input variables  
 $\overline x$ (with positive and negative copies). Assume that the gates in layer $d$ are all $\land$ gates (resp., $\lor$ gates). 
@@ -485,7 +490,7 @@ Hence, the expected number $\mu$ of free variables is \( pN \), where $N$ is the
 
 The following is thus the upper bound on the probability that at least one bad event happened (using the union bound): 
 \begin{equation}\label{eq:487:28}
- S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad with \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}},
+ S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad \text{with} \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}},
 \end{equation}
 where the left most term is by a union bound on all gates, and the rightmost term is the bad event estimated by the  Chernoff bound.\footnote{%
 Note that we have used the union bound on the following bad events, given a random pick of a single assignment $\rho$: $S$ many potential bad events that a gate in layer $d$ does not switch, together with a single event that the number of free variables in $\rho$ falls below half the expected number of free variables.
@@ -495,58 +500,56 @@ Note that we have used the union bound on the following bad events, given a rand
 %All that is left is to make some computations to get a lower bound on the parameter $S$. 
 
 \Cref{eq:487:28} is equivalent to 
-\[
+\begin{equation}\label{eq:498:27}
 S \left( 9 \cdot \frac{1}{36 \cdot \log s} \cdot 2 \log s \right)^{2 \log s} + 
-2 e^{-\frac{\left(\frac{1}{36 \cdot \log S }\right)^{d-3} \cdot n}{2^{d-1} \cdot 3}}.
-\]
-
-
-Let us denote the right summand above by $B$. 
-We get:
+\underbrace{2 e^{-\frac{\left(\frac{1}{36 \cdot \log S }\right)^{d-3} \cdot n}{2^{d-1} \cdot 3}}}_B.
+\end{equation}Let us denote the right summand above by $B$, namely $B=2\cd
+e^{-\left(\frac{n}{{(36 \cdot \log S)^{d-3} \cdot 2^{d-1} \cdot 3}}\right)}$.  
+Thus, \Cref{eq:498:27} equals
 $$
-=S \cdot\left(\frac{18}{36}\right)^{2 \cdot \log S}+B =S \cdot \frac{1}{S^2}+B =
+S \cdot\left(\frac{18}{36}\right)^{2 \cdot \log S}+B =S \cdot \frac{1}{S^2}+B =
 \frac{1}{S}+
-\underbrace{
-2\cd
-e^{-\left(\frac{n}{{(36 \cdot \log S)^{d-3} \cdot 2^{d-1} \cdot 3}}\right)}
-}_B.
+B.
 $$
-To prove the induction statement it thus suffices to show that $1/S+B<1$, hence the probability that none of the bad events occurred is positive. We are left to compute the following:
+To prove the induction statement it  suffices to show that $1/S+B<1$, hence the probability that none of the bad events occurred is positive. It is enough to prove  that $B<1/2$, since we can assume that the size $S$\ of the circuit is at least $2$ (e.g., because the number of variables $n=2$), meaning that $1/S+B<1$. Thus, we are left to show the following:
 \[
-e^{\frac{n}{(36 \log s)^{d-3} \cdot 2^{d-1.3}}} \geq 2
+e^{\frac{n}{(36 \log S)^{d-3} \cdot 2^{d-1}\cd 3}} > 4
 \]
-
-which implies:
-
+for which it is enough to show that 
+$
+\frac{n}{(36 \log S)^{d-3} \cdot 2^{d-1}\cd 3)}>2,
+$
+namely
 \[
-n \geq (36 \log s)^{d-3} \cdot 2^{d-1.3} \cdot 6
+\frac{n}{6 \cdot 2^{d-1}\cd 36^{d-3}} > \log^{d-3} S.
 \]
-
-Thus, taking the $(d-3)$th root:
-
+%\[
+%n > (36 \log s)^{d-3} \cdot 2^{d-1} \cdot 6.
+%\]
+Taking the $(d-3)$th root we get:
 \[
-\sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}} \geq \frac{\log s}{36}
+\frac{1}{36}\cd \sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}} > \log S,
 \]
-
 which leads to:
-
-\[
-\log s \leq 2
-\]
-
-\textit{(since the function is increasing, the inequality holds)}.
-
-If \( s > 2^{d+3} \sqrt{n} > 2^{d/2} \sqrt{n} \), then we finish the proof because:
-
-\[
-2^{\frac{d-1}{d-3}} < 2^2 = 4.
-\]
-
-
-
-\includegraphics[width=\textwidth]{image010.png}
-
-(Note: \includegraphics[width=0.3\textwidth]{image011.png})
+\begin{equation}\label{eq:534:30}
+2^{
+\frac{1}{36}\cd \sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}}
+} >  S.
+\end{equation}
+Since $2^{\frac{d-1}{d-3}} < 2^2 = 4$ (for $d>3$), and by assumption that $ 2^{
+\sqrt[d-1]{n}
+}>S$,    
+$$
+2^{
+\frac{1}{36}\cd \sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}}}>
+2^{
+\frac{1}{36\cd 6\cd 4}\cd\sqrt[d-3]{n}
+}
+> 2^{
+\sqrt[d-1]{n}
+}>S,
+$$
+and therefore  \Cref{eq:534:30} holds. 
 \mbox{}
 \end{proof} % Induction step of Switching
 

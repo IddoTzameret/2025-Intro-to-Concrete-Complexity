@@ -324,7 +324,7 @@ In other words, we pick randomly and independently for each variable $x_i$ with 
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \begin{theorem}[Switching Lemma]\label{thm:Switching-Lemma}
-For every positive integers $r$ and $k$ and $n$, if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be computable by as an $s$-CNF.
+For every positive integers $r$ and $k$ and $n$, if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be computable by  an $s$-CNF.
 \end{theorem}
 \end{tcolorbox}
 
@@ -341,7 +341,8 @@ However, we note that this probabilistic argument via the union bound  is  \emph
 
 Recall that we want to prove \Cref{thm:ACZ-lower bound}  stating that every circuit family of depth-$d$ computing the PARITY function requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$.
 
-So, suppose  that $C$ is a depth-$d$ alternating formula circuit of size $s$ computing $\Parity_n$. We are going to show that $s= 2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$, since assuming otherwise would lead to a contradiction.
+So, suppose  that $C$ is a depth-$d$ alternating formula circuit of size $S$ computing $\Parity_n$. We can assume that 
+$S< 2^{ n^{\nicefrac{1}{d-1}}}$, as otherwise we finish the proof.
 
 
 Recall that we assume that $C$ is an alternating formula, with $d$ layers, where in each layer all gates are either $\land$ or $\lor$.  The proof proceeds by first a ``preprocessing step'' in which we use the Switching Lemma to decrease the fan-in of the \emph{bottom} layer gates, followed by   $d-2$ depth reduction steps using the Switching Lemma in which we gradually reduce the depth of the circuit, from bottom to top, by one depth, until we reach a depth-$2$ circuit.
@@ -397,7 +398,11 @@ We go by induction on depth, to prove the following.
 
 \begin{tcolorbox}[colframe=white, colback=red!11, boxrule=0mm, sharp corners]
 \begin{lemma}[Induction Statement]\label{lem:induction-switch}
-Let $C$ be a depth at least $d$ circuit of size $S$ 
+Let $C$ be a depth at least $d$ circuit of size 
+$S<
+2^{
+\sqrt[d-1]{n}
+}$ 
 with layer-1 (bottom) gates all of fan-in  $ \leq k=2 \log S$ (either  $\land$ or $\lor$),
 with $n$ input variables  
 $\overline x$ (with positive and negative copies). Assume that the gates in layer $d$ are all $\land$ gates (resp., $\lor$ gates). 
@@ -485,7 +490,7 @@ Hence, the expected number $\mu$ of free variables is \( pN \), where $N$ is the
 
 The following is thus the upper bound on the probability that at least one bad event happened (using the union bound): 
 \begin{equation}\label{eq:487:28}
- S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad with \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}},
+ S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad \text{with} \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}},
 \end{equation}
 where the left most term is by a union bound on all gates, and the rightmost term is the bad event estimated by the  Chernoff bound.\footnote{%
 Note that we have used the union bound on the following bad events, given a random pick of a single assignment $\rho$: $S$ many potential bad events that a gate in layer $d$ does not switch, together with a single event that the number of free variables in $\rho$ falls below half the expected number of free variables.
@@ -495,58 +500,58 @@ Note that we have used the union bound on the following bad events, given a rand
 %All that is left is to make some computations to get a lower bound on the parameter $S$. 
 
 \Cref{eq:487:28} is equivalent to 
-\[
+\begin{equation}\label{eq:498:27}
 S \left( 9 \cdot \frac{1}{36 \cdot \log s} \cdot 2 \log s \right)^{2 \log s} + 
-2 e^{-\frac{\left(\frac{1}{36 \cdot \log S }\right)^{d-3} \cdot n}{2^{d-1} \cdot 3}}.
-\]
-
-
-Let us denote the right summand above by $B$. 
-We get:
+\underbrace{2 e^{-\frac{\left(\frac{1}{36 \cdot \log S }\right)^{d-3} \cdot n}{2^{d-1} \cdot 3}}}_B.
+\end{equation}Let us denote the right summand above by $B$, namely $B=2\cd
+e^{-\left(\frac{n}{{(36 \cdot \log S)^{d-3} \cdot 2^{d-1} \cdot 3}}\right)}$.  
+Thus, \Cref{eq:498:27} equals
 $$
-=S \cdot\left(\frac{18}{36}\right)^{2 \cdot \log S}+B =S \cdot \frac{1}{S^2}+B =
+S \cdot\left(\frac{18}{36}\right)^{2 \cdot \log S}+B =S \cdot \frac{1}{S^2}+B =
 \frac{1}{S}+
-\underbrace{
-2\cd
-e^{-\left(\frac{n}{{(36 \cdot \log S)^{d-3} \cdot 2^{d-1} \cdot 3}}\right)}
-}_B.
+B.
 $$
-To prove the induction statement it thus suffices to show that $1/S+B<1$, hence the probability that none of the bad events occurred is positive. We are left to compute the following:
+To prove the induction statement it  suffices to show that $1/S+B<1$, hence the probability that none of the bad events occurred is positive. It is enough to prove  that $B<1/2$, since we can assume that the size $S$\ of the circuit is at least $2$ (e.g., because the number of variables $n=2$), meaning that $1/S+B<1$. Thus, we are left to show the following:
 \[
-e^{\frac{n}{(36 \log s)^{d-3} \cdot 2^{d-1.3}}} \geq 2
+e^{\frac{n}{(36 \log S)^{d-3} \cdot 2^{d-1}\cd 3}} > 4
 \]
-
-which implies:
-
+for which it is enough to show that 
+$
+\frac{n}{(36 \log S)^{d-3} \cdot 2^{d-1}\cd 3)}>2,
+$
+namely
 \[
-n \geq (36 \log s)^{d-3} \cdot 2^{d-1.3} \cdot 6
+\frac{n}{6 \cdot 2^{d-1}\cd 36^{d-3}} > \log^{d-3} S.
 \]
-
-Thus, taking the $(d-3)$th root:
-
+%\[
+%n > (36 \log s)^{d-3} \cdot 2^{d-1} \cdot 6.
+%\]
+Taking the $(d-3)$th root we get:
 \[
-\sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}} \geq \frac{\log s}{36}
+\frac{1}{36}\cd \sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}} > \log S,
 \]
-
 which leads to:
 
-\[
-\log s \leq 2
-\]
+\begin{equation}\label{eq:534:30}
+2^{
+\frac{1}{36}\cd \sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}}
+} >  S.
+\end{equation}
+Since $2^{\frac{d-1}{d-3}} < 2^2 = 4$ (for $d>3$), and by assumption that $ 2^{
+\sqrt[d-1]{n}
+}>S$,    
+$$
+2^{
+\frac{1}{36}\cd \sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}}}>
+2^{
+\frac{1}{36\cd 6\cd 4}\cd\sqrt[d-3]{n}
+}
+> 2^{
+\sqrt[d-1]{n}
+}>S,
+$$
+and therefore  \Cref{eq:534:30} holds. 
 
-\textit{(since the function is increasing, the inequality holds)}.
-
-If \( s > 2^{d+3} \sqrt{n} > 2^{d/2} \sqrt{n} \), then we finish the proof because:
-
-\[
-2^{\frac{d-1}{d-3}} < 2^2 = 4.
-\]
-
-
-
-\includegraphics[width=\textwidth]{images/image010.png}
-
-(Note: \includegraphics[width=0.3\textwidth]{images/image011.png})
 \mbox{}
 \end{proof} % Induction step of Switching
 
@@ -816,7 +821,7 @@ Let \( \mathcal{R}_{\rho} \) be the distribution of random restrictions,
 taken with probability \( P_{\rho}[X_i = *] = p \) as before.
 Let \( S \) be the set of ``bad'' restrictions \( \rho \in \mathcal{R}_{\rho} \).
 That is, restrictions for which \( T(f|_{\rho}) \) has height \( > s \).
-We wish to bound from above \( P_{\rho}[\rho \in S] \).
+We wish to bound from above \( P_{\rho\in \mathcal R}[\rho \in S] \).
 
 A priori, we only have the trivial bound:
 \[
@@ -835,9 +840,8 @@ The idea is to show that the probability of the event of picking a bad restricti
 is bounded from above by the probability of picking a restriction from a \emph{different} 
 set of restrictions, denoted \( T \).
 
-For the sake of illustration, let's assume that  \( S \) contained a \emph{single} restriction \( \rho \). So our goal would be easy to achieve: we shall bound the probability of picking $\rho$ by the probability of picking a restriction that is longer by  $s$  
-
- because we shall have 
+For the sake of illustration, let's assume that  \( S \) contained a \emph{single} restriction \( \rho \). So our goal would be easy to achieve: we shall bound the probability of picking $\rho$ by the probability of picking a restriction that is longer by  $s$ 
+ because we have 
 \[
 \Pr_{\mathcal{R}}[S] \leq \frac{1}{4^s}\cd \Pr_{\mathcal{R}}[\{\rho\}] \leq \frac{1}{4^s} 
 \quad \text{(because trivially \( \Pr_{\mathcal{R}}[\{\rho\}] \leq 1\))}
@@ -845,17 +849,19 @@ For the sake of illustration, let's assume that  \( S \) contained a \emph{singl
 for every restriction \( \rho \) to \( s \) additional variables.
 The first inequality follows by the fact that making a restriction \emph{longer} 
 only \emph{increases} its probability; and  since fixing a \emph{single} variable 
-to \( \{0,1\} \) has probability (since $p<1/9)$: 
+to \( \{0,1\} \) has probability (recall  $p<1/9)$: 
 \[
 \frac{1 - p}{2} > \frac{8p}{2} = \frac{4}{9},
 \]
 while fixing a variable to \( * \) has probability only \( < \frac{1}{9} \).
 
-Here is a simple example when extending the assignment by one bit:
+Here is a simple example when extending the assignment by one bit. In particular, let $\rho$ be a restriction and assume we extend it by one bit to $\rho\sigma$ (namely, $|\sigma|=1$). We have 
+$\Pr_{\mathcal{R}}[\rho] = \frac{2}{1 - p} \cdot p \cdot \Pr_{\mathcal{R}}[\rho\sigma]$, because we can obtain $\rho$ from $\rho\sigma$ and un-choosing the variable  fixed by $\sigma$ (this means dividing by $(1-p)/2$) and instead choosing this variable to be free (this means multiplying by $p$). In other words, we get:  
 \[
-\Pr_{\mathcal{R}}[S] = \frac{1}{1 - p} \cdot p \cdot \Pr_{\mathcal{R}}[S_0] 
-< 2 \cdot \frac{1}{9} \cdot \frac{1}{9} \Pr_{\mathcal{R}}[S_0] 
-= \frac{1}{9^2} \Pr_{\mathcal{R}}[S_0].
+\Pr_{\mathcal{R}}[\rho] = \frac{2}{1 - p} \cdot p \cdot \Pr_{\mathcal{R}}[\rho\sigma] 
+<  \frac{2}{8/9} \cdot \frac{1}{9} \cd\Pr_{\mathcal{R}}
+[\rho\sigma] = \frac{1}{4}\cd
+ \Pr_{\mathcal{R}}[\rho\sigma].
 \]
 
 \begin{figure}
@@ -870,27 +876,27 @@ to represent their respective probabilities (weight or ``mass'' in the probabili
 \end{figure}
  
 
-But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S' \).
-To show that the sum of the probabilities of \emph{all} of the restrictions in \( S' \) is at most 
-\(\frac{1}{4^s} \cdot (\text{small number})\), we can try showing that \emph{each} \( \rho \in S' \) can be mapped to a 
+But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S \).
+To show that the sum of the probabilities of \emph{all} of the restrictions in \( S \) is at most 
+\(\frac{1}{4^s} \cdot (\text{small number})\), we can try showing that \emph{each} \( \rho \in S \) can be mapped to a 
 \emph{distinct} restriction \( \rho_0 \) as above. 
 
 If the mapping, denoted \( \Theta \), is done to \emph{distinct} restrictions, that is, the mapping is 
 \emph{one-to-one} (\emph{``injective''}), then we know that the sum of all probabilities of picking bad restrictions, 
-namely the event of picking a restriction from \( S' \), is mapped to the \emph{event} of picking a restriction in the 
+namely the event of picking a restriction from \( S \), is mapped to the \emph{event} of picking a restriction in the 
 \emph{image} of \( \Theta \).
 because every event has probability smaller than one we finish. 
 
 We explain it as follows. We have the following 
 \[
-\Pr_{\mathcal{R}}[S'] = \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\rho] = 
-\sum_{\rho \in S'} \left(\frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[\Theta(\rho)]\right) =
-\frac{1}{4^s} \cdot \sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)].
+\Pr_{\mathcal{R}}[S] = \sum_{\rho \in S} \Pr_{\mathcal{R}}[\rho] = 
+\sum_{\rho \in S} \left(\frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[\Theta(\rho)]\right) =
+\frac{1}{4^s} \cdot \sum_{\rho \in S} \Pr_{\mathcal{R}}[\Theta(\rho)].
 \]
 
 Now, we'd like to claim that 
 \[
-\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
+\sum_{\rho \in S} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
 \]
 and finish. But this is not necessarily true for every sum of probabilities: if the map \( \Theta \) is 
 not one-to-one we may end up adding an event with a very large probability more than once, for example, 
@@ -915,11 +921,11 @@ hence exceeding one.
 %and finish. But this is not necessarily true for %every sum of probabilities: if the map \( \Theta \) is not one-to-one we may end up adding an event with a very large probability more than once, for example, hence exceeding one. 
 
 The way to ensure
-$\sum_{\rho \in S'} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
+$\sum_{\rho \in S} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
 $
 is by making sure \( \Theta \) is one-to-one, 
 hence we don't count probabilities more than once.
-In other words, picking restrictions from \(\text{Image}(\Theta(S'))\) is an \emph{event} of our probability distribution, and so an event has always probability at most one.
+In other words, picking restrictions from \(\text{Image}(\Theta(S))\) is an \emph{event} of our probability distribution, and so an event has always probability at most one.
 
 \section*{Constructing the one-to-one map}
 
@@ -927,12 +933,12 @@ In other words, picking restrictions from \(\text{Image}(\Theta(S'))\) is an \em
 \begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
 \textbf{The upshot of argument}
 \begin{itemize}
-    \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S' \) to some \emph{longer} restrictions \( \rho\sigma \). 
+    \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S \) to some \emph{longer} restrictions \( \rho\sigma \). 
 
-    Bad: restriction whose \( T(f\restriction \rho) \) has depth \( > s \). 
-    \item Thus, we get that the event \( \Pr_{\mathcal{R}}[ \rho \in S' ] \leq \frac{1}{4^s} \cdot (\text{small number}) \).
+    Bad: restriction whose \( T(f\rst\rho) \) has depth \( > s \). 
+    \item Thus, we get that the event \( \Pr_{\mathcal{R}}[ \rho \in S ] \leq \frac{1}{4^s} \cdot (\text{small number}) \).
     
-    \item To show the mapping is \emph{one-to-one}, we build a map from \( \rho \in S' \) to longer restrictions \( \rho\sigma \) such that given \( \rho\sigma \), we can \emph{(uniquely) recover} \( \rho \). (Hence, the map is one-to-one).
+    \item To show the mapping is \emph{one-to-one}, we build a map from \( \rho \in S \) to longer restrictions \( \rho\sigma \) such that given \( \rho\sigma \), we can \emph{(uniquely) recover} \( \rho \). (Hence, the map is one-to-one).
     
     \item The map is defined as encoding \( \rho \) by \( \rho\sigma \) + \emph{(small helper code)}.
 
@@ -940,7 +946,7 @@ In other words, picking restrictions from \(\text{Image}(\Theta(S'))\) is an \em
     
     \item The idea to recover \( \rho \), given \( \rho\sigma \), is to map \( \rho \) to \( \rho\sigma \) plus some ``small helper code''. The helper code is small but will allow us to recover \( \rho \) given \( \rho\sigma \).
 
-    \item The code and its helper code is built based on the following idea: Consider \( \rho \in S' \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
+    \item The code and its helper code is built based on the following idea: Consider \( \rho \in S \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
     
     \textcolor{gray}{(We shall prune this path to length \( s \)).}
 \end{itemize}
@@ -1156,14 +1162,14 @@ Namely, bound
 
 \textit{i.e., the probability (in \( \mathcal{R} \)) of choosing the past \( \Theta_1(\rho) \), which is \( \rho_{\delta} \) for some \( \delta \) of size \( s \) with helper codes \( \beta_1', \pi_1' \).}
 
-\subsection*{Probability of \( \rho_{\delta} \)}
-Since \( \rho_{\delta} \) sets exactly \( s \) variables that were unset in \( \rho \), we have:
+\subsection*{Probability of \( \rho\sigma \)}
+Since \( \rho\sigma \) sets exactly \( s \) variables that were unset in \( \rho \), we have:
 
 \[
-\textcolor{red}{\Pr_{\mathcal{R}} [\rho_{\delta}]} = p^{-s} \cdot \left( \frac{1-p}{2} \right)^s \cdot \Pr_{\mathcal{R}} [\rho]
+\textcolor{red}{\Pr_{\mathcal{R}} [\rho\sigma]} = p^{-s} \cdot \left( \frac{1-p}{2} \right)^s \cdot \Pr_{\mathcal{R}} [\rho]
 \]
 
-\textit{Unset \( S \) means setting the \( s \) variables that you just unset to \( p \) values.}
+\textit{Unset \( s \) means setting the \( s \) variables that you just unset to \( p \) values.}
 
 By factoring out \( \left( \frac{2p}{1 - p} \right)^s \) we get from (1):
 
@@ -1194,10 +1200,6 @@ Finally, \( S \) is the union of the sets \( S_{\beta^{'},\pi^{'}} \) over all p
 \[
 = \left( \frac{8 p r}{1 - p} \right)^s \leq (9 p r)^s, \quad \text{for } p < \frac{1}{q}.
 \]
-
-\[
-\Box_{\text{Switching Lemma}}
-\]
-
+This concluded the proof of the switching lemma. 
 
 

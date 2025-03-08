@@ -633,7 +633,7 @@ Notice the  subtlety in this definition: introducing new errors here means that 
 
 
 To prove the lower bound theorem, all we need to know are \emph{some properties} of the approximator steps. In other words, given these properties it would not be important how precisely we defined the approximators for gates (that is, how precisely we picked the $\cX$ in each approximator $\APPX(\cX)$).
-In particular, the following two lemmas, proved in the next section, are sufficient to conclude the proof. 
+In particular, the following two lemmas, proved in the next section, are sufficient to conclude the theorem. 
 \begin{lemma}\label{lem:new-false-positives}
 Each approximation step introduces at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
 \end{lemma}
@@ -643,7 +643,7 @@ Each approximation step introduces at most $M^2 \cdot\binom{n-l-1}{k-l-1}$ false
 \end{lemma}
 
 
-Given these two lemmas, we can now relatively easily conclude the lower bound. The idea is that, if we assume by way of contradiction that we are given a small monotone circuit computing \cliquenk, then we can approximate the output gate of this circuit with an approximator that does not make too many errors: the circuit is small and each original gate when approximated contributes only a few new errors. But it is not hard to show that a good approximator for the \cliquenk\ function does not exist. We formalise this argument in what follows.
+Given these two lemmas, we can now relatively easily conclude the lower bound. The idea is that, if we assume by way of contradiction that we are given a small monotone circuit computing \cliquenk, then we can approximate the output gate of this circuit with an approximator that does not make too many errors: the circuit is small and each original gate when approximated contributes only  few new errors. But it is not hard to show that a good approximator for the \cliquenk\ function does not exist. We formalise this argument in what follows.
 
 
 

@@ -162,7 +162,7 @@ The proof uses the Random Restriction Method described in the sequel.
 \textbf{Upshot of argument}: The idea is to randomly restrict (assign) the variables of the circuit (of which we want to show it cannot compute \Parity). If the circuit is small, such a restriction collapses (gradually) the depth of the circuit to a depth-2 circuit. If the depth of the initial circuit was constant, this gradual step-by-step depth reduction needs to be done only for a constant many times. If we made random assignments (restrictions) only for a constant many times, we can rest assure that we have not assigned (i.e., fixed) too many variables. Hence, the function $\Parity$ under these restrictions still has a lot of free variables. But such $\Parity$ with sufficiently many free variables cannot have small depth 2 circuits (this we show by an auxiliary elementary argument).
 \end{tcolorbox}
 
-\includegraphics[width=0.9\textwidth]{image007.png}
+\includegraphics[width=0.9\textwidth]{images/image007.png}
 
 
 \begin{note} Notice the similarity with the monotone circuit lower bound proof: we use structural induction on the circuit purported to correctly compute \Parity. \end{note}
@@ -232,7 +232,7 @@ We shall use the following notation.
 
 The below figure illustrates a single Depth Reduction Step. Such a step is also called  ``Switching'', as it switches a $t$-CNF into an $s$-CNF, or vice versa.
 
-\includegraphics[width=0.7\textwidth]{image008.png}
+\includegraphics[width=0.7\textwidth]{images/image008.png}
 
 \begin{note} We can always turn a $t$-CNF into an $s$-DNF for some \textit{big} $s$ (by distributing out \(\lor, \land\) using de Morgan's rules).
 But then we've not maintained the invariant that the bottom level has fan-in \(\leq s\) (namely, \(s\) is small enough).
@@ -420,7 +420,7 @@ We assume the induction statement holds for layer $d-1$, and prove it for $d$. T
 
 \begin{figure}[H]
     \begin{center}
-    \includegraphics[width=\textwidth]{switchinginduc.png}
+    \includegraphics[width=\textwidth]{images/switchinginduc.png}
     \end{center}\label{fig:depth-reduction-use}
     \caption{The setup of the induction step.}
 \end{figure}
@@ -544,9 +544,9 @@ If \( s > 2^{d+3} \sqrt{n} > 2^{d/2} \sqrt{n} \), then we finish the proof becau
 
 
 
-\includegraphics[width=\textwidth]{image010.png}
+\includegraphics[width=\textwidth]{images/image010.png}
 
-(Note: \includegraphics[width=0.3\textwidth]{image011.png})
+(Note: \includegraphics[width=0.3\textwidth]{images/image011.png})
 \mbox{}
 \end{proof} % Induction step of Switching
 

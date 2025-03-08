@@ -327,9 +327,9 @@ $F_{x_i := 0} \vdash \square$ into $F \vdash x_i$.
 \begin{enumerate}
     \item[e)] If in $F_{x_i := 0} \vdash \square$ we used the resolution rule:
     \[
-    \frac{A \lor u}{A \lor B} \quad \frac{B \lor w}{A \lor B}
+    \frac{A \lor x_j\qquad B\lor \neg x_j}{A \lor B} 
     \]
-    for some variable $w \in \{x_1, \dots, x_n\} \setminus \{x_i\}$  
+    for some variable $x_j \in \{x_1, \dots, x_n\} \setminus \{x_i\}$  
     (\textit{recall that variable $x_i$ doesn't occur in} $F_{x_i := 0}$),  
     then when adding $\lor x_i$, it turns into a \textbf{legit} resolution rule:
 
@@ -649,14 +649,14 @@ F_{x_i := 0} \vdash_{b - 1 + w(F)} \square \quad \text{into} \quad F \vdash_{b +
 \begin{enumerate}
     \item[e)] If in $F_{x_i := 0} \vdash \square$, we used the \textbf{resolution rule}:
     \[
-    \frac{A \lor v \quad B \lor w}{A \lor B}
+    \frac{A \lor x_j \quad B \lor \neg x_j}{A \lor B}
     \]
-    for some variable $w \in \{x_1, \dots, x_n\} \setminus \{x_i\}$  
+    for some variable $x_j \in \{x_1, \dots, x_n\} \setminus \{x_i\}$  
     (\textit{recall that variable $x_i$ does not occur in $F_{x_i := 0}$}),  
     then when adding $\lor x_i$, it turns into a \textbf{legit resolution rule}:
 
     \[
-    \frac{x_i \lor A \lor v \quad x_i \lor B \lor w}{x_i \lor A \lor B}
+    \frac{x_i \lor A \lor x_j \quad x_i \lor B \lor \neg x_j}{x_i \lor A \lor B}
     \]
 \end{enumerate}
 

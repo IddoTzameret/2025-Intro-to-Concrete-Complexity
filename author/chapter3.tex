@@ -339,7 +339,7 @@ However, we note that this probabilistic argument via the union bound  is  \emph
 
 \section{Proof that PARITY does not have small circuits, using the Switching Lemma}
 
-Recall that we want to prove \Cref{thm:ACZ-lower bound}  stating that every circuit family of depth-$d$ computing the PARITY function requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$.
+Recall that we want to prove \Cref{thm:ACZ-lower bound}  stating that every circuit family of depth-$d$ computing the PARITY on $n$ variables requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$.
 
 So, suppose  that $C$ is a depth-$d$ alternating formula circuit of size $S$ computing $\Parity_n$. We can assume that 
 $S< 2^{ n^{\nicefrac{1}{d-1}}}$, as otherwise we finish the proof.
@@ -558,49 +558,58 @@ and therefore  \Cref{eq:534:30} holds.
 
 \para{Concluding the proof}
 Using the Induction Statement together with the Bottom Switching Step,
-we can now conclude the proof of the lower bound.
-Given a circuit of depth $d$ with $n$ variables,
-we first apply the Bottom Layer Switching (with sufficiently high probability using Chernoff's bound, the number of free variables after this step
-are at least $(1/36)\cd n$; we skip this computation).
+we now conclude the proof of the lower bound.
 
-Then, we have a circuit $C$ of depth-$d$ with layer 2 consisting of  $k$-CNF gates. We  then apply the Induction Statement. We reach a circuit $C \rst_\rho$ of depth-2, namely a $k$-CNF (or $k$-DNF) with
+Given a circuit $C$ of depth $d$ with $n$ variables,
+we first apply the Bottom Layer Switching to get a circuit  $C\!\rst_{\rho_1}$ of depth $d$ with layer 2 consisting of $k$-CNF gates. Using Chernoff's bound, with sufficiently high probability  the number of free variables after this step
+are at least $(1/36)\cd n$ (we skip this computation).
+
+Then, we have a circuit $C\!\rst_{\rho_1}$ of depth $d$ with layer 2 consisting of  $k$-CNF gates, and at least $n/36$ free variables. We   apply the Induction Statement on this circuit. We reach a circuit $C\!\rst_{\rho_1\rho}$ of depth-2, namely a $k$-CNF (or $k$-DNF) with
 $\rho: \bar{x} \rightarrow\{0,1, *\}$ being a restriction
-with $\geq \frac{p^{d-2} \cdot n}{2^{d-2}}$ free variables and $p=\frac{1}{36 \cdot \log S}$, such that the function computed by $g\rst_\rho$ for every $\land$ gate $g$ in layer $d$ (resp., $\lor$ gate) can be computed by a $k$-DNF, with $k=2 \log S$ (resp. a $k$-CNF).
-And specifically, when $d$ is the depth of $C$, we know that $C\rst_\rho$ as a whole is computed by a $k$-CNF (in this case $d$ is a layer with a single gate). 
+with $\geq \frac{p^{d-2} \cdot (n/36)}{2^{d-2}}$ free variables and $p=\frac{1}{36 \cdot \log S}$, such that the function computed by $g\!\rst_{\rho_1\rho}$ for every $\land$ gate $g$ in layer $d$ (resp., $\lor$ gate) can be computed by a $k$-DNF, with $k=2 \log S$ (resp. a $k$-CNF).
+And specifically, when $d$ is the depth of $C$, we know that $C\!\rst_{\rho_1\rho}$ as a whole is computed by a $k$-CNF (in this case, the $d$th layer in $C$ has a single gate). 
 
 
-But now we get a contradiction if \( k \) is less than the number of free variables, which is 
+But now we get a contradiction whenever \( k \) is less than the number of free variables, which is 
 \[
-\frac{p^{d-2} \cdot n}{2^{d-2}}.
+\frac{p^{d-2} \cdot (n/36)}{2^{d-2}}.
 \]
-This is because every \( k \)-CNF can be made the  constant function 0 with \( k \) assignments of 0/1 values to its variables: Pick one \( k \)-clause, e.g.,
+This is because every \( k \)-CNF can be made the  constant function 0 with \( k \) assignments of 0/1 values to its variables: Pick one \( k \)-clause, and assign all its literals to zero. For example, if the $k$-clause is 
 \[
 x_1 \lor \overline{x_2} \lor x_3 \lor \overline{x_4},
 \]
-assign the literals in the clause all zero: 
+ the following assignment falsifies the clause:  
 \[
 x_1 = 0, \ x_2 = 1, \ x_3 = 0, \ x_4 = 1.
 \]
 However, Parity for \( r > k \) many inputs \emph{cannot} be made a constant function without assigning all its \( r \) variables. Hence, when the number of free variables
 \[
-\frac{p^{d-2} \cdot n}{2^{d-2}} > k = 2 \log S,
+\frac{p^{d-2} \cdot (n/36)}{2^{d-2}} > k = 2 \log S,
 \]
 we get  a contradiction.
 In other words, we have:
 \[
-2 \log S \geq \frac{p^{d-2} \cdot n}{2^{d-2}}.
+2 \log S \geq \frac{p^{d-2} \cdot n}{36\cd2^{d-2}}.
 \]
 We now compute to find out what is the lower bound for $S$:
 \begin{align*}
-    2 \log S &\ge  \frac{p^{d-2} \cdot n}{2^{d-2}} 
- = \frac{\left(\frac{1}{36 \log S}\right)^{d-2} \cdot n}{2^{d-2}} 
-    & = \left(\frac{1}{\log S}\right)^{d-2} \cdot n \cdot \left(\frac{1}{72}\right)^{d-2}.
+    2 \log S &\ge  \frac{p^{d-2} \cdot n}{36\cd2^{d-2}} 
+ = \frac{\left(\frac{1}{36 \log S}\right)^{d-2} \cdot n}{36\cd2^{d-2}} 
+    & = \left(\frac{1}{\log S}\right)^{d-2} \cdot n \cdot \left(\frac{1}{36\cd72}\right)^{d-2}.
 \end{align*}
 Hence, 
 \begin{align*}
-    \left(\log S\right)^{d-1} &\ge \frac{1}{2} \left(\frac{1}{72}\right)^{d-2} \cdot n \implies \\
-    \log S &\ge \frac{1}{2} \left(\frac{1}{72}\right)^{\frac{d-2}{d-1}} \cdot n^{\frac{1}{d-1}}
-= \Omega \left(n^{\frac{1}{d-1}}\right)  \implies \\
+    \left(\log S\right)^{d-1} &\ge \frac{1}{2} \left(\frac{1}{36\cd72}\right)^{d-2} \cdot n \implies \\
+    \log S &\ge \frac{1}{2} \left(\frac{1}{36\cd72}\right)^{\frac{d-2}{d-1}} \cdot n^{\frac{1}{d-1}}
+= \Omega \left(n^{\frac{1}{d-1}}\right),
+\end{align*}
+because 
+$(\frac{1}{36\cd 72})^{\frac{d-2}{d-1}}
+>
+(
+\frac{1}{36\cd 72}
+)^{\frac{2}{3}}$ (for $d>3$), and hence 
+\begin{align*}
      S &=  2^{\Omega ({\sqrt[d-1]{n}})},
 \end{align*}
 concluding the proof. 

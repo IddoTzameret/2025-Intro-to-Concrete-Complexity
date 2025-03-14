@@ -346,7 +346,7 @@ $S< 2^{ n^{\nicefrac{1}{d-1}}}$, as otherwise we finish the proof.
 
 
 Recall that we assume that $C$ is an alternating formula, with $d$ layers, where in each layer all gates are either $\land$ or $\lor$.  The proof proceeds by first a ``preprocessing step'' in which we use the Switching Lemma to decrease the fan-in of the \emph{bottom} layer gates, followed by   $d-2$ depth reduction steps using the Switching Lemma in which we gradually reduce the depth of the circuit, from bottom to top, by one depth, until we reach a depth-$2$ circuit.
-After this, we can conclude the theorem: if the circuit was too small, we end up with a $k$-CNF (or $k$-DNF) computing \Parity\ over more than $k$ variables which is easyly shown to be impossible.
+After this, we can conclude the theorem: if the circuit was too small, we end up with a $k$-CNF (or $k$-DNF) computing \Parity\ over more than $k$ variables which is easily shown to be impossible.
 
 
 
@@ -358,17 +358,17 @@ After this, we can conclude the theorem: if the circuit was too small, we end up
 
 \para{Decreasing Bottom Layer Fan-in}
 
-This step is needed in order to optimise the lower bound, namely to reach the tight lower bound of $2^{\Omega(n^{1/d-1})}$. \% we may explain this point later.
+This step is needed in order to optimise the lower bound, namely to reach the tight lower bound of $2^{\Omega(n^{1/d-1})}$ (see \Cref{note:bottom-explanation}).
 
 Consider the bottom two layers of the given constant-depth circuit. We assumed that the layers alternate between $\land$ and $\lor$, thus the depth-2 sub-formulas  at these bottom two layers are all either DNFs or CNFs. Let us assume  without loss of generality  that they are all CNFs. The bottom fan-in of these CNFs may be large, namely, it may be $\ell$-CNFs for a large $\ell$. 
-Since  $\ell$ may be  very large, using the Switching Lemma to turn this $\ell$-CNF to an $s$-DNF will be too expensive, in the sense that applying the Switching Lemma with this $\ell$ would give us probability of $\leq (9p\ell)^s$, but with \emph{large} $\ell$, which later would mean we get a weaker lower bound (e.g., we sould get a lower bound of $2^{\Omega(n^{\frac{1}{d}})}$, which is weaker, namely smaller, than our lower bound of $2^{\Omega(n^{\frac{1}{d-1}})}$).
-\textcolor[rgb]{0.815686,0.815686,0.815686}{\% This is caused by a weaker union bound computation (we explain this after we finish the proof).}
+Since  $\ell$ may be  very large, using the Switching Lemma to turn this $\ell$-CNF to an $s$-DNF will be too expensive, in the sense that applying the Switching Lemma with this $\ell$ would give us probability of $\leq (9p\ell)^s$, but with \emph{large} $\ell$, which later would mean we get a weaker lower bound (e.g., we would get a lower bound of $2^{\Omega(n^{\frac{1}{d}})}$, which is weaker, namely smaller, than our lower bound of $2^{\Omega(n^{\frac{1}{d-1}})}$).
+See \Cref{note:bottom-explanation} for an explanation of this. 
 
 
 
 For this reason, we shall reduce the fan-in of the bottom layer (i.e., layer 1) directly using the Switching Lemma (while maintaining a lower probability of failure).
 
-\begin{claim}\label{cla:}
+\begin{claim}\label{cla:bottom-switch}
 An $\ell$-CNF does not turn into a $k$-CNF under a random restriction $\rho$ with probability $\leq (9p_0)^k$, for $p_0$ the probability a variable is free in the random restriction $\rho$. Specifically, when $k = 2 \cdot \log S$, if we choose $p_0 = \frac{1}{18}$, the probability of failure is at most $ \frac{1}{S^2}$.
 \end{claim}
 
@@ -583,9 +583,10 @@ x_1 \lor \overline{x_2} \lor x_3 \lor \overline{x_4},
 x_1 = 0, \ x_2 = 1, \ x_3 = 0, \ x_4 = 1.
 \]
 However, Parity for \( r > k \) many inputs \emph{cannot} be made a constant function without assigning all its \( r \) variables. Hence, when the number of free variables
-\[
+\begin{equation}
+\label{eq:660:327}
 \frac{p^{d-2} \cdot (n/36)}{2^{d-2}} > k = 2 \log S,
-\]
+\end{equation}
 we get  a contradiction.
 In other words, we have:
 \[
@@ -654,6 +655,13 @@ concluding the proof.
 % \textcolor{red}{
 % \begin{Huge}
 % To Be Completed!\end{Huge}}
+
+
+\begin{note}\label{note:bottom-explanation}
+Notice that by  using the Bottom Switching Step with a random restriction with $p_0=1/18$ we got that there exists a good random restriction $\rho_1$ with at least $1/36$ fraction of free variables.  In other words, we  reduce the number of free variable only by a constant factor in this step. This allowed us in \Cref{eq:660:327} to start with $\frac{p^{d-2} \cdot (n/36)}{2^{d-2}} $. If we opted to use another application of the switching lemma with $p=\frac{1}{\log S\cd 36}$ like the other steps) instead of the bottom switching step, we would have to start with  $\frac{p}{2} \cd \frac{p^{d-2} \cdot n}{2^{d-2}} = 
+\frac{p^{d-1} \cdot (n)}{2^{d-1}}  $ instead (which is a  factor of $\frac{1}{72\log S}$ instead of 1/36), so that overall we would have gotten a weaker lower bound of $2^{\Omega(\sqrt[d]n)}$ instead of the stronger lower bound of $2^{\Omega(\sqrt[d-1]n)}$ .
+\end{note}
+
 
 
 \section{Proof of the Switching Lemma}

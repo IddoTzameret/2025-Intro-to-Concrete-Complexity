@@ -341,12 +341,12 @@ The rest of this chapter aims to prove this theorem. \textit{Our exposition is t
 \paragraph{Approximation Method Overview}
 
 We first provide an overview of the approach we take to prove \Cref{thm:razborov} which is called \emph{the approximation method}. 
-We shall describe a way of approximating any \textbf{monotone} circuit for $\operatorname{CLIQUE}({n}, {k})$ by a approximator, namely a big OR of cliques, as follows.
+We shall describe a way of approximating any \textbf{monotone} circuit for $\operatorname{CLIQUE}({n}, {k})$ by an approximator, namely a big OR of cliques, as follows.
  
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \textbf{Approximation Method}:
-The upshot of the method is the following: \emph{by  way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be well approximated by a small approximator. Then, if the number of nodes in the circuit is small the output gate is also well approximated by a small approximator. Now, use an auxiliary argument to show that there is no small approximator approximating well  $\operatorname{CLIQUE}({n}, {k})$.
+The upshot of the method is the following: \emph{by  way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be well approximated by a small approximator. Then, if the number of nodes in the circuit is small the output gate is also well approximated by a small approximator. Now, use an auxiliary argument to show that there is no small approximator well approximating $\operatorname{CLIQUE}({n}, {k})$.
 \end{tcolorbox}
 % =======
 % The upshot is the following: \emph{by way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be approximated by a small approximator. Then, the output gate is also approximated by a small approximator. Now, use an auxiliary argument to show that there is no small approximator approximating $\operatorname{CLIQUE}({n}, {k})$.
@@ -361,7 +361,7 @@ $\APPX(X_1, \ldots, X_m)$ for some $m$ and $|{X}_{i}| \leq l$ (for some $l$, and
 % \item  Given a monotone circuit $C$, we shall construct a approximator ${\APPX}({X_1, \ldots, {X_m})}$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
 % >>>>>>> f39d2195a6351cafba5750ac78532621d361fb0c
 
-\item That is, if the number of gates in $C$ is small the precision is  good, namely the approximator ${\APPX}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  "NO" on an input that has a $k$-clique, or "YES" on an input that has no $k$-clique).\label{it:approximation-b}
+\item That is, if the number of gates in $C$ is small the precision is  good, namely the approximator ${\APPX}(X_1, \ldots, X_m)$ for $\operatorname{CLIQUE}({n}, {k})$ we end up with makes \textit{few} mistakes on the $\operatorname{CLIQUE}({n}, {k})$ function (a mistake happens when the circuit  answers  ``NO" on an input that has a $k$-clique, or ``YES" on an input that has no $k$-clique).\label{it:approximation-b}
 
 The \textbf{approximation} (i.e., construction of an approximator for CLIQUE(${n},{k})$ given the circuit $C$) will proceed in steps, one step for each gate of the monotone circuit:
 
@@ -889,7 +889,7 @@ with $\mathcal{X}=\{X_1, \ldots, X_m\}$,
 $\mathcal{Y}=\{Y_1, \ldots, Y_{m^{\prime}}\}$, $m\le M$, and $\left|X_i\right| \leq \ell $, for all $i\in[m]$, $m'\le M $ and $\left|Y_i\right| \leq \ell$, for all $i\in[m']$.
 We wish to construct   two approximators that do not introduce too many errors over  $\APPX(\mathcal{X}) \vee \APPX(\mathcal{Y})$, and $\operatorname{\APPX}(\mathcal X) \wedge 
 \operatorname{\APPX}(\mathcal Y)$, respectively,
-in the sense that they introduce at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ new false positives and at most $M^2 \cdot\binom{n-l-1}{k-l-1}$  new false negatives.\end{tcolorbox}
+in the sense that they introduce at most $M^2 \cdot \frac{(k-1)^n}{2^p}$ new false positives and at most $M^2 \cdot\binom{n-l-1}{k-l-1}$  new false negatives (for both the $\lor$ and $\land$ cases).\end{tcolorbox}
 
 
 % In other words, our goal is to prove the following inductive statement.
@@ -1001,10 +1001,10 @@ We are finally ready to define precisely how to approximate OR and AND gates.
 \begin{definition}[Approximators for $\lor$ and $\land$ gates]
 
 \begin{description}
-\item[The approximate for $g_1\lor g_2$:] Assume that $\gapx(g_1)=\APPX(\cX)$ and $\gapx(g_2)=\operatorname{\APPX}(\cY)$. Define 
+\item[The approximator for $g_1\lor g_2$:] Assume that $\gapx(g_1)=\APPX(\cX)$ and $\gapx(g_2)=\operatorname{\APPX}(\cY)$. Define 
 $$\gapx(g_1\lor g_2):=\APPX(\operatorname{pluck}(\cX \cup \cY)).$$
 
-\item[The approximate  for $g_1\land g_2$:]
+\item[The approximator for $g_1\land g_2$:]
 Assume that $\gapx(g_1)=\APPX(\cX)$ and $\gapx(g_2)=\operatorname{\APPX}(\cY)$. Define 
 $$\gapx(g_1\land g_2):=
     \APPX
@@ -1063,7 +1063,7 @@ We need to show that each approximation step introduces at most $M^2 \frac{(k-1)
 
 \case 1  OR-approximator.
 We start with $\APPX\left(X_1, \ldots, X_m\right)$ and 
-$\operatorname{\APPX}\left(Y_1, \ldots, Y_{m_m}\right)$ and consider a false positive introduced by
+$\operatorname{\APPX}\left(Y_1, \ldots, Y_{m'}\right)$ and consider a false positive introduced by
 
 $$
 \operatorname{\APPX}\left(\text{pluck}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}\right)\right) \text {. }
@@ -1073,7 +1073,7 @@ $$
 That is, a $(k-1)$-colouring $G=(V, E)$ such that,
 \begin{equation}\label{eq:991:24}
 \operatorname{\APPX}\left(X_1, \ldots, X_m\right)(G)=0 
-\quad \text{ and } ~~~\operatorname{\APPX}\left(Y_1, \ldots, Y_m\right)(G)=0
+\quad \text{ and } ~~~\operatorname{\APPX}\left(Y_1, \ldots, Y_{m'}\right)(G)=0
 \end{equation}
 while 
 \begin{equation}\label{eq:960:30}
@@ -1191,5 +1191,5 @@ Since there are $\leq M^2$ deletions of sets (because $|\mathcal X| = |\mathcal 
 
   
 % Diusable watermark from this point onward
- \SetWatermarkText{}
+% \SetWatermarkText{}
 

@@ -1063,7 +1063,7 @@ We need to show that each approximation step introduces at most $M^2 \frac{(k-1)
 
 \case 1  OR-approximator.
 We start with $\APPX\left(X_1, \ldots, X_m\right)$ and 
-$\operatorname{\APPX}\left(Y_1, \ldots, Y_{m_m}\right)$ and consider a false positive introduced by
+$\operatorname{\APPX}\left(Y_1, \ldots, Y_{m'}\right)$ and consider a false positive introduced by
 
 $$
 \operatorname{\APPX}\left(\text{pluck}\left(X_1, \ldots, X_m, Y_1, \ldots, Y_{m^{\prime}}\right)\right) \text {. }
@@ -1073,7 +1073,7 @@ $$
 That is, a $(k-1)$-colouring $G=(V, E)$ such that,
 \begin{equation}\label{eq:991:24}
 \operatorname{\APPX}\left(X_1, \ldots, X_m\right)(G)=0 
-\quad \text{ and } ~~~\operatorname{\APPX}\left(Y_1, \ldots, Y_m\right)(G)=0
+\quad \text{ and } ~~~\operatorname{\APPX}\left(Y_1, \ldots, Y_{m'}\right)(G)=0
 \end{equation}
 while 
 \begin{equation}\label{eq:960:30}
@@ -1123,7 +1123,7 @@ $$
 $\operatorname{Pr}[R(X)] \leq \frac{1}{2}$, for $|X|\le \ell$).
 
 
-Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $\mathrm{p}-1$, and there are no more than $2M$ sets when we start), the lemma holds for the $\lor$ approximation step,  because (recall the total number of $(k-1)$-colouring is  $(k-1)^n$) 
+Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $p-1$, and there are no more than $2M$ sets when we start), the lemma holds for the $\lor$ approximation step,  because (recall the total number of $(k-1)$-colouring is  $(k-1)^n$) 
 $$
 \frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p} \leq
 M^2 \cdot \frac{(k-1)^n}{2^p}  .

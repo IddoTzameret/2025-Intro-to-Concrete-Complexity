@@ -159,7 +159,7 @@ The proof uses the Random Restriction Method described in the sequel.
 
 
 \begin{tcolorbox}[colframe=white, colback=gray!5, boxrule=0mm, sharp corners]
-\textbf{Upshot of argument}: The idea is to randomly restrict (assign) the variables of the circuit (of which we want to show it cannot compute \Parity). If the circuit is small, such a restriction collapses (gradually) the depth of the circuit to a depth-2 circuit. If the depth of the initial circuit was constant, this gradual step-by-step depth reduction needs to be done only for a constant many times. If we made random assignments (restrictions) only for a constant many times, we can rest assure that we have not assigned (i.e., fixed) too many variables. Hence, the function $\Parity$ under these restrictions still has a lot of free variables. But such $\Parity$ with sufficiently many free variables cannot have small depth 2 circuits (this we show by an auxiliary elementary argument).
+\textbf{Upshot of argument}: The idea is to randomly restrict (assign) the variables of the circuit (of which we want to show it cannot compute \Parity). If the circuit is small, such a restriction collapses (gradually) the depth of the circuit to a depth-2 circuit. If the depth of the initial circuit was constant, this gradual step-by-step depth reduction needs to be done only for a constant many times. If we made random assignments (restrictions) only for a constant many times, we can rest assure that with high probability we have not assigned (i.e., fixed) too many variables. Hence, the function $\Parity$ under these restrictions still has a lot of free variables with high probability. But such $\Parity$ with sufficiently many free variables cannot have small depth 2 circuits (this we show by an auxiliary elementary argument).
 \end{tcolorbox}
 
 \includegraphics[width=0.9\textwidth]{images/image007.png}
@@ -526,12 +526,11 @@ namely
 %\[
 %n > (36 \log s)^{d-3} \cdot 2^{d-1} \cdot 6.
 %\]
-Taking the $(d-3)$th root we get:
+Taking the $(d-3)$th root, this is equivalent to showing 
 \[
 \frac{1}{36}\cd \sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}} > \log S,
 \]
-which leads to:
-
+which means showing
 \begin{equation}\label{eq:534:30}
 2^{
 \frac{1}{36}\cd \sqrt[d-3]{\frac{n}{6 \cdot 2^{d-1}}}
@@ -551,7 +550,6 @@ $$
 }>S,
 $$
 and therefore  \Cref{eq:534:30} holds. 
-
 \mbox{}
 \end{proof} % Induction step of Switching
 
@@ -658,7 +656,7 @@ concluding the proof.
 
 
 \begin{note}\label{note:bottom-explanation}
-Notice that by  using the Bottom Switching Step with a random restriction with $p_0=1/18$ we got that there exists a good random restriction $\rho_1$ with at least $1/36$ fraction of free variables.  In other words, we  reduce the number of free variable only by a constant factor in this step. This allowed us in \Cref{eq:660:327} to start with $\frac{p^{d-2} \cdot (n/36)}{2^{d-2}} $. If we opted to use another application of the switching lemma with $p=\frac{1}{\log S\cd 36}$ like the other steps) instead of the bottom switching step, we would have to start with  $\frac{p}{2} \cd \frac{p^{d-2} \cdot n}{2^{d-2}} = 
+Notice that by  using the Bottom Switching Step with a random restriction with $p_0=1/18$ we got that there exists a good random restriction $\rho_1$ with at least $1/36$ fraction of free variables.  In other words, we  reduce the number of free variable only by a constant factor in this step. This allowed us in \Cref{eq:660:327} to start with $\frac{p^{d-2} \cdot (n/36)}{2^{d-2}} $. If we opted to use another application of the switching lemma with $p=\frac{1}{\log S\cd 36}$ like the other steps instead of the bottom switching step, we would have to start with  $\frac{p}{2} \cd \frac{p^{d-2} \cdot n}{2^{d-2}} = 
 \frac{p^{d-1} \cdot (n)}{2^{d-1}}  $ instead (which is a  factor of $\frac{1}{72\log S}$ instead of 1/36), so that overall we would have gotten a weaker lower bound of $2^{\Omega(\sqrt[d]n)}$ instead of the stronger lower bound of $2^{\Omega(\sqrt[d-1]n)}$ .
 \end{note}
 
@@ -907,7 +905,7 @@ namely the event of picking a restriction from \( S \), is mapped to the \emph{e
 \emph{image} of \( \Theta \).
 because every event has probability smaller than one we finish. 
 
-We explain it as follows. We have the following 
+We explain this in more detail as follows. We have the following 
 \[
 \Pr_{\mathcal{R}}[S] = \sum_{\rho \in S} \Pr_{\mathcal{R}}[\rho] = 
 \sum_{\rho \in S} \left(\frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[\Theta(\rho)]\right) =

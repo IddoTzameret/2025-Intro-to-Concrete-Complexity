@@ -66,7 +66,7 @@ The computational problem \textbf{CLIQUE$(k, n)$}:
  
 It is known that CLIQUE$(k,n)$ is NP-complete (see standard complexity textbooks; e.g., Papadimitriou 1994).
 Note that $\operatorname{CLIQUE}(k, n)$ is a monotone function: if we add 1's to the input, we only \emph{increase} the chance it has a $k$-clique. Since CLIQUE$(n, k)$ is a monotone (Boolean)
-function we can compute it by a monotone Boolean circuit. But the question remains whether we can compute CLIQUE$(n, k)$ with small monotone circuit. 
+function we can compute it by a monotone Boolean circuit. But the question remains whether we can compute CLIQUE$(n, k)$ with a small monotone circuit. 
 
 \begin{trailer}{Example of a monotone circuit computing CLIQUE$(n, k)$}
 Consider  all $\binom{n}{k} ~~ k$-sub-graphs in $G$, and check if at least one of those is a clique:
@@ -346,7 +346,7 @@ We shall describe a way of approximating any \textbf{monotone} circuit for $\ope
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \textbf{Approximation Method}:
-The upshot of the method is the following: \emph{by  way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be well approximated by a small approximator. Then, if the number of nodes in the circuit is small the output gate is also well approximated by a small approximator. Now, use an auxiliary argument to show that there is no small approximator well approximating $\operatorname{CLIQUE}({n}, {k})$.
+The upshot of the method is the following: \emph{by  way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be well approximated by a small approximator. Then, we show that if the number of nodes in the circuit is small the output gate is also well approximated by a small approximator. Now, use an auxiliary argument to show that there is no small approximator  approximating  well $\operatorname{CLIQUE}({n}, {k})$.
 \end{tcolorbox}
 % =======
 % The upshot is the following: \emph{by way of contradiction,} consider a purported small monotone circuit computing  $\operatorname{CLIQUE}({n}, {k})$, and show by induction, gradually progressing from the input nodes towards the output node, that the function computed at every gate can be approximated by a small approximator. Then, the output gate is also approximated by a small approximator. Now, use an auxiliary argument to show that there is no small approximator approximating $\operatorname{CLIQUE}({n}, {k})$.
@@ -355,7 +355,7 @@ The upshot of the method is the following: \emph{by  way of contradiction,} cons
 More precisely, we have:  
 \begin{enumerate}
  
-\item  Given a monotone circuit $C$, we shall construct a approximator 
+\item  Given a monotone circuit $C$, we shall construct an approximator 
 $\APPX(X_1, \ldots, X_m)$ for some $m$ and $|{X}_{i}| \leq l$ (for some $l$, and for $i=1, \ldots, m$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
 % =======
 % \item  Given a monotone circuit $C$, we shall construct a approximator ${\APPX}({X_1, \ldots, {X_m})}$ for some $m$ and $\left|{X}_{{i}}\right| \leq l$ (for some $l$, and for ${i}=1, \ldots, {m}$ ), that approximates $\operatorname{CLIQUE}({n}, {k})$ with \textbf{precision} that is dependent on the number of gates in $C$.
@@ -374,7 +374,7 @@ The \textbf{approximation} (i.e., construction of an approximator for CLIQUE(${n
 
 
 
-\item We show that every approximator ${\APPX}({X}_1, \ldots, {X_m})$ ($|{X}_i| \leq l$ for some $l$, for all $i=1, \ldots, m$ ), ought to make \textit{exponentially many errors} on the function $\operatorname{CLIQUE}(n, k)$. From \ref{it:approximation-b} above we conclude that there exists no circuit $C$ with a small number of gates. 
+\item We show that every approximator ${\APPX}({X}_1, \ldots, {X_m})$ ($|{X}_i| \leq l$ for some $l$, for all $i=1, \ldots, m$ ), ought to make \textit{exponentially many errors} on the function $\operatorname{CLIQUE}(n, k)$. From \ref{it:approximation-b} above we conclude that there exists no circuit $C$ with a small number of gates, if $\ell$ and $m$ are not too big. 
 \end{enumerate}
 
 
@@ -582,7 +582,7 @@ For every gate $g$ in $C$ we are going to define $\gapx(g)$ to be $\APPX(\cX)$ f
 
 \begin{description}
 \item[\textbf{Base Approximation Step}:] 
-Input nodes $x_{ij}$. Define the approximator of $x_{ij}$, denoted  to be precisely $x_{ij}$, that is $\gapx(x_{ij}):=x_{ij}$.
+Input nodes $x_{ij}$. Define the approximator of $x_{ij}$  to be precisely $x_{ij}$, that is $\gapx(x_{ij}):=x_{ij}$.
 Note that $x_{ij}$ is indeed an OR of (a single) AND, namely $x_{ij}=\APPX(\{x_{ij}\})$, and so this definition is legit.
 
 \item[\textbf{Induction  Approximator Step}:]\
@@ -780,7 +780,7 @@ Based on the above claim, we have two cases:
 \medskip 
 
 \noindent \case 1 $\operatorname{\APPX}\left(X_1, \ldots, X_m\right) $ is identically 0. 
-Thus, the number of \emph{false negatives} $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ has in total is the number of all possible positive instance, namely all possible $k$-cliques, which is $\binom{n}{k}$.
+Thus, the number of \emph{false negatives} $\operatorname{\APPX}\left(X_1, \ldots, X_m\right)$ has in total is the number of all possible positive instances, namely all possible $k$-cliques, which is $\binom{n}{k}$.
 By \Cref{lem:new-false-negatives},  each approximation step introduces at most $M^2\cd\binom{n-l-1}{k-l-1}$ new false negatives. Therefore,  \emph{the number of gates in  $C$\ is lower bounded by the total number of new errors introduced across all the  gates in $C$ (which is $\binom{n}{k}$), divided by the maximal number of errors introduced by each gate (which is $\le M^2\cd\binom{n-l-1}{k-l-1}$).} In other words,
 \begin{align*}
 |C| \geq \frac{\binom{n}{k}}{M^2\cd\binom{n-l-1}{k-l-1}}
@@ -954,15 +954,58 @@ By induction on $\ell$.
 
 \case 1 If $D$ contains $\geq p$ sets then $D$ is a sunflower with an empty core, and we are done.
 
-\case 2 Otherwise, let $E$ be the \emph{union} of all sets in $D$.
+\case 2 Otherwise, intuitively there is enough intersection to find an element that is very popular; namely, the element appears in a lot of sets in $Z$. Hence, let $E$ be the \emph{union} of all sets in $D$.
 Since $|D|<p$, i.e., $D$ contains less than $p$ sets, and each set in $D$ has size $\le \ell$, we know that $|E| \leq(p-1)\cd\ell$.
 
 \medskip 
 
 Moreover, $E$ intersects every set in $Z$ by assumption.
-Since $Z$ has more than $M$ sets by assumption, and each set intersects some element of $E$, there exists an element $d \in E$ that intersects $>\frac{M}{(p-1)\cd l}=(p-1)^{l-1} \cdot(l-1)!$ sets in $Z$.
-\footnote{If a set $E$ intersects all sets in a family of sets $X_1, . ., X_M$ then there is an element in $E$ that appears in $\geq \frac{M}{|E|}$ sets $X_i$.
-Otherwise, each element in $E$ appears in $<\frac{M}{|E|}$ sets $X_i$. Thus, $E$ intersects $<|E| \cdot \frac{M}{|E|}=M$ sets $X_i$, which is a contradiction to the assumption. Another way to look at this is through the pigeonhole principle: if $E$ intersect each set $X_i$, then there is a functional mapping from each of the $M$ sets $X_i$ to a (single, arbitrarily chosen) element of $E$ that occurs also in $X_i$. Thus, there must be an element of $E$ with at least $\frac{M}{|E|}$ sets $X_i$ that maps to it.}
+Since $Z$ has more than $M$ sets by assumption, and each set intersects some element of $E$, there exists an element $d \in E$ that intersects $>\frac{M}{(p-1)\cd l}=(p-1)^{l-1} \cdot(l-1)!$ sets in $Z$. To see why that is so consider the following.
+
+If a set $E$ intersects all sets in a family of sets $X_1, . ., X_M$ then there is an element in $E$ that appears in $\geq \frac{M}{|E|}$ sets $X_i$.
+Otherwise, each element in $E$ appears in $<\frac{M}{|E|}$ sets $X_i$. Thus, $E$ intersects $<|E| \cdot \frac{M}{|E|}=M$ sets $X_i$, which is a contradiction to the assumption. Another way to look at this is through the pigeonhole principle: if $E$ intersects each set $X_i$, then there is a mapping from each of the $M$ sets $X_i$ to a (single) element of $E$ that occurs also in $X_i$ (in case there are several such elements choose one arbitrarily). Thus, there must be an element of $E$ with at least $\frac{M}{|E|}$ sets $X_i$ that maps to it. See  \Cref{fig:sunflower-simple-counting}  
+
+\usetikzlibrary{positioning,calc,fit}
+
+\begin{figure}[t]
+  \centering
+ 
+\begin{tikzpicture}[
+  scale=0.75,
+  transform shape,
+  font=\small,
+  set/.style={draw, rounded corners, inner sep=6pt, minimum width=16mm, minimum height=10mm},
+  elem/.style={draw, circle, inner sep=1.6pt},
+  arrow/.style={->, thick}
+  ]
+
+% Left: sets X_1, X_2, X_3, ..., X_M
+\node[set] (X1) {$X_{1}$};
+\node[set, below=7mm of X1] (X2) {$X_{2}$};
+\node[set, below=7mm of X2] (X3) {$X_{3}$};
+\node[below=10mm of X3] (Xdots) {$\vdots$};
+\node[set, below=10mm of Xdots] (XM) {$X_{M}$};
+
+% Right: elements of E stacked vertically
+\node[elem, right=45mm of X1] (e1) {$e_{1}$};
+\node[elem, below=6mm of e1] (e2) {$e_{2}$};
+%\node[elem, below=6mm of e2] (e3) {$e_{3}$};
+\node[below=6mm of e2] (edots) {$\vdots$};
+\node[elem, below=6mm of edots] (ek) {$e_{k}$};
+
+% Box around E and label
+\node[draw, rounded corners, fit=(e1)(ek), inner sep=10mm] (Ebox) {};
+\node[above=2mm of Ebox.north] {$E$};
+
+% Arrows (no labels), with X_2 -> e_3 and X_3 -> e_2
+\draw[arrow] (X1.east) -- (e1.west);
+\draw[arrow] (X2.east) -- (e2.west);
+\draw[arrow] (X3.east) -- (e2.west);
+\draw[arrow] (XM.east) -- (ek.west);
+
+\end{tikzpicture}
+\caption{}\label{fig:sunflower-simple-counting}
+\end{figure}
 
 Consider
 

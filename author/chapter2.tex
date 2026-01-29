@@ -1127,7 +1127,7 @@ We consider each plucking involved in \Cref{eq:960:30}, and bound from above the
 
 
 Consider a single plucking\footnote{It is fine to consider each single plucking, and count how many errors introduced in each such plucking. The reason is that once a plucking was done, we take the core $Z$ of some sunflower; and this new set $Z$ replaces all other set in the sunflower. Then we count the number of new errors introduced. Now, this $Z$ could  be replaced again in future pluckings, and we shall count the new errors introduced again.}: 
-replace sunflower $\left\{Z_1, \ldots, Z_p\right\}$ by its core $Z$ (see \Cref{fig:pluck-stage}).
+replace the sunflower $\left\{Z_1, \ldots, Z_p\right\}$ by its core denoted $Z$ (see \Cref{fig:pluck-stage}).
 
 By \Cref{eq:991:24}: $Y_i$'s and $X_i$'s are all non-cliques in $G$.
 Thus, by \Cref{eq:960:30}, $Z$ \emph{is} a new  clique
@@ -1136,7 +1136,7 @@ identified by the approximation and for every $i\in[p]$, the petal of $Z_i$ cont
 \begin{figure}[H]
     \centering
     \includegraphics[width=.6\linewidth]{images/clique3.png}
-    \caption{Example}
+    \caption{Example. Here $p=6$.}
     \label{fig:pluck-stage}
 \end{figure}
 
@@ -1147,26 +1147,27 @@ For this purpose we consider the following question:\ choosing a $(k-1)$-colouri
 As before, let $R(X)$ be the probability that $X$ has repeated colours.
 
 
-$$
+\begin{equation}\label{eq:monotone-crucial-inequality-for-petal-disjointness:1}
 \operatorname{Pr}
 \left[R\left(Z_1\right) \wedge 
 \ldots \wedge R\left(Z_p\right) \wedge \neg R(Z)
 \right] 
-\leq \operatorname{Pr}\left[R\left(Z_1\right) \wedge \ldots \wedge R\left(Z_p\right) \mid \neg R(Z)\right]$$
-(by the definition of conditional probability $\operatorname{Pr}[A \land B]=\operatorname{Pr}[A \mid B] \cdot \operatorname{Pr}[B]$)
+\leq \operatorname{Pr}\left[R\left(Z_1\right) \wedge \ldots \wedge R\left(Z_p\right) \mid \neg R(Z)\right]
+\end{equation}
+by the definition of conditional probability $\operatorname{Pr}[A \land B]=\operatorname{Pr}[A \mid B] \cdot \operatorname{Pr}[B]$.
 
-\begin{align*}
-& =\prod_{i=1}^p \operatorname{Pr}\left[R\left(Z_i\right) \mid \neg R(Z)\right] 
-\intertext{($Z_i$'s do not have common nodes, except those in $Z$, so given $\neg R(Z)$ the events $R(Z_i)$ are independent)}
+Now we use crucially the fact that the petals $Z_i$'s do not have common nodes, except those in the core $Z$. This allows us to conclude that the events $R(Z_i)$, for $i\in[p]$,  that a random $(k-1)$-colouring colors two nodes with the same colour in petal $Z_i$ given $\neg R(Z)$ are \emph{independent} and hence the probability that \emph{each} petal contains a pair with the same colours decrease exponentially in the number of petals $p$; namely, the right hand side of \Cref{eq:monotone-crucial-inequality-for-petal-disjointness:1} equals
+\begin{align}
+& \prod_{i=1}^p \operatorname{Pr}\left[R\left(Z_i\right) \mid \neg R(Z)\right] \\
 & \leq \prod_{i=1}^p \operatorname{Pr}\left[R\left(Z_i\right)\right]\\
 \intertext{(the probability of repetition of colours is increased if we do not restrict ourselves to colourings with no repetitions in the core $Z \subseteq Z_i$)}
 & \leq \frac{1}{2^p}
-\end{align*}
+\end{align}
 (because as we have seen before in \Cref{sec:Concluding-monotone-lower-bound-str-ind}, 
 $\operatorname{Pr}[R(X)] \leq \frac{1}{2}$, for $|X|\le \ell$).
 
 
-Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $p-1$, and there are no more than $2M$ sets when we start), the lemma holds for the $\lor$ approximation step,  because (recall the total number of $(k-1)$-colouring is  $(k-1)^n$) 
+Finally, since the approximation step entails up to $\frac{2 M}{p-1}$ pluckings (each plucking decreases the number of sets by $p-1$, and there are no more than $2M$ sets when we start), the lemma holds for the $\lor$ approximation step,  because (recall the total number of $(k-1)$-colouring is  $(k-1)^n$) using the union bound
 $$
 \frac{2 M}{p-1} \cdot \frac{(k-1)^n}{2^p} \leq
 M^2 \cdot \frac{(k-1)^n}{2^p}  .
@@ -1181,7 +1182,7 @@ The second phase omits from the approximator circuit several sets (those of card
 
 The third phase entails a sequence of fewer than $M^2$ plucking, during each of which, by the analysis of the OR case above, at most $2^{-p}(k-1)^{n}$ false positives are introduced. 
 
-The proof of the lemma is complete: because at total we introduced $\leq M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
+The proof of the lemma is complete,  because in both cases we introduced in total at most $ M^2 \cdot \frac{(k-1)^n}{2^p}$ false positives.
  
 
 
@@ -1203,7 +1204,7 @@ The proof of the lemma is complete: because at total we introduced $\leq M^2 \cd
 \text{APX}(\text{pluck}(\mathcal{X} \cup \mathcal{Y}))}_{\text{$\lor$-approximator}}(G) = 0.
 \end{equation}
 But such a $G$ does not exist, because plucking only makes some sets smaller (a petal is discarded but is replaced by its core, which is its subset). Hence,
-if \Cref{eq:or_case_1} holds, then \Cref{eq:or_case_2} cannot.\footnote{When the core is empty, we get that the empty set is one of the sets in $\text{pluck}(\mathcal{X} \cup \mathcal{Y})$, which means that one of the AND gates in $\text{APX}(\text{pluck}(\mathcal{X} \cup \mathcal{Y}))$ is empty, namely the constant truth value 1.}
+if \Cref{eq:or_case_1} holds, then \Cref{eq:or_case_2} cannot.\footnote{When the core is empty, we get that the empty set is one of the sets in $\text{pluck}(\mathcal{X} \cup \mathcal{Y})$, which means that one of the AND gates in $\text{APX}(\text{pluck}(\mathcal{X} \cup \mathcal{Y}))$ is empty, namely the constant truth value 1. Note that in this case the whole approximator is simply the constant 1.}
 \medskip 
 
 \noindent\case{$\land$}
@@ -1217,7 +1218,7 @@ a $k$-clique $G = (V, E)$ such that
 \end{equation}
 
 In the first step, we replace $\text{APX}(\mathcal{X}) \wedge \text{APX}(\mathcal{Y})$ by $\text{APX}(X \cup Y : X \in \mathcal{X}, Y \in \mathcal Y)$. 
-Hence, if $G$ is a $k$-clique and both $\mathcal{X}$ and $\mathcal{Y}$ are each cliques in $G$, it must be that $X \cup Y$ is also a clique in $G$ (because $G$ contains a single $k$-clique in which no edge outside the clique is present, hence if there is a clique on both $X$ and $Y$, it must be that they are both a part of a single $k$-clique, meaning all edges between nodes in $X$ and $Y$ are also present). Thus, no false negatives are introduced in this step.
+Hence, if $G$ is a $k$-clique and both $\mathcal{X}$ and $\mathcal{Y}$ are each cliques in $G$, it must be that $X \cup Y$ is also a clique in $G$ (because $G$, being an extreme positive instance, contains a single $k$-clique in which no edge outside the clique is present, hence if there is a clique on both $X$ and $Y$, it must be that they are both a part of a single $k$-clique, meaning all edges between nodes in $X$ and $Y$ are also present). Thus, no false negatives are introduced in this step.
 
 \bigskip 
 

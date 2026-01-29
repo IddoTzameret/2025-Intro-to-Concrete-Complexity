@@ -174,7 +174,8 @@ Here are the main steps of the argument with slightly more detail.
 
 \begin{enumerate}
 \item By  way of contradiction, start with a purported small depth-$d$ circuit $C$ for $\Parity_n$.
-We are going to assign to some of the input variables of the circuit $C$ (and hence, also to the function $\Parity_n$ it is supposed to compute), random 0,1 values. We show the result of these assignments leads to conflicting effects: with high probability, while the circuit restricted to these randomly chosen partial assignments becomes a circuit that computes a very simple function, the function $\Parity$ is still a rather complicated function to compute even after all these restriction.
+We are going to assign to some of the input variables of the circuit $C$ (and hence, implicitly also to the function $\Parity_n$ that the circuit  allegedly  computes), random 0,1 values. We show the result of these assignments leads to conflicting effects: with high probability  the circuit restricted to these randomly chosen partial assignments becomes a circuit that computes a very simple function; but on the other hand,  the function that survives after all these restrictions is still the $\Parity$ function (only of a somewhat smaller number of variables) and so it is easy to show that such a simple circuit cannot compute this function.
+
 \item Let $\overline x$ be $n$ variables $x_1,\dots,x_n$. Pick a random assignment $\rho_0: \overline x \rightarrow\{0,1, *\}^n$ with ``$x_i \rightarrow *$'' meaning that $x_i$ is \emph{un-assigned}, namely, stays a \emph{free} variable. We make sure that enough $x_i$'s stay  free, as this is crucial to get our contradiction.
 \label{it:two-165}
 
@@ -215,13 +216,13 @@ in particular, it is a very simple argument to show that there are no $k$-CNF fo
 We shall use the following notation.
 \begin{itemize}
     \item \textit{Boolean (propositional) variables:} \(x_1, x_2, \ldots \).
-    \item \textit{Literal:} \(x_i\) or \(\neg x_i\) (i.e., a variables or its negation).\\
-    A negation of a variable  \(x_i\) is written as eiter \(\neg x_i\), or $\overline {x_i}$.
+    \item \textit{Literals:} \(x_i\) or \(\neg x_i\) (i.e., a variables or its negation).\\
+    (We sometimes write a negation of a variable  \(x_i\) as $\overline {x_i}$.)
     \item \textit{Clause:} A disjunction of literals.\\
     Example: \((x_1 \lor \neg x_2 \lor x_3)\)
     \item \textit{CNF:} Conjunctive Normal Form formula, namely a conjunction  of clauses.\\
     Example: \((x_1 \lor \neg x_2 \lor x_3) \land (x_1 \lor x_4 \lor x_5) \land (x_2 \lor \neg x_7 \lor \neg x_{20} \lor \neg x_{102})\)
-    \item \textit{DNF:} Disjunction Normal Form formulas, namely a disjuncion of ANDs of literals (an AND of literals is sometimes called \emph{a term}.\\
+    \item \textit{DNF:} Disjunction Normal Form formulas, namely a disjunction of ANDs of literals (an AND of literals is sometimes called \emph{a term}.\\
     Example: \((x_1 \land x_4 \land x_7) \lor (x_8 \land \neg x_9 \land x_{10}) \lor (x_3 \lor \neg x_2)\)
     \item \textit{$t$-clause:} A clause with at most \(t\) literals.\\
     Example: 3-clause: \((x_1 \lor \neg x_2 \lor x_7)\)
@@ -230,13 +231,13 @@ We shall use the following notation.
 \end{itemize}
 
 
-The below figure illustrates a single Depth Reduction Step. Such a step is also called  ``Switching'', as it switches a $t$-CNF into an $s$-CNF, or vice versa.
+The below figure illustrates a single Depth Reduction Step. Such a step is also called  ``switching'', as it switches a $t$-CNF into an $s$-DNF, or vice versa.
 
 \includegraphics[width=0.7\textwidth]{images/image008.png}
 
 \begin{note} We can always turn a $t$-CNF into an $s$-DNF for some \textit{big} $s$ (by distributing out \(\lor, \land\) using de Morgan's rules).
 But then we've not maintained the invariant that the bottom level has fan-in \(\leq s\) (namely, \(s\) is small enough).
-In other words, we will end up with a depth-2 circuit, but of huge size computing \(f\rst_\rho\). This will not give us a contradiction since every function is computable by an exponential-size circuit.
+In other words, we will end up with a depth-2 circuit, but of huge size computing \(f\rst_\rho\). This will not give us a contradiction since every function is computable by an exponential-size depth-2 circuit.
 \end{note}
 
 \para{Examples of Assignments and their Consequences}
@@ -284,7 +285,8 @@ Assigning $1$ to $x_9$:
 \end{note}
 
 But how can we choose the assignment of $0$ and $1$'s to variables that guarantees eliminating all the large conjuncts, without fixing all the variables in the DNF formula (recall that by \Cref{it:two-165} above we need to keep sufficiently many variables $x_i$ free)?
-The idea is to use the \emph{probabilistic method}: choosing a \emph{random} $g: \overline x \to \{0,1, *\}^n$ will lead with \textbf{positive} probability to an assignment that eliminates \emph{all} large conjuncts, while leaving enough variables free. When an event occurs with a positive probability, in this case the event of choosing an assignments with the desired properties, it means that there \textbf{exists} at least one such assignment. This will be enough for our purpose: the existence of such an assignment is sufficient to conclude our proof, because our argument hinges on a proof by contradiction: if there exists a small constant-depth circuit for PARITY, then there \emph{exists} also a desired assignment (formally, a sequence of assignments) that will yield our contradiction as in \Cref{it:final-step:269}.
+The idea is to use the \emph{probabilistic method}: choosing a \emph{random} $g: \overline x \to \{0,1, *\}^n$ will lead with \textbf{positive} probability to an assignment that eliminates \emph{all} large conjuncts, while leaving enough variables free. When an event occurs with a positive probability, in this case the event of choosing an assignments with the desired properties, it means that there \textbf{exists} at least one such assignment. 
+%This will be enough for our purpose: the existence of such an assignment is sufficient to conclude our proof, because our argument hinges on a proof by contradiction: if there exists a small constant-depth circuit for PARITY, then there \emph{exists} also a desired assignment (formally, a sequence of assignments) that will yield our contradiction as in \Cref{it:final-step:269}.
 
 \para{Switching via Random Restrictions}
 
@@ -324,7 +326,7 @@ In other words, we pick randomly and independently for each variable $x_i$ with 
 
 \begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \begin{theorem}[Switching Lemma]\label{thm:Switching-Lemma}
-For every positive integers $r$ and $k$ and $n$, if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be computable by  an $s$-CNF.
+For every positive integers $r,s$ and $n$, if a Boolean function $f$ with $n$ variables is computable by an $r$-DNF and $\rho$ is a random restriction as above with $0<p \leq \frac{1}{9}$, then with probability at most $(9pr)^s$, $f\!\rst_\rho$ \emph{cannot} be computable by  an $s$-CNF.
 \end{theorem}
 \end{tcolorbox}
 

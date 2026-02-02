@@ -341,7 +341,7 @@ However, we note that this probabilistic argument via the union bound  is  \emph
 
 \section{Proof that PARITY does not have small circuits, using the Switching Lemma}
 
-Recall that we want to prove \Cref{thm:ACZ-lower bound}  stating that every circuit family of depth-$d$ computing the PARITY on $n$ variables requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$.
+Recall that we want to prove \Cref{thm:ACZ-lower bound}  stating that every circuit family of depth-$d$ computing the PARITY on $n$ variables requires size $2^{\Omega\left(n^{\nicefrac{1}{d-1}}\right)}$. In this section we are going to assume the Switching Lemma to prove this result. In the next section we shall prove the Switching Lemma itself. 
 
 So, suppose  that $C$ is a depth-$d$ alternating formula circuit of size $S$ computing $\Parity_n$. We can assume that 
 $S< 2^{ n^{\nicefrac{1}{d-1}}}$, as otherwise we finish the proof.
@@ -371,7 +371,7 @@ See \Cref{note:bottom-explanation} for an explanation of this.
 For this reason, we shall reduce the fan-in of the bottom layer (i.e., layer 1) directly using the Switching Lemma (while maintaining a lower probability of failure).
 
 \begin{claim}\label{cla:bottom-switch}
-An $\ell$-CNF does not turn into a $k$-CNF under a random restriction $\rho$ with probability $\leq (9p_0)^k$, for $p_0$ the probability a variable is free in the random restriction $\rho$. Specifically, when $k = 2 \cdot \log S$, if we choose $p_0 = \frac{1}{18}$, the probability of failure is at most $ \frac{1}{S^2}$.
+An $\ell$-CNF does not turn into a $k$-CNF under a random restriction $\rho$ with probability $\leq (9p_0)^k$, where $p_0$ is the probability a variable is free in the random restriction $\rho$. Specifically, when $k = 2 \cdot \log S$, if we choose $p_0 = \frac{1}{18}$, the probability of failure is at most $ \frac{1}{S^2}$.
 \end{claim}
 
 \begin{proof}[Claim]
@@ -394,7 +394,7 @@ By this claim, and using the union bound, the probability that at least one $\el
 
 
 \para{Repeated Depth Reduction Steps}
-We now start from a circuit $C{\rst}_{\rho_1}$ with $k$-CNF at the bottom, for $k = 2 \log S$.
+We now can assume we start from a circuit $C{\rst}_{\rho_0}$ with $k$-CNF at the bottom, for $k = 2 \log S$, where $\rho_0$ is the restriction that decreased the bottom layer fan-in above. (For simplicity we use the notation $C$ below, instead of $C{\rst}_{\rho_0}$.)
 We go by induction on depth, to prove the following.
 
 
@@ -409,7 +409,7 @@ with layer-1 (bottom) gates all of fan-in  $ \leq k=2 \log S$ (either  $\land$ o
 with $n$ input variables  
 $\overline x$ (with positive and negative copies). Assume that the gates in layer $d$ are all $\land$ gates (resp., $\lor$ gates). 
 Then, there exists a restriction $\rho: \overline {x} \rightarrow\{0,1, *\} $ with at least  $\frac{p^{d-2} \cdot n}{2^{d-2}} $ free variables, where $ p=\frac{1}{36 \cdot \log S}$, such that  
-the function computed by $g{\rst}_{\rho}$ for every $\land$ (resp. $\lor$) gate in layer $d$ is computable by a $k$-DNF (resp., a $k$-CNF) formula. 
+the function computed by $g{\rst}_{\rho}$ for every $\land$ (resp. $\lor$) gate $g$ in layer $d$ is computable by a $k$-DNF (resp., a $k$-CNF) formula. 
 \end{lemma} 
 \end{tcolorbox}
 
@@ -420,7 +420,7 @@ We prove it for the case $\land$ in layer $d$. The $\lor$ case is similar.
 this case holds immediately.  
 
 \Induction   
-We assume the induction statement holds for layer $d-1$, and prove it for $d$. The following figure illustrates the argument. 
+We assume the induction statement holds for  $d-1$, and prove it for $d$. The following figure illustrates the argument. 
 
 
 
@@ -428,14 +428,21 @@ We assume the induction statement holds for layer $d-1$, and prove it for $d$. T
 \begin{figure}[H]
     \begin{center}
     \includegraphics[width=\textwidth]{images/switchinginduc.png}
-    \end{center}\label{fig:depth-reduction-use}
-    \caption{The setup of the induction step.}
+    \end{center}
+    \caption{The setup of the induction step.}\label{fig:depth-reduction-use}
 \end{figure}
- In (\textbf{1}) in the  Figure~\ref{fig:depth-reduction-use},  we have (by induction hypothesis) a depiction of part of the circuit $C$, showing a single $\land$ gate in layer $d$ (there  may be other $\land$ gates in this layer, and there may be other gates above it in layers higher than $d$). 
-In (\textbf{2}) we see the $\land$ gate in layer $d$ under the restriction $\rho'$, i.e., $C\rst_{\rho'}$, with $\rho'$ having $\geq \frac{p_0^{d-3} \cdot n}{2^{d-3}}$ free variables. Hence, its children, which are $\lor$ gates, have turned under $\rho'$ to  $k$-CNFs.
- (\textbf{3}) simply merged the $\land$ gate in layer $d$ to its children in layer $d-1$, all of which turned to $\land$ gates themselves. 
-Our goal is to get to circuit (\textbf{4}), by applying the Switching Lemma with a random restriction $\rho''$ and then compute an upper bound on the probability that such a switch to $k$-DNF occurs for \emph{all} the gates in layer $d$. We explain this now.
 
+\begin{enumerate}
+    \item 
+        In (\textbf{1}) in    Figure~\ref{fig:depth-reduction-use},  we have a depiction of part of the circuit $C$, showing a \emph{single} $\land$ gate in layer $d$ (there  may be other $\land$ gates in this layer, and there may be other gates above it in layers higher than $d$). 
+
+
+    \item In (\textbf{2}) we see the $\land$ gate in layer $d$ under the restriction $\rho'$, i.e., $C{\rst}_{\rho'}$, with $\rho'$ having $\geq \frac{p^{d-3} \cdot n}{2^{d-3}}$ free variables. Hence, by induction hypothesis its children, which are $\lor$ gates, have turned under $\rho'$ to  $k$-CNFs.
+
+    \item (\textbf{3}) simply merged the $\land$ gate in layer $d$ to its children in layer $d-1$, all of which turned to $\land$ gates themselves. 
+
+    \item Our goal is to get to circuit (\textbf{4}), by applying the Switching Lemma with a random restriction $\rho''$ and then compute an upper bound on the probability that such a switch to $k$-DNF occurs for \emph{all} the gates in layer $d$. We explain this now.
+\end{enumerate} 
 
 \smallskip 
 
@@ -450,30 +457,59 @@ Our goal is to get to circuit (\textbf{4}), by applying the Switching Lemma with
 
 Using the Switching Lemma with the parameters \( r = s = k = 2 \log S \), with probability \( \leq (9pk)^k \), a \emph{single} $k$-CNF in layer \( d \) does not switch to a $k$-DNF.
 By the union bound, with probability \( \leq S\cd(9pk)^k \) the bad event that \emph{at least one} $k$-CNF in layer \( d \) does \emph{not} switch to a $k$-DNF occurs.
-We now use another bound to estimate the probability of the event that a random restriction has too few free variables. The tool we use is the Chernoff bound.
+We now use another bound to estimate the probability of the event that a random restriction has too few free variables. The tool we use is the important \emph{Chernoff bound}.
 
 
 \begin{tcolorbox}[colframe=white, colback=gray!11, boxrule=0mm, sharp corners]
 \textbf{Chernoff Concentration Bound}.
-Random variables and expectations: A random variable \( X \) is a mapping from the sample probability space of elementary (or ``atomic'') outcomes to the real line, \( X: \Omega \to \mathbb{R} \). For example, consider a random variable with \( X_i = 1 \) if \( E_i \) occurs, and \( 0 \) otherwise. (For example, a random event is flipped as ``heads''). The indicator variable \( X \) taking values in \( [0, 1] \), with \( X_i = 1 \) if \( E_i \) happened, \( 0 \) otherwise.
-
-If a random variable \( X \) takes its values from a set \( A \), we define the expectation of \( X \) as follows:
+ 
+\paragraph{Random variables and expectations.}
+Let $\Omega$ be a finite sample space of \emph{atomic (elementary) outcomes}. A \emph{random variable} is a function
 \[
-\mathbb{E}[X] = \sum_{a\in A} Pr[X = a]\cd a\,.
+X:\Omega \to \mathbb{R}.
+\]
+So each atomic outcome $\omega\in\Omega$ is mapped to a real number $X(\omega)$.
+
+A basic and important example is a $\{0,1\}$-valued random variable (an \emph{indicator variable}). Given an event $E \subseteq \Omega$, define a random variable $X$ by
+\[
+X(\omega)=
+\begin{cases}
+1 & \text{if } \omega\in E,\\
+0 & \text{otherwise.}
+\end{cases}
+\]
+Thus $X$ records whether the event $E$ happened.
+
+If a random variable $X$ takes values in a finite set $A\subseteq\mathbb{R}$, its \emph{expectation} is
+\[
+\mathbb{E}[X] \;=\; \sum_{a\in A}\Pr[X=a]\cdot a.
 \]
 
-Linearity of expectation: For a collection of random variables \( X_1, X_2, ..., X_n \) (not necessarily independent), we have:
+\paragraph{Linearity of expectation.}
+For any random variables $X_1,\dots,X_n$ (not necessarily independent),
 \[
-\mathbb{E} \left[ \sum_{i=1}^{n} X_i \right] = \sum_{i=1}^{n} \mathbb{E}[X_i].
+\mathbb{E}\Big[\sum_{i=1}^n X_i\Big] \;=\; \sum_{i=1}^n \mathbb{E}[X_i].
 \]
 
-Concentration around the expectation: 
-For a random variable \( X = \sum^n_{i=1} X_i \), that is a sum of \emph{independent} random variables (say each \( X_i \) takes values in \( \{0, 1\} \)), a  strong bound is given by the Chernoff inequality. In particular, it says that the probability that this \( X \) is at least twice the expectation is inversely-exponentially small in the expectation.
-
-\begin{theorem}[Chernoff\,bound] Let \( X_1, X_2, ..., X_n \) be independent identically distributed random variables such that \( Pr[X_i = 1] = p \) and \( Pr[X_i = 0] = 1 - p \), for some \( 0 \leq p \leq 1 \).
-Consider the new random variable \( X = \sum_{i=1}^n X_i \), with expectation \( \mu = pn \). Then, for any \( 0 < \delta < 1 \),
+\paragraph{Concentration around the expectation.}
+Often we consider a sum
 \[
-Pr[|X - p| > \delta p] \leq 2 e^{- \frac{\delta^2 \mu}{3}}.
+X \;=\; \sum_{i=1}^n X_i,
+\]
+where $X_1,\dots,X_n$ are \emph{independent} random variables taking values in $\{0,1\}$. In that case $\mu=\mathbb{E}[X]$ is the expected number of indices $i$ for which $X_i=1$. The Chernoff bound says that $X$ is very unlikely to differ from $\mu$ by a noticeable multiplicative factor.
+
+\begin{theorem}[Chernoff bound, two-sided form]
+Let $X_1,\dots,X_n$ be independent $\{0,1\}$-valued random variables with $\Pr[X_i=1]=p$ and $\Pr[X_i=0]=1-p$. Let
+\[
+X=\sum_{i=1}^n X_i
+\qquad\text{and}\qquad
+\mu=\mathbb{E}[X]=pn.
+\]
+Then for any $0<\delta<1$,
+\[
+\Pr\big[\,|X-\mu| \ge \delta\mu\,\big]
+\;\le\;
+2e^{-\delta^2\mu/3}.
 \]
 \end{theorem}
 \end{tcolorbox}
@@ -494,8 +530,7 @@ The following is thus the upper bound on the probability that at least one bad e
 \begin{equation}\label{eq:487:28}
  S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad \text{with} \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}},
 \end{equation}
-where the left most term is by a union bound on all gates, and the rightmost term is the bad event estimated by the  Chernoff bound.\footnote{%
-Note that we have used the union bound on the following bad events, given a random pick of a single assignment $\rho$: $S$ many potential bad events that a gate in layer $d$ does not switch, together with a single event that the number of free variables in $\rho$ falls below half the expected number of free variables.
+where the left most term is by a union bound on all gates, and the rightmost term is the bad event estimated by the  Chernoff bound.\footnote{Note that we have used the union bound on the following bad events, given a random pick of a single assignment $\rho$: $S$ many potential bad events that a gate in layer $d$ does not switch, together with a single bad event that the number of free variables in $\rho$ falls below half the expected number of free variables.
 }
 
 
@@ -557,7 +592,7 @@ and therefore  \Cref{eq:534:30} holds.
 
 
 \para{Concluding the proof}
-Using the Induction Statement together with the Bottom Switching Step,
+Using the Induction Statement \Cref{lem:induction-switch} together with the Bottom Switching Step,
 we now conclude the proof of the lower bound.
 
 Given a circuit $C$ of depth $d$ with $n$ variables,

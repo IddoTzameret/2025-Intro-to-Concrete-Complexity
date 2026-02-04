@@ -524,11 +524,11 @@ Every single variable \( x_i \) has a probability \( p \) to stay free under our
 Hence, the expected number $\mu$ of free variables is \( pN \), where $N$ is the number of (free) variables in $C\rst_{\rho'}$ which is $\ge \frac{p^{d-3} \cdot n}{2^{d-3}}$ by induction hypothesis. Hence, the expected number of free variables is $\mu\ge pN= \frac{p^{d-2} \cdot n}{2^{d-3}}$. 
 (Since the event that a variable stays free under \( \rho'' \) is independent from the events that other variables stay free, the expected value is achieved with high probability by the Chernoff bound.)
  In other words, the bad event that the number of free variables are less than half of the expected value $\mu$ is at most $
-2e^{-\delta^2 \cdot \frac{\mu}{3}}$, with $\delta = \frac{1}{2}$ and  $\mu = \frac{p^{d-3} \cdot n}{2^{d-2}}.$
+2e^{-\delta^2 \cdot \frac{\mu}{3}}$, with $\delta = \frac{1}{2}$ and  $\mu = \frac{p^{d-2} \cdot n}{2^{d-3}}.$
 
 The following is thus the upper bound on the probability that at least one bad event happened (using the union bound): 
 \begin{equation}\label{eq:487:28}
- S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad \text{with} \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-3} \cdot n}{2^{d-3}},
+ S(9pk)^k + 2e^{-\delta^2 \cdot \frac{\mu}{3}}, \quad \text{with} \quad \delta = \frac{1}{2} \quad \text{and} \quad \mu = \frac{p^{d-2} \cdot n}{2^{d-3}},
 \end{equation}
 where the left most term is by a union bound on all gates, and the rightmost term is the bad event estimated by the  Chernoff bound.\footnote{Note that we have used the union bound on the following bad events, given a random pick of a single assignment $\rho$: $S$ many potential bad events that a gate in layer $d$ does not switch, together with a single bad event that the number of free variables in $\rho$ falls below half the expected number of free variables.
 }
@@ -539,9 +539,9 @@ where the left most term is by a union bound on all gates, and the rightmost ter
 \Cref{eq:487:28} is equivalent to 
 \begin{equation}\label{eq:498:27}
 S \left( 9 \cdot \frac{1}{36 \cdot \log s} \cdot 2 \log s \right)^{2 \log s} + 
-\underbrace{2 e^{-\frac{\left(\frac{1}{36 \cdot \log S }\right)^{d-3} \cdot n}{2^{d-1} \cdot 3}}}_B.
+\underbrace{2 e^{-\frac{\left(\frac{1}{36 \cdot \log S }\right)^{d-2} \cdot n}{2^{d-2} \cdot 3}}}_B.
 \end{equation}Let us denote the right summand above by $B$, namely $B=2\cd
-e^{-\left(\frac{n}{{(36 \cdot \log S)^{d-3} \cdot 2^{d-1} \cdot 3}}\right)}$.  
+e^{-\left(\frac{n}{{(36 \cdot \log S)^{d-2} \cdot 2^{d-2} \cdot 3}}\right)}$.  
 Thus, \Cref{eq:498:27} equals
 $$
 S \cdot\left(\frac{18}{36}\right)^{2 \cdot \log S}+B =S \cdot \frac{1}{S^2}+B =
@@ -823,34 +823,53 @@ while \( \pi_i \) on a different node in the same layer doesn't nullify \( C_j \
  
 
 \subsection{Connection between canonical decision trees and CNF/DNFs}
+
+
+
 \begin{claim}
-Let \( g \) be a DNF and assume that the height of \( T(g) \leq s \).
-Then \( g \) can be written as an \( s \)-CNF as well as an \( s \)-DNF.
+Let $g$ be a DNF and suppose the height of the decision tree $T(g)$ is at most $s$.
+Then $g$ can be written as an $s$-DNF and also as an $s$-CNF.
 \end{claim}
 
 \begin{proof}
-Each leaf of \( T(g) \) determines an assignment \( \pi \) that fixes \( g \) to either 1 or 0 
-(i.e., \( g|_{\pi} \in \{0,1\} \)).
-
-Thus, for every assignment \( \pi \) to the variables, \( g|_{\pi} = 0 \) \( \Leftrightarrow \) 
-\( \pi \) leads to a 0-leaf in \( T(g) \).
-
-Let \( A_{\pi} \) be the AND determined by an assignment \( \pi \):
-if \( \pi(x_i) = 1 \) add \( x_i \), if \( \pi(x_i) = 0 \) add \( \neg x_i \).
-
+\textbf{Step 1: $g$ is an $s$-DNF.}
+Let $T(g)$ be a decision tree of height $\le s$ computing $g$.
+For every root-to-leaf path $\pi$ that ends in a $1$-leaf, define the term
 \[
-\bigvee_{ \pi \in J } A_{\pi}
+A_\pi \;:=\; \bigwedge_{x_i \text{ queried on }\pi}
+\begin{cases}
+x_i & \text{if }\pi(x_i)=1,\\
+\neg x_i & \text{if }\pi(x_i)=0.
+\end{cases}
 \]
-is an \( s \)-DNF computing the function \( \neg g \).
-
-Thus, 
+This is a conjunction of at most $s$ literals. Define
 \[
-\neg \bigvee_{\pi \in J} A_{\pi} = \bigwedge_{\pi \in J} \neg A_{\pi}
+D \;:=\; \bigvee_{\pi \text{ is a $1$-leaf path}} A_\pi .
 \]
-is an \( s \)-CNF computing \( \neg \neg g = g \).
+Then $D \equiv g$: for every input $a\in\{0,1\}^n$, the computation of $T(g)$ on $a$
+follows a unique path $\pi(a)$, and we have $D(a)=1$ iff $\pi(a)$ is a $1$-leaf,
+which holds iff $g(a)=1$. Hence $g$ is an $s$-DNF.
 
-
+\textbf{Step 2: $g$ is an $s$-CNF.}
+Apply Step~1 to the function $\neg g$. The same decision tree with leaf labels
+flipped computes $\neg g$, and its height is still $\le s$. Therefore $\neg g$ has
+an $s$-DNF representation
+\[
+\neg g \;\equiv\; \bigvee_{j} \bigwedge_{i\in I_j} \ell_i ,
+\]
+where each conjunction has at most $s$ literals. Negating both sides and using De
+Morgan's laws gives
+\[
+g \;\equiv\; \neg(\neg g)
+\;\equiv\; \neg\left(\bigvee_{j} \bigwedge_{i\in I_j} \ell_i\right)
+\;\equiv\; \bigwedge_{j}\;\neg\left(\bigwedge_{i\in I_j} \ell_i\right)
+\;\equiv\; \bigwedge_{j}\;\bigvee_{i\in I_j} \neg \ell_i .
+\]
+Each clause $\bigvee_{i\in I_j} \neg \ell_i$ has size at most $s$, and hence $g$ is
+an $s$-CNF.
 \end{proof}
+
+
 
 In other words, a canonical decision tree for \( F \) decides \( \neg F \),
 if we consider the assignments on 0-leafs.
@@ -896,27 +915,27 @@ is bounded from above by the probability of picking a restriction from a \emph{d
 set of restrictions, denoted \( T \).
 
 For the sake of illustration, let's assume that  \( S \) contained a \emph{single} restriction \( \rho \). So our goal would be easy to achieve: we shall bound the probability of picking $\rho$ by the probability of picking a restriction that is longer by  $s$ 
- because we have 
+ restricted variables because we have 
 \[
 \Pr_{\mathcal{R}}[S] \leq \frac{1}{4^s}\cd \Pr_{\mathcal{R}}[\{\rho\}] \leq \frac{1}{4^s} 
 \quad \text{(because trivially \( \Pr_{\mathcal{R}}[\{\rho\}] \leq 1\))}
 \]
 for every restriction \( \rho \) to \( s \) additional variables.
-The first inequality follows by the fact that making a restriction \emph{longer} 
-only \emph{increases} its probability; and  since fixing a \emph{single} variable 
+The first inequality follows by the fact that making a restriction \emph{longer}, namely restricting more variables,  
+only \emph{increases} its probability  since fixing a \emph{single} variable 
 to \( \{0,1\} \) has probability (recall  $p<1/9)$: 
 \[
 \frac{1 - p}{2} > \frac{8p}{2} = \frac{4}{9},
 \]
-while fixing a variable to \( * \) has probability only \( < \frac{1}{9} \).
+while fixing a variable to \( * \), i.e., leaving it free, has probability only \( < \frac{1}{9} \).
 
-Here is a simple example when extending the assignment by one bit. In particular, let $\rho$ be a restriction and assume we extend it by one bit to $\rho\sigma$ (namely, $|\sigma|=1$). We have 
+Here is a simple example when extending the assignment by one bit. Let $\rho$ be a restriction and assume we extend it by one bit to $\rho\sigma$ (namely, $|\sigma|=1$). We have 
 $\Pr_{\mathcal{R}}[\rho] = \frac{2}{1 - p} \cdot p \cdot \Pr_{\mathcal{R}}[\rho\sigma]$, because we can obtain $\rho$ from $\rho\sigma$ and un-choosing the variable  fixed by $\sigma$ (this means dividing by $(1-p)/2$) and instead choosing this variable to be free (this means multiplying by $p$). In other words, we get:  
 \[
 \Pr_{\mathcal{R}}[\rho] = \frac{2}{1 - p} \cdot p \cdot \Pr_{\mathcal{R}}[\rho\sigma] 
 <  \frac{2}{8/9} \cdot \frac{1}{9} \cd\Pr_{\mathcal{R}}
 [\rho\sigma] = \frac{1}{4}\cd
- \Pr_{\mathcal{R}}[\rho\sigma].
+ \Pr_{\mathcal{R}}[\rho\sigma]\le 1/4.
 \]
 
 \begin{figure}
@@ -931,7 +950,7 @@ to represent their respective probabilities (weight or ``mass'' in the probabili
 \end{figure}
  
 
-But we need to do something similar not to merely a single assignment \( \rho \), but rather all \( S \).
+But we need to do something similar not to merely a single assignment \( \rho \), but rather \emph{all} assignments in  \( S \).
 To show that the sum of the probabilities of \emph{all} of the restrictions in \( S \) is at most 
 \(\frac{1}{4^s} \cdot (\text{small number})\), we can try showing that \emph{each} \( \rho \in S \) can be mapped to a 
 \emph{distinct} restriction \( \rho_0 \) as above. 
@@ -939,8 +958,8 @@ To show that the sum of the probabilities of \emph{all} of the restrictions in \
 If the mapping, denoted \( \Theta \), is done to \emph{distinct} restrictions, that is, the mapping is 
 \emph{one-to-one} (\emph{``injective''}), then we know that the sum of all probabilities of picking bad restrictions, 
 namely the event of picking a restriction from \( S \), is mapped to the \emph{event} of picking a restriction in the 
-\emph{image} of \( \Theta \).
-because every event has probability smaller than one we finish. 
+\emph{image} of \( \Theta \); and
+because every event has probability smaller than 1 we finish. 
 
 We explain this in more detail as follows. We have the following 
 \[
@@ -997,19 +1016,19 @@ In other words, picking restrictions from \(\text{Image}(\Theta(S))\) is an \emp
     
     \item The map is defined as encoding \( \rho \) by \( \rho\sigma \) + \emph{(small helper code)}.
 
-    \item \textbf{Note:} If we know \( \rho\sigma \), it does not \emph{a priori} mean we can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'\sigma = \rho\sigma \) (\emph{the domain of 0/1 assignment in \( \rho \) and \( \rho' \) may be different}).
+    \item \textbf{Note:} If we know \( \rho\sigma \), it does not \emph{a priori} mean we can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'\sigma' = \rho\sigma \) (\emph{the domain of 0/1 assignment in \( \rho \) and \( \rho' \) and $\sigma$ and $\sigma'$ may be different}).
     
     \item The idea to recover \( \rho \), given \( \rho\sigma \), is to map \( \rho \) to \( \rho\sigma \) plus some ``small helper code''. The helper code is small but will allow us to recover \( \rho \) given \( \rho\sigma \).
 
     \item The code and its helper code is built based on the following idea: Consider \( \rho \in S \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
     
-    \textcolor{gray}{(We shall prune this path to length \( s \)).}
+    \textcolor{gray}{(We shall prune this path to length \( s \) precisely).}
 \end{itemize}
 
 \begin{itemize}
     \item Then, given \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by that path \( \pi \).
     
-    \item This means we are able to distinguish between \( \rho\sigma \) and \( \rho \), hence recover \( \rho \) \emph{(uniquely)}.
+    \item This means we are able to distinguish between \( \rho\sigma \) and \( \rho \) because variables assigned by $\rho$ cannot be then re-assigned in the tree $T(f{\rst}\rho)$, hence recover \( \rho \) \emph{(uniquely)}.
 \end{itemize}
 \end{tcolorbox}
 

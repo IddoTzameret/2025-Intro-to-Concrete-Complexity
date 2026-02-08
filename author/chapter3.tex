@@ -718,7 +718,7 @@ and a fixed order on literals in each conjunct.
 
 \subsection{The Canonical Decision Tree \( T(f|_{\rho}) \)}
 
-A decision tree for \( f|_{\rho} \) is defined as follows:
+A canonical decision tree for \( f|_{\rho} \) is defined as follows:
 
 \begin{enumerate}
     \item Look through \( f \) for a conjunct \( C \) such that \( C|_{\rho} \neq 0 \).
@@ -876,7 +876,7 @@ if we consider the assignments on 0-leafs.
 Thus, if we turn these ANDs corresponding to these assignments to OR of the negated literals, and AND all these ORs, 
 we get a CNF computing \( F \).
 
-Given the  claim above, we can rephrase the switching (\Cref{thm:Switching-Lemma}) in the terminiology of decision tree height as follows: 
+Given the  claim above, we can rephrase the Switching Lemma (\Cref{thm:Switching-Lemma}) in the terminology of decision tree height as follows: 
 
 \begin{theorem}[Switching Lemma; Decision tree version]\label{thm:SL-DT-version}
 If \( f \) is an \( r \)-DNF with \( n \) variables 
@@ -887,7 +887,7 @@ is bigger than \( s \).
 \end{theorem}
 
 This means that \( f|_{\rho} \) \textbf{cannot} be written as an \( s \)-CNF 
-with probability \( \leq (9rq)^s \), by the claim above.
+with probability at most \( (9rq)^s \).
 
 \subsection*{Discussion of the main idea behind the proof}
 
@@ -938,14 +938,21 @@ $\Pr_{\mathcal{R}}[\rho] = \frac{2}{1 - p} \cdot p \cdot \Pr_{\mathcal{R}}[\rho\
  \Pr_{\mathcal{R}}[\rho\sigma]\le 1/4.
 \]
 
+
+
+
+
 \begin{figure}
 \centering
-\textbf{Distribution \( \mathcal{R} \)}
+
+\includegraphics{switching-mappin-rho.png}
+
+\textbf{Distribution \( \mathcal{R} \) (both sides are the same distribution)}
 \[
-\rho \longrightarrow \rho_0
+\rho \longrightarrow \rho\sigma
 \]
-\caption{Mapping a single restriction \( \rho \) to a restriction \( \rho_0 \) with bigger probability.
-The event (of picking) \( \rho \) is depicted as a smaller size circle than the event (of picking) \( \rho_0 \),
+\caption{Mapping bad restrictions \( \rho\in S_{\beta \pi\gamma} \) via the mapping $\Theta_1$ (notation will become clearer later) to a restriction \( \rho\sigma \) with bigger probability.
+The event (of picking) \( \rho \) is depicted as a smaller size circle than the event (of picking) \( \rho\sigma \),
 to represent their respective probabilities (weight or ``mass'' in the probability distribution \( \mathcal{R} \)).}
 \end{figure}
  
@@ -968,7 +975,7 @@ We explain this in more detail as follows. We have the following
 \frac{1}{4^s} \cdot \sum_{\rho \in S} \Pr_{\mathcal{R}}[\Theta(\rho)].
 \]
 
-Now, we'd like to claim that 
+Now, we would  like to claim that 
 \[
 \sum_{\rho \in S} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
 \]
@@ -998,7 +1005,7 @@ The way to ensure
 $\sum_{\rho \in S} \Pr_{\mathcal{R}}[\Theta(\rho)] \leq 1
 $
 is by making sure \( \Theta \) is one-to-one, 
-hence we don't count probabilities more than once.
+hence we do not count probabilities more than once.
 In other words, picking restrictions from \(\text{Image}(\Theta(S))\) is an \emph{event} of our probability distribution, and so an event has always probability at most one.
 
 \subsection{Constructing the one-to-one map}
@@ -1007,78 +1014,72 @@ In other words, picking restrictions from \(\text{Image}(\Theta(S))\) is an \emp
 \begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
 \textbf{The upshot of argument}
 \begin{itemize}
-    \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S \) to some \emph{longer} restrictions \( \rho\sigma \). 
-
-    Bad: restriction whose \( T(f\rst\rho) \) has depth \( > s \). 
-    \item Thus, we get that the event \( \Pr_{\mathcal{R}}[ \rho \in S ] \leq \frac{1}{4^s} \cdot (\text{small number}) \).
-    
+    \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S \) to some set of  \emph{longer} restrictions \( \rho\sigma\in S' \). 
+A \emph{bad} restriction here means a restriction $\rho$ for which \( T(f\rst\rho) \) has depth \( > s \). 
+    \item Thus, as explained above, we get that the event of picking a bad restriction is roughly bounded from above: \( \Pr_{\mathcal{R}}[\rho \in S ] \leq \frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[ \rho \in S' ] \le \frac{1}{4^s}\).    
     \item To show the mapping is \emph{one-to-one}, we build a map from \( \rho \in S \) to longer restrictions \( \rho\sigma \) such that given \( \rho\sigma \), we can \emph{(uniquely) recover} \( \rho \). (Hence, the map is one-to-one).
+    \item \textbf{Note:} If we know \( \rho\sigma \), it does not \emph{a priori} mean we can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'\sigma' = \rho\sigma \) (\emph{the domain of the 0-1 assignment in \( \rho \) and \( \rho' \) and $\sigma$ and $\sigma'$ may be different}).
     
-    \item The map is defined as encoding \( \rho \) by \( \rho\sigma \) + \emph{(small helper code)}.
+    \item To be able to recover the source restriction $\rho$ we shall encode  \( \rho \) by \( \rho\sigma\) \emph{plus some small helper code.}
 
-    \item \textbf{Note:} If we know \( \rho\sigma \), it does not \emph{a priori} mean we can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'\sigma' = \rho\sigma \) (\emph{the domain of 0/1 assignment in \( \rho \) and \( \rho' \) and $\sigma$ and $\sigma'$ may be different}).
     
-    \item The idea to recover \( \rho \), given \( \rho\sigma \), is to map \( \rho \) to \( \rho\sigma \) plus some ``small helper code''. The helper code is small but will allow us to recover \( \rho \) given \( \rho\sigma \).
-
-    \item The code and its helper code is built based on the following idea: Consider \( \rho \in S \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
+    \item  The code for $\rho\sigma$  and its helper code are built based on the following rough idea: consider \( \rho \in S \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
+        (We shall prune this path to length \( s \) precisely.)
+    \item Then, given \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by the path \( \pi \).
     
-    \textcolor{gray}{(We shall prune this path to length \( s \) precisely).}
-\end{itemize}
-
-\begin{itemize}
-    \item Then, given \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by that path \( \pi \).
-    
-    \item This means we are able to distinguish between \( \rho\sigma \) and \( \rho \) because variables assigned by $\rho$ cannot be then re-assigned in the tree $T(f{\rst}\rho)$, hence recover \( \rho \) \emph{(uniquely)}.
+    \item This means we are able to distinguish between \( \rho\sigma \) and \( \rho \) because variables assigned by $\rho$ cannot be then re-assigned along $\pi$ in the tree $T(f{\rst}\rho)$.
 \end{itemize}
 \end{tcolorbox}
 
 \subsection{Proving the Switching Lemma}
 We now have the sufficient concepts to formally prove the switching lemma. 
  
-Let \( \rho \in S \) be a bad restriction, namely a restriction under which the decision tree height of $f\rst_\rho$ is more than $s$.  
-Let \( \pi \) be the \emph{first} path in \( T(f\rst_{\rho}) \) with length \( > s \).
+Let \( \rho \in S \) be a bad restriction, namely a restriction under which the canonical decision tree height of $f{\rst_\rho}$ is more than $s$.  
+Let \( \pi \) be the \emph{first} path in \( T(f{\rst_{\rho}}) \) with length \( > s \) (this is based on the orders we fixed for terms in the DNF and the order of literals in each AND).
 
-\para{Notation}
-\begin{itemize}
-    \item \( C_1, \dots, C_k \) : conjuncts.
-    \item \( \beta_1, \dots, \beta_k \) : unset variables.
-    \item \( \pi_1, \dots, \pi_k \) : assignments to \( \beta_i \) according to \( \pi \).
-    \item \( \sigma_1, \dots, \sigma_k \) : unique assignments to \( \beta_i \) that is consistent with \( C_i |_{\rho, \pi_1, \dots, \pi_{i-1}} \).
-\end{itemize}
-These terms in \( f \) were queried along \( \pi \), in order.
-
-\para{Helper Code}
-\begin{itemize}
-    \item \( \beta_i \) is coded by string \( \beta_i' \), of \( |\beta_i| \) numbers, each \( \leq 2r \) (recording for each variable in \( \beta_i \): its location in \( C_i \) (number \( \leq r \)), and whether it is the last variable in \( \beta_i \) (one bit)).
-    \item \( \beta' := \beta_1' \dots \beta_k' \). Note that the number of possible codes $\beta'$ is at most $ (2r)^s $.
-    \item \( \pi_i \) is coded as a string \( \pi_i' \) of \( |\beta_i| \) bits.
-    \item \( \pi' := \pi_1' \pi_2' \dots \pi_k' \), where the number of possible \( \pi' \) codes is \( 2^s \).
-\end{itemize}
 
 
 
 \subsubsection{Running example (continued)}\label{sec:running-example}
+We shall continue with our $r$-DNF example. We will see how to encode, and then decode back, bad restrictions $\rho\in S$ based on this example.  Recall the DNF $f$: 
 \[
-f := (x_1 \wedge x_2 \wedge x_4 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2 \wedge x_4) \vee (\bar{x}_3 \wedge x_4 x_7) \vee (x_6 \wedge \bar{x}_5) \vee \dots
+f = (x_1 \wedge x_2 \wedge x_4 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2 \wedge x_4) \vee (\bar{x}_3 \wedge x_4 x_7) \vee (x_6 \wedge \bar{x}_5) \vee \dots
 \]
+Let $\rho$ be the following restriction, that we shall assume is a bad one: 
+\[
+\rho \in S:\qquad
+\begin{array}{c|ccccccc}
+  \text{variables}~~     & x_1 & x_2 & x_3 & x_4 & x_5 & x_6 & x_7\\ \hline
+\text{value of }  \rho  & 1   & *   & *   & 1   & *   & *   & *
+\end{array}
+\]
+When applying $\rho$ to $f$ we get:
 
 \[
-\rho \in S' : \quad x_1 \quad x_2 \quad x_3 \quad x_4 \quad x_5 \quad x_6 \quad x_7
+f{\rst}_{\rho} = (x_2 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2) \vee (x_6 \wedge x_5) \vee \dots
 \]
+Consider the canonical tree representation \(T(f{\rst}_{\rho})\), depicted in the picture below:
+\includegraphics{canonical-tree-of-rho-example.png}
+Consider the first path (to the left) denoted $\pi$ with length bigger than $s$. This leftmost ``first''  path---witnessing that $\rho$ is a bad restriction---is  marked in yellow. We first trim it to length \emph{precisely}  $s$.
+We are going to encode $\rho$ with the help of this path. Namely, we are going to show that from a specific longer restriction $\rho\sigma$, using in additional a bit of helper codes together, we can recover this path and hence will be able to recover $\rho$ completely (thus, proving there is a one-to-one map between bad restrictions and longer restrictions).   
 
-\[
-\rho = (1 \quad * \quad * \quad 1 \quad * \quad * \quad *)
-\]
 
-\[
-f_{\rho} = (x_2 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2) \vee (x_6 \wedge x_5) \vee \dots
-\]
 
-Tree Representation \(T(f_{\rho})\):
+\paragraph{Coding $\rho$}
+Looking at the tree above, we consider the following (see also \Cref{fig:example-dec-tree-encoding-bad-assignments}) 
+
 \begin{itemize}
-    \item First path (to the left) with length \( > s \).
-    \item Trimmed to length precisely \( s \).
+    \item \( C'_1, \dots, C'_k \) : the conjuncts (ANDs, or terms) in $f{\rst}_\rho$ from which the variables are queried along the yellow path, in order of terms (from left to right, based on the fixed ordering we assumed).
+
+    \item \( \beta_1, \dots, \beta_k \) : the tuples of variables that we queried in each term $C'_1,\dots,C'_k$ from $f{\rst}_\rho$ along the yellow path, in order of appearance (based on the fixed order of clauses, and then the fixed order of literals).
+Note that $C'_i = C_j{\rst}_\rho$, for some $j$ not necessarily equal to $i$; The index $j$ is different from $i$ when $C_j{\rst}_\rho$ is already fixed to $0$, so there is no variable to query in this term, and we need to skip to the next nonzero term in $f {\rst}_\rho $.   
+
+  
+    \item \( \pi_1, \dots, \pi_k \) : assignments to \( \beta_i \) according to \( \pi_i \), for $i\in[k]$ (where $ \pi=\pi_1, \dots, \pi_k $; recall that we identify paths with the assignments they determine).
+    \item \( \sigma_1, \dots, \sigma_k \) : unique assignments to \( \beta_i \) that are \emph{consistent} with \( C_i |_{\rho, \pi_1, \dots, \pi_{i-1}} \), for $i\in[k]$.
 \end{itemize}
+
+
 
 
 \begin{figure}[H]
@@ -1086,7 +1087,22 @@ Tree Representation \(T(f_{\rho})\):
 \caption{Example of coding a bad restriction by looking at the left-most path whose length exceeds $s$ in $T(f|\rho)$. 
 %Note: On the same depth (but different paths) in the tree, different variables can be queried. Here, at depth 3, we query \( x_7 \) and \( x_6 \) at different paths.%
 }
+\label{fig:example-dec-tree-encoding-bad-assignments}
 \end{figure}
+
+To code $\rho$ we shall use only the following: the assignment $\rho\sigma$ (where $\sigma$ is defined as above), together with the helper codes $\pi_1,\dots,\pi_k = \pi$, and the tuples $\beta'_1,\dots,\beta'_k$.
+
+
+
+\para{Helper Codes}
+\begin{itemize}
+    \item \( \beta_i \) is coded by string \( \beta_i' \), of \( |\beta_i| \) numbers, each \( \leq 2r \) (recording for each variable in \( \beta_i \): its location in \( C_i \) (number \( \leq r \)), and whether it is the last variable in \( \beta_i \) (one bit)).
+    \item \( \beta' := \beta_1' \dots \beta_k' \). Note that the number of possible codes $\beta'$ is at most $ (2r)^s $.
+    \item \( \pi_i \) is coded as a string \( \pi_i' \) of \( |\beta_i| \) bits.
+    \item \( \pi' := \pi_1' \pi_2' \dots \pi_k' \), where the number of possible \( \pi' \) codes is \( 2^s \). \textcolor{red}{***Should it be $\pi$ without asterix?}***
+\end{itemize}
+
+
 
 \noindent\text{Coding Table}
 \begin{center}
@@ -1140,8 +1156,8 @@ Suppose we are given \( (\rho\sigma, \beta', \pi') \). We may recover \( \rho \)
     \item \( C_1' \) cannot come before \( C_1 \), and by construction \( C_1 \) is not falsified by \( \rho\sigma \).
     \item So we must have \( C_1' = C_1 \).
     \item From \( \beta_1' \) and \( C_1 \) we can recover \( \beta_1 \), and from this and \( \pi_1' \) we can recover \( \pi_1 \).
-    \item \( \sigma_1 \) and \( \pi_1 \) were assignments to the same variables, so we can construct a restriction \( \rho\sigma_1[\pi_1/\sigma_1] = \pi_1\sigma_2 \dots \sigma_k \).
-    \item Let \( C_2' \) be the first term in \( F \) such that \( C_2' | \rho\pi\sigma_2 \dots \sigma_k \neq 0 \).
+    \item \( \sigma_1 \) and \( \pi_1 \) were assignments to the same variables, so we can construct a restriction \( \rho\sigma_1[\pi_1/\sigma_1] = \rho\pi_1\sigma_2 \dots \sigma_k \).
+    \item Let \( C_2' \) be the first term in \( F \) such that \( C_2' | \rho\pi_1\sigma_2 \dots \sigma_k \neq 0 \).
     \item Then as above, \( C_2' \) must equal \( C_2 \), and we can recover \( \beta_2 \) and \( \pi_2 \) and carry on in the same way.
 \end{itemize}
 
@@ -1175,7 +1191,7 @@ The point is that we want to avoid a situation in which \( C_i | \rho \not\equiv
 We want to recover \( \rho \) given \( \rho{\sigma} \) and helper codes.
 
 \begin{itemize}
-    \item Consider the first AND clause \( C_1 \) in \( f | \rho{\sigma} \) such that \( C_1' | \rho{\sigma} \neq 0 \).
+    \item Consider the first AND clause \( C'_1 \) in \( f | \rho{\sigma} \) such that \( C_1' | \rho{\sigma} \neq 0 \).
     \item Since \( \sigma \) never falsifies an AND in \( f \) by \textbf{construction}, then \( C_1' = C_1 \) (i.e., the first AND such that \( f | \rho \neq 0 \)).
     \item \( C_1' \) cannot come before \( C_1 \) (in \( f \)) because \( C_1' | \rho{\sigma} \neq 0 \Rightarrow C_1' | \rho \neq 0 \), since \( \rho{\sigma} \) extends \( \rho \).
     \item Thus, we know that \( C_1 \) was the first queried AND when we constructed \( T(f | \rho{\sigma}) \).
@@ -1187,7 +1203,7 @@ We want to recover \( \rho \) given \( \rho{\sigma} \) and helper codes.
     \item Now, we do the same decoding procedure with \( T(f | \rho{\sigma} [\sigma \to \pi_1]) \), which is precisely the decision tree rooted at the third layer of the tree, left-most node (rooted at $x_5$).
     \item At the end, we know what is:
     \[
-    \rho{\sigma} [\sigma \to \pi_1, \dots, \sigma_k \to \pi_k]
+    \rho{\sigma} [\sigma_1 \to \pi_1, \dots, \sigma_k \to \pi_k]
     \]
     Since we know all \( \pi_1, \dots, \pi_k \), we now know what was \( \rho \): We take \( \rho{\sigma} \) and assign stars to all variables queried on the path \( \pi_C \).
 \end{itemize}

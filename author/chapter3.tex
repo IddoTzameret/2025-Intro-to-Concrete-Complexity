@@ -887,7 +887,7 @@ is bigger than \( s \).
 \end{theorem}
 
 This means that \( f|_{\rho} \) \textbf{cannot} be written as an \( s \)-CNF 
-with probability at most \( (9rq)^s \).
+with probability at most \( (9pr)^s \).
 
 \subsection*{Discussion of the main idea behind the proof}
 
@@ -1015,7 +1015,7 @@ In other words, picking restrictions from \(\text{Image}(\Theta(S))\) is an \emp
 \textbf{The upshot of argument}
 \begin{enumerate}
     \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S \) to some set of  \emph{longer} restrictions \( \rho\sigma\in S' \). 
-A \emph{bad} restriction here means a restriction $\rho$ for which \( T(f\rst\rho) \) has depth \( > s \). 
+A \emph{bad} restriction here means a restriction $\rho$ for which \( T(f{\rst}\rho) \) has depth \( > s \). 
     \item If we achieve such a mapping, as explained above, we can conclude that the event of picking a bad restriction is small enough, and roughly bounded from above: \( \Pr_{\mathcal{R}}[\rho \in S ] \leq \frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[ \rho \in S' ] \le \frac{1}{4^s}\), which will be sufficient for us.   
     \item The main challenge is showing the mapping is \emph{one-to-one}. For this purpose,  we roughly build a map that codes bad restrictions \( \rho \in S \) by longer restrictions \( \rho\sigma \), such that given \( \rho\sigma \), we can completely \emph{recover} the restriction \( \rho \) whose code is \( \rho\sigma \) (hence, the map is one-to-one, because distinct restrictions must be mapped to distinct codes).
     \smallskip 
@@ -1025,7 +1025,7 @@ A \emph{bad} restriction here means a restriction $\rho$ for which \( T(f\rst\rh
     \item Formally, to be able to recover the source restriction $\rho$ from $\rho\sigma$ we shall encode  \( \rho \) by \( \rho\sigma\) \emph{plus some small helper code.} Since these codes will be small, they will not damage our upper bound. Informally, one can think about it as showing that the mapping $\rho$ to $\rho\sigma$ is one-to-few (e.g., if the helper code is one bit, we get a one-to-two mapping, which will still be enough to conclude the upper bound on the probability of picking a bad restriction). 
     
     \item  \label{it:recover-code-SL-upshot}
-    The code for $\rho\sigma$  and its helper code are built based on the following  idea: consider \( \rho \in S \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
+    The code for $\rho\sigma$  and its helper code are built based on the following  idea: consider a bad restriction \( \rho \in S \), and let \( \pi \) be the first (leftmost) path in \( T(f{\rst}\rho) \) exceeding length \( s \). 
         (We shall prune this path to length \( s \) precisely.)
 Then, given only \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by this path \( \pi \).     
  This will mean that we are able to recover which variables were assigned by $\sigma$ (the variables assigned by $\pi$ and $\sigma$ are the same). Which in turn, means we are able to know which variables are assigned by $\rho$ (note that variables assigned by $\rho$ cannot be then re-assigned along $\pi$ in the tree $T(f{\rst}\rho)$). Given $\rho\sigma$ and knowing which variable was assigned by either $\rho$ or $\sigma$ allows us to recover $\rho$.  
@@ -1078,7 +1078,7 @@ Look at  \Cref{fig:example-dec-tree-encoding-bad-assignments}, which shows a cod
 \label{fig:example-dec-tree-encoding-bad-assignments}
 \end{figure}
   
-To explain this figure and the coding procedure in general we use the following notation:
+To explain this diagram  and the coding procedure in general we use the following notation:
 \begin{itemize}
     \item \( C'_1, \dots, C'_k \) : the conjuncts (ANDs, or terms) in $f{\rst}_\rho$ from which the variables are queried along the yellow path, in order of terms (from left to right, based on the fixed ordering we assumed). Note that 
 $$C'_i = C_j{\rst}_{\rho\pi_1\dots\pi_{i-1}},$$
@@ -1098,10 +1098,10 @@ The code of $\rho$ consists of the following: the assignment $\rho\sigma$ (where
 
 \para{Helper Codes}
 \begin{itemize}
-    \item \( \beta_i \) is coded by string \( \beta_i' \), of \( |\beta_i| \) numbers, each \( \leq 2r \) (recording for each variable in \( \beta_i \): its location in \( C_i \) (number \( \leq r \)), and whether it is the last variable in \( \beta_i \) (one bit)).
-    \item \( \beta' := \beta_1' \dots \beta_k' \). Note that the number of possible codes $\beta'$ is at most $ (2r)^s $.
+    \item \( \beta_i \) is coded by string \( \beta_i' \), of \( |\beta_i| \) numbers, each \( \leq 2r \) (recording for each variable in \( \beta_i \): its location in \( C'_i \) (number \( \leq r \)), and whether it is the last variable in \( \beta_i \) (one bit).
+We set  \( \beta' := \beta_1' \cdots \beta_k' \), noting  that the number of possible codes $\beta'$ is at most $ (2r)^s $.
     \item The corresponding assignments \( \pi_i \) are encoded by the values $\pi'_i$ along the path $\pi_i$ in their order of appearance from top to bottom (namely, we record only the \emph{values} each variable in the assignment gets while not recording the variables assigned themselves---as we show they can be recovered).
-We thus have  \( \pi' := \pi_1' \pi_2' \dots \pi_k' \), where the number of possible codes for \( \pi' \) is \( 2^s \). 
+We thus have  \( \pi' := \pi_1' \pi_2' \cdots \pi_k' \), where the number of possible codes for \( \pi' \) is \( 2^s \). 
 \end{itemize}
 
 
@@ -1145,7 +1145,7 @@ As mentioned above, given \( \rho\sigma \), we do not know a priori how to find 
  
 \subsubsection{The coding map is one-to-one}   
 
-\begin{lemma}
+\begin{lemma}\label{lem:SL-coding-map-1-1}
 \(\Theta\) is one-to-one. Namely, given \( (\rho\sigma, \beta', \pi') \) we can \emph{recover}  \( \rho \).
 \end{lemma}
 
@@ -1213,51 +1213,50 @@ We want to recover \( \rho \) given \( \rho{\sigma} \) and helper codes.
 \subsubsection{Wrapping up  the Proof of the Switching Lemma}
 
 
-Let \( \Theta_1 \) be the projection of \( \Theta \) to the first coordinate (\(\rho{\sigma}\)).
-   When we fix helper codes, \( \Theta_1 \) \emph{is one-to-one}.
-To see this, fix some helper codes \( \beta_1', \pi_1' \) and let \( S_{\beta_1', \pi_1'} \) be all \( \rho \in S \) such that \( \Theta(\rho) = (\rho{\sigma}, \beta', \pi') \) for some \( \sigma \). That is, all bad assignments with helper codes \( \beta_1', \pi_1' \).
-Consider the projection of \( \Theta \) to the first component:
-\[
-\Theta: S \to \mathcal{R} \times (2r)^s \times 2^s \quad \text{(Recall definition)}
-\]
-\[
-\Theta: \rho \mapsto (\rho{\sigma}, \beta', \pi')
-\]
-\[
-\Theta_1: \rho \mapsto \rho{\sigma}
-\]
-By Claim, \( \Theta_1 \circ S_{\beta_1',\pi_1'} \to \mathcal{R} \) is one-to-one.
+Let \( \Theta_1: \rho \mapsto \rho{\sigma} \) be the projection of \( \Theta: \rho \mapsto (\rho\sigma, \beta', \pi') \) to the first coordinate \(\rho{\sigma}\).
+   When we \emph{fix} the helper codes, \(\beta', \pi'\), the mapping \( \Theta_1 \) \emph{is one-to-one}.
+This is because, otherwise two distinct restrictions $\rho\neq\rho'$ would map to the same $\rho\sigma$ with the same helper codes, contradicting \Cref{lem:SL-coding-map-1-1}.
+% 
+% 
+% To see this, fix some helper codes \( \beta_1', \pi_1' \) and let \( S_{\beta_1', \pi_1'} \) be all \( \rho \in S \) such that \( \Theta(\rho) = (\rho{\sigma}, \beta', \pi') \) for some \( \sigma \). That is, all bad assignments with helper codes \( \beta_1', \pi_1' \).
+% Consider the projection of \( \Theta \) to the first component:
+% \[
+% \Theta: S \to \mathcal{R} \times (2r)^s \times 2^s \quad \text{(Recall definition)}
+% \]
+% \[
+% \Theta: \rho \mapsto (\rho{\sigma}, \beta', \pi')
+% \]
+% \[
+% \Theta_1: \rho \mapsto \rho{\sigma}
+% \]
+% By Claim, \( \Theta_1 \circ S_{\beta_1',\pi_1'} \to \mathcal{R} \) is one-to-one.
+% 
+% \medskip 
 
-\medskip 
-We want to bound from above the probability that a \textit{random} restriction in \( S_{\beta_1', \pi_1'} \) is chosen.
-Namely, bound
+We want to bound from above the probability that a \textit{random} restriction in \( S_{\beta', \pi'} \) is chosen.
+Namely, upper bound
 \[
-\Pr_{\mathcal{R}} [\rho \in S_{\beta_1', \pi_1'}].
+\Pr_{\mathcal{R}} [\rho \in S_{\beta', \pi'}].
 \]
 
 By definition
 \[
-\Pr_{\mathcal{R}} [\rho \in S_{\beta_1', \pi_1'}] = \sum_{\rho \in S_{\beta_1', \pi_1'}} \Pr_{\mathcal{R}} [\rho] = \sum_{\rho \in S_{\beta_1', \pi_1'}} \left( \frac{2p}{1-p} \right)^s \Pr_{\mathcal{R}} [\Theta_1(\rho)],
+\Pr_{\mathcal{R}} [\rho \in S_{\beta', \pi'}] = \sum_{\rho \in S_{\beta', \pi'}} \Pr_{\mathcal{R}} [\rho] = \sum_{\rho \in S_{\beta', \pi'}} \left( \frac{2p}{1-p} \right)^s \Pr_{\mathcal{R}} [\Theta_1(\rho)],
 \]
-namely, the probability (in \( \mathcal{R} \)) of choosing the past \( \Theta_1(\rho) \), which is \( \rho{\sigma} \) for some \( \sigma \) of size \( s \) with helper codes \( \beta_1', \pi_1' \).
-
- 
-Since \( \rho\sigma \) sets exactly \( s \) variables that were unset in \( \rho \), we have:
-
+%namely, the probability (in \( \mathcal{R} \)) of choosing the restriction \( \Theta_1(\rho) \), which is \( \rho{\sigma} \) for some \( \sigma \) of size \( s \) with helper codes \( \beta_1', \pi_1' \).
+%
+where the right equality follows  because  \( \rho\sigma \) sets exactly \( s \) variables that were unset in \( \rho \), meaning that (for every restriction $\rho\in S$):
 \[
-\Pr_{\mathcal{R}} [\rho\sigma] = p^{-s} \cdot \left( \frac{1-p}{2} \right)^s \cdot \Pr_{\mathcal{R}} [\rho]
+\Pr_{\mathcal{R}} [\rho ] = p^{s} \cdot \left( \frac{2}{1-p} \right)^s \cdot \Pr_{\mathcal{R}} [\rho\sigma]
 \]
 
 By factoring out \( \left( \frac{2p}{1 - p} \right)^s \) we get:
 
 \[
-\Pr \left[ \rho \in S_{\beta^{'},\pi^{'}} \right] = \sum_{\rho \in R} \left( \frac{2p}{1 - p} \right)^s \Pr_R [\Theta(\rho)]
-= \left( \frac{2p}{1 - p} \right)^s \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)].
+\Pr \left[ \rho \in S_{\beta^{'},\pi^{'}} \right] = \left( \frac{2p}{1 - p} \right)^s \cdot \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)].
 \]
-
-But \( \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)] \) is a probability of an \emph{event}, namely it is \( \leq 1 \), because for \( \rho \in S_{\beta^{'},\pi^{'}} \), we never 
-\emph{repeat the same restriction}, that is, if \( \rho \neq \rho' \in S_{\beta^{'},\pi^{'}} \), then \( \Theta(\rho) \neq \Theta(\rho') \) (as was discussed above; otherwise we may have counted more than once the same restriction in \( \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)] \) ).
-So \( \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)] \leq 1 \), and we get:
+But \( \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)] \) is a probability of an \emph{event}, namely it is \( \leq 1 \), because when fixing $\beta',\pi'$ the mapping $\Theta$ is one-to-one as mentioned above\footnote{Namely,  for \( \rho \in S_{\beta^{'},\pi^{'}} \), we never \emph{repeat the same restriction}, that is, if \( \rho \neq \rho' \in S_{\beta^{'},\pi^{'}} \), then \( \Theta(\rho) \neq \Theta(\rho') \); as was discussed above; otherwise we may have counted more than once the same restriction in \( \sum_{\rho \in S_{\beta^{'},\pi^{'}}} \Pr_R [\Theta(\rho)] \).}.
+Thus,
 
 \[
 \Pr \left[ \rho \in S_{\beta^{'},\pi^{'}} \right] \leq \left( \frac{2p}{1 - p} \right)^s.
@@ -1267,10 +1266,8 @@ Finally, \( S \) is the union of the sets \( S_{\beta^{'},\pi^{'}} \) over all p
 
 \[
 \Pr \left[ \rho \in S \right] \leq (2r)^s \cdot 2^s \cdot \left( \frac{2p}{1 - p} \right)^s
-\]
-\[
 = \left( \frac{8 p r}{1 - p} \right)^s \leq (9 p r)^s, \quad \text{for } p < \frac{1}{9}.
 \]
-This concluded the proof of the switching lemma. 
+This concludes the proof of the switching lemma. 
 
 

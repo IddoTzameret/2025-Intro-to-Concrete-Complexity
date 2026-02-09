@@ -40,7 +40,7 @@ Here is an example of a circuit of depth 3:
 
 
 Recall that we are interested in the  study of the asymptotic size of circuit families, not a single circuit. That is, we want to consider how circuit size grows when the number of inputs $n$ grows. In this chapter we shall focus on circuit families $\{C_n\}_{n=1}^\infty$
-whose number of inputs bits $n$ grows, their size $|C_n|$ grows polynomially while their depth is \emph{fixed} throughout the family, namly is a constant $c$ independent of $n$. 
+whose number of inputs bits $n$ grows, their size $|C_n|$ grows polynomially while their depth is \emph{fixed} throughout the family, namely is a constant $c$ independent of $n$. 
 
 %The class of Boolean functions computed by such circuit families is denoted $\ACZ$, and the class of such constant depth cir
 
@@ -159,7 +159,7 @@ The proof uses the Random Restriction Method described in the sequel.
 
 
 \begin{tcolorbox}[colframe=white, colback=gray!5, boxrule=0mm, sharp corners]
-\textbf{Upshot of argument}: The idea is to randomly restrict (assign) the variables of the circuit (of which we want to show it cannot compute \Parity). If the circuit is small, such a restriction collapses (gradually) the depth of the circuit to a depth-2 circuit. If the depth of the initial circuit was constant, this gradual step-by-step depth reduction needs to be done only for a constant many times. If we made random assignments (restrictions) only for a constant many times, we can rest assure that with high probability we have not assigned (i.e., fixed) too many variables. Hence, the function $\Parity$ under these restrictions still has a lot of free variables with high probability. But such $\Parity$ with sufficiently many free variables cannot have small depth 2 circuits (this we show by an auxiliary elementary argument).
+\textbf{Upshot of argument}: The idea is to randomly restrict (assign) the variables of the circuit (of which we want to show it cannot compute \Parity). If the circuit is small, such a restriction collapses (gradually, layer-by-layer) the depth of the circuit to a depth-2 circuit. If the depth of the initial circuit was constant, this gradual step-by-step depth reduction needs to be done only for a constant many times. If we made random assignments (restrictions) only for a constant many times, we can rest assure (assuming each step did not assign too many variables) that with high probability we have not assigned (i.e., fixed) too many variables. Hence, with high probability the function $\Parity$ under these restrictions still has a lot of free variables. But such $\Parity$ with sufficiently many free variables cannot have small depth 2 circuits (this we show by an auxiliary elementary argument).
 \end{tcolorbox}
 
 \includegraphics[width=0.9\textwidth]{images/image007.png}
@@ -393,7 +393,7 @@ By this claim, and using the union bound, the probability that at least one $\el
 
 
 
-\para{Repeated Depth Reduction Steps}
+\para{Repeated Depth Reduction Step}
 We now can assume we start from a circuit $C{\rst}_{\rho_0}$ with $k$-CNF at the bottom, for $k = 2 \log S$, where $\rho_0$ is the restriction that decreased the bottom layer fan-in above. (For simplicity we use the notation $C$ below, instead of $C{\rst}_{\rho_0}$.)
 We go by induction on depth, to prove the following.
 
@@ -832,7 +832,7 @@ Then $g$ can be written as an $s$-DNF and also as an $s$-CNF.
 \end{claim}
 
 \begin{proof}
-\textbf{Step 1: $g$ is an $s$-DNF.}
+\textbf{Case 1: $g$ is an $s$-DNF.}
 Let $T(g)$ be a decision tree of height $\le s$ computing $g$.
 For every root-to-leaf path $\pi$ that ends in a $1$-leaf, define the term
 \[
@@ -850,7 +850,7 @@ Then $D \equiv g$: for every input $a\in\{0,1\}^n$, the computation of $T(g)$ on
 follows a unique path $\pi(a)$, and we have $D(a)=1$ iff $\pi(a)$ is a $1$-leaf,
 which holds iff $g(a)=1$. Hence $g$ is an $s$-DNF.
 
-\textbf{Step 2: $g$ is an $s$-CNF.}
+\textbf{Case 2: $g$ is an $s$-CNF.}
 Apply Step~1 to the function $\neg g$. The same decision tree with leaf labels
 flipped computes $\neg g$, and its height is still $\le s$. Therefore $\neg g$ has
 an $s$-DNF representation
@@ -1013,22 +1013,23 @@ In other words, picking restrictions from \(\text{Image}(\Theta(S))\) is an \emp
 
 \begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
 \textbf{The upshot of argument}
-\begin{itemize}
+\begin{enumerate}
     \item Our goal is to show there is a \emph{one-to-one} mapping from bad restrictions \( \rho \in S \) to some set of  \emph{longer} restrictions \( \rho\sigma\in S' \). 
 A \emph{bad} restriction here means a restriction $\rho$ for which \( T(f\rst\rho) \) has depth \( > s \). 
-    \item Thus, as explained above, we get that the event of picking a bad restriction is roughly bounded from above: \( \Pr_{\mathcal{R}}[\rho \in S ] \leq \frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[ \rho \in S' ] \le \frac{1}{4^s}\).    
-    \item To show the mapping is \emph{one-to-one}, we build a map from \( \rho \in S \) to longer restrictions \( \rho\sigma \) such that given \( \rho\sigma \), we can \emph{(uniquely) recover} \( \rho \). (Hence, the map is one-to-one).
-    \item \textbf{Note:} If we know \( \rho\sigma \), it does not \emph{a priori} mean we can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'\sigma' = \rho\sigma \) (\emph{the domain of the 0-1 assignment in \( \rho \) and \( \rho' \) and $\sigma$ and $\sigma'$ may be different}).
+    \item If we achieve such a mapping, as explained above, we can conclude that the event of picking a bad restriction is small enough, and roughly bounded from above: \( \Pr_{\mathcal{R}}[\rho \in S ] \leq \frac{1}{4^s} \cdot \Pr_{\mathcal{R}}[ \rho \in S' ] \le \frac{1}{4^s}\), which will be sufficient for us.   
+    \item The main challenge is showing the mapping is \emph{one-to-one}. For this purpose,  we roughly build a map that codes bad restrictions \( \rho \in S \) by longer restrictions \( \rho\sigma \), such that given \( \rho\sigma \), we can completely \emph{recover} the restriction \( \rho \) whose code is \( \rho\sigma \) (hence, the map is one-to-one, because distinct restrictions must be mapped to distinct codes).
+    \smallskip 
     
-    \item To be able to recover the source restriction $\rho$ we shall encode  \( \rho \) by \( \rho\sigma\) \emph{plus some small helper code.}
-
+     \textbf{Note:} \emph{A prior}, if we know \( \rho\sigma \), it does not mean we can recover \( \rho \), because a different \( \rho' \) can be mapped to \( \rho'\sigma' = \rho\sigma \) (because the \emph{ domains} of the 0-1 assignment in \( \rho \) and \( \rho' \), as well as the domain of   $\sigma$ and $\sigma'$ may be different).
     
-    \item  The code for $\rho\sigma$  and its helper code are built based on the following rough idea: consider \( \rho \in S \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
+    \item Formally, to be able to recover the source restriction $\rho$ from $\rho\sigma$ we shall encode  \( \rho \) by \( \rho\sigma\) \emph{plus some small helper code.} Since these codes will be small, they will not damage our upper bound. Informally, one can think about it as showing that the mapping $\rho$ to $\rho\sigma$ is one-to-few (e.g., if the helper code is one bit, we get a one-to-two mapping, which will still be enough to conclude the upper bound on the probability of picking a bad restriction). 
+    
+    \item  \label{it:recover-code-SL-upshot}
+    The code for $\rho\sigma$  and its helper code are built based on the following  idea: consider \( \rho \in S \), and let \( \pi \) be the first (leftmost) path in \( T(f \restriction \rho) \) exceeding length \( s \). 
         (We shall prune this path to length \( s \) precisely.)
-    \item Then, given \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by the path \( \pi \).
-    
-    \item This means we are able to distinguish between \( \rho\sigma \) and \( \rho \) because variables assigned by $\rho$ cannot be then re-assigned along $\pi$ in the tree $T(f{\rst}\rho)$.
-\end{itemize}
+Then, given only \( \rho\sigma \) and the helper code, we will be able to recover which variables were assigned in \( \rho\sigma \) by this path \( \pi \).     
+ This will mean that we are able to recover which variables were assigned by $\sigma$ (the variables assigned by $\pi$ and $\sigma$ are the same). Which in turn, means we are able to know which variables are assigned by $\rho$ (note that variables assigned by $\rho$ cannot be then re-assigned along $\pi$ in the tree $T(f{\rst}\rho)$). Given $\rho\sigma$ and knowing which variable was assigned by either $\rho$ or $\sigma$ allows us to recover $\rho$.  
+\end{enumerate}
 \end{tcolorbox}
 
 \subsection{Proving the Switching Lemma}
@@ -1060,70 +1061,50 @@ f{\rst}_{\rho} = (x_2 \wedge \bar{x}_3) \vee (x_5 \wedge \bar{x}_2) \vee (x_6 \w
 \]
 Consider the canonical tree representation \(T(f{\rst}_{\rho})\), depicted in the picture below:
 \includegraphics{canonical-tree-of-rho-example.png}
+
 Consider the first path (to the left) denoted $\pi$ with length bigger than $s$. This leftmost ``first''  path---witnessing that $\rho$ is a bad restriction---is  marked in yellow. We first trim it to length \emph{precisely}  $s$.
-We are going to encode $\rho$ with the help of this path. Namely, we are going to show that from a specific longer restriction $\rho\sigma$, using in additional a bit of helper codes together, we can recover this path and hence will be able to recover $\rho$ completely (thus, proving there is a one-to-one map between bad restrictions and longer restrictions).   
-
-
-
-\paragraph{Coding $\rho$}
-Looking at the tree above, we consider the following (see also \Cref{fig:example-dec-tree-encoding-bad-assignments}) 
-
-\begin{itemize}
-    \item \( C'_1, \dots, C'_k \) : the conjuncts (ANDs, or terms) in $f{\rst}_\rho$ from which the variables are queried along the yellow path, in order of terms (from left to right, based on the fixed ordering we assumed).
-
-    \item \( \beta_1, \dots, \beta_k \) : the tuples of variables that we queried in each term $C'_1,\dots,C'_k$ from $f{\rst}_\rho$ along the yellow path, in order of appearance (based on the fixed order of clauses, and then the fixed order of literals).
-Note that $C'_i = C_j{\rst}_\rho$, for some $j$ not necessarily equal to $i$; The index $j$ is different from $i$ when $C_j{\rst}_\rho$ is already fixed to $0$, so there is no variable to query in this term, and we need to skip to the next nonzero term in $f {\rst}_\rho $.   
-
-  
-    \item \( \pi_1, \dots, \pi_k \) : assignments to \( \beta_i \) according to \( \pi_i \), for $i\in[k]$ (where $ \pi=\pi_1, \dots, \pi_k $; recall that we identify paths with the assignments they determine).
-    \item \( \sigma_1, \dots, \sigma_k \) : unique assignments to \( \beta_i \) that are \emph{consistent} with \( C_i |_{\rho, \pi_1, \dots, \pi_{i-1}} \), for $i\in[k]$.
-\end{itemize}
+We are going to \emph{encode} $\rho$ with the help of this path. On the other hand, given the code for $\rho$ we shall \emph{not} need to know this path or in general the tree \(T(f{\rst}_{\rho})\). We will be able to \emph{recover} (namely, decode) the restriction $\rho$ from its code, using \emph{only} the code (and knowing $f$)  (see \Cref{it:recover-code-SL-upshot} above).  
 
 
 
 
+\subsubsection{Coding $\rho$}
+Look at  \Cref{fig:example-dec-tree-encoding-bad-assignments}, which shows a coding procedure for the canonical decision tree above: 
 \begin{figure}[H]
-\includegraphics[width=\textwidth]{images/coding-sl-ex1.png}
+\includegraphics[width=\textwidth]{images/coding-sl-ex1-b.png}
 \caption{Example of coding a bad restriction by looking at the left-most path whose length exceeds $s$ in $T(f|\rho)$. 
 %Note: On the same depth (but different paths) in the tree, different variables can be queried. Here, at depth 3, we query \( x_7 \) and \( x_6 \) at different paths.%
 }
 \label{fig:example-dec-tree-encoding-bad-assignments}
 \end{figure}
+  
+To explain this figure and the coding procedure in general we use the following notation:
+\begin{itemize}
+    \item \( C'_1, \dots, C'_k \) : the conjuncts (ANDs, or terms) in $f{\rst}_\rho$ from which the variables are queried along the yellow path, in order of terms (from left to right, based on the fixed ordering we assumed). Note that 
+$$C'_i = C_j{\rst}_{\rho\pi_1\dots\pi_{i-1}},$$
+ for some $j$ not necessarily equal to $i$ (this is because some terms $C_j$ become zero along the path, namely under $\rho\pi_1\dots\pi_{\ell}$ (some $\ell \le k$), so there is no variable to query in this term, and we need to skip to the next nonzero term in $f{\rst}_{\rho\pi_1\dots\pi_{\ell}}$). 
+    \item \( \beta_1, \dots, \beta_k \) : the tuples of variables that we queried in each term $C'_1,\dots,C'_k$  along the yellow path, in order of appearance (based on the fixed order of clauses, and then the fixed order of literals).
+  
+    \item \( \pi_1, \dots, \pi_k \) : assignments to \( \beta_i \) according to the sub-assignments of $\pi$, denoted \( \pi_i \), for $i\in[k]$ (i.e.,  $ \pi=\pi_1 \dots \pi_k $).
+Recall that we identify paths with the assignments they determine.
 
-To code $\rho$ we shall use only the following: the assignment $\rho\sigma$ (where $\sigma$ is defined as above), together with the helper codes $\pi_1,\dots,\pi_k = \pi$, and the tuples $\beta'_1,\dots,\beta'_k$.
+    \item \( \sigma_1, \dots, \sigma_k \) : unique assignments to \( \beta_i \) that \emph{satisfy}  \( C_i |_{\rho, \pi_1, \dots, \pi_{i-1}} \), for each $i\in[k]$.
+\end{itemize}
 
+\begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
+The code of $\rho$ consists of the following: the assignment $\rho\sigma$ (where $\sigma$ is defined as above), together with the helper codes $\pi'_1,\dots,\pi'_k $, and the tuples $\beta'_1,\dots,\beta'_k$, as described in what follows.
+\end{tcolorbox}
 
 
 \para{Helper Codes}
 \begin{itemize}
     \item \( \beta_i \) is coded by string \( \beta_i' \), of \( |\beta_i| \) numbers, each \( \leq 2r \) (recording for each variable in \( \beta_i \): its location in \( C_i \) (number \( \leq r \)), and whether it is the last variable in \( \beta_i \) (one bit)).
     \item \( \beta' := \beta_1' \dots \beta_k' \). Note that the number of possible codes $\beta'$ is at most $ (2r)^s $.
-    \item \( \pi_i \) is coded as a string \( \pi_i' \) of \( |\beta_i| \) bits.
-    \item \( \pi' := \pi_1' \pi_2' \dots \pi_k' \), where the number of possible \( \pi' \) codes is \( 2^s \). \textcolor{red}{***Should it be $\pi$ without asterix?}***
+    \item The corresponding assignments \( \pi_i \) are encoded by the values $\pi'_i$ along the path $\pi_i$ in their order of appearance from top to bottom (namely, we record only the \emph{values} each variable in the assignment gets while not recording the variables assigned themselves---as we show they can be recovered).
+We thus have  \( \pi' := \pi_1' \pi_2' \dots \pi_k' \), where the number of possible codes for \( \pi' \) is \( 2^s \). 
 \end{itemize}
 
 
-
-\noindent\text{Coding Table}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\( C_i \)'s ({\tiny Conjuncts on yellow path; these are not in the code)}) & \( \beta_i \) (Unset variables) & \( \pi_i \) (Partial \( \pi \) Assignment) & \( \sigma_i \) \\ 
-\hline
-\( C_1 \) & \( \beta_1 = \{x_2, x_3\} \) & \( \pi_1 = 00 \) & \( \sigma_1 = 10 \) \\
-         & \( \beta_1' = \{\ceil{2}, \ceil{4}\} \) & & \( \Rightarrow \) satisfies \( C_1 \) \\
-\hline
-\( C_2 \) & \( \beta_2 = \{x_5\} \) & \( \pi_2 = 1 \) & \( \sigma_2 = 0 \) \\
-         & \( \beta_2' = \{\ceil{1}\} \) & & \\
-\hline
-\( C_3 \) & \( \beta_3 = \{x_7\} \) & \( \pi_3 = 1 \) & \( \sigma_3 = 1 \) \\
-         & \( \beta_3' = \{\ceil{2}\} \) & & \\
-\hline
-\end{tabular}
-\end{center}
-
- 
-\subsubsection{The coding map is one-to-one}   
 
 \noindent
 \textbf{The Coding Map} \( \Theta \) is a function:
@@ -1136,41 +1117,62 @@ defined by:
 \]
 
 \begin{note}
-Only given \( \rho\sigma \), we don't know how to find \( \rho \) because we don't know what's the domain of \( \rho \) and what's the domain of \( \rho\sigma \). We only know the domain of \( \rho\sigma \).
+As mentioned above, given \( \rho\sigma \), we do not know a priori how to find \( \rho \) because we do not necessarily  know what is the domain of \( \rho \) and what is the domain of \( \rho\sigma \). We only know the domain of \( \rho\sigma \).
 \end{note}
 
-\begin{claim}
-\(\Theta\) is one-to-one. Namely, given \( (\rho\sigma, \beta', \pi') \) we can \emph{recover} (uniquely) \( \rho \).
-\end{claim}
+
+
+% 
+% 
+% \noindent\text{Coding Table}
+% \begin{center}
+% \begin{tabular}{|c|c|c|c|}
+% \hline
+% \( C_i \)'s ({\tiny Conjuncts on yellow path; these are not in the code)}) & \( \beta_i \) (Unset variables) & \( \pi_i \) (Partial \( \pi \) Assignment) & \( \sigma_i \) \\ 
+% \hline
+% \( C_1 \) & \( \beta_1 = \{x_2, x_3\} \) & \( \pi_1 = 00 \) & \( \sigma_1 = 10 \) \\
+%          & \( \beta_1' = \{\ceil{2}, \ceil{4}\} \) & & \( \Rightarrow \) satisfies \( C_1 \) \\
+% \hline
+% \( C_2 \) & \( \beta_2 = \{x_5\} \) & \( \pi_2 = 1 \) & \( \sigma_2 = 0 \) \\
+%          & \( \beta_2' = \{\ceil{1}\} \) & & \\
+% \hline
+% \( C_3 \) & \( \beta_3 = \{x_7\} \) & \( \pi_3 = 1 \) & \( \sigma_3 = 1 \) \\
+%          & \( \beta_3' = \{\ceil{2}\} \) & & \\
+% \hline
+% \end{tabular}
+% \end{center}
+
+ 
+\subsubsection{The coding map is one-to-one}   
+
+\begin{lemma}
+\(\Theta\) is one-to-one. Namely, given \( (\rho\sigma, \beta', \pi') \) we can \emph{recover}  \( \rho \).
+\end{lemma}
 
 \begin{proof}
-(Recall \( C_1, C_2, \dots \) are the clauses we query along the left-most path of length \( >s \) in \( T(f_{\rho}) \).)
- 
-%\textbf{Proof the coding map is an injection.} 
 
-Suppose we are given \( (\rho\sigma, \beta', \pi') \). We may recover \( \rho \) as follows:
+Recall \( C'_1, C'_2, \dots \) are the clauses we query along the left-most path of length \( >s \) in \( T(f{\rst}_{\rho}) \).
+Suppose we are given \( (\rho\sigma, \beta', \pi') \). We can recover \( \rho \) as follows:
 
 \begin{itemize}
     \item First, we can easily recover all strings \( \beta_i' \) and \( \pi_i' \).
-    \item Now let \( C_1' \) be the first term in \( F \) such that \( C_1' | \rho\sigma \neq 0 \).
-    \item \( C_1' \) cannot come before \( C_1 \), and by construction \( C_1 \) is not falsified by \( \rho\sigma \).
-    \item So we must have \( C_1' = C_1 \).
-    \item From \( \beta_1' \) and \( C_1 \) we can recover \( \beta_1 \), and from this and \( \pi_1' \) we can recover \( \pi_1 \).
+    \item Now let \( C_1'' \) be the first term in \( f \) such that \( C'_1|\rho\sigma \neq 0 \).
+    \item \( C''_1 \) cannot come before \( C'_1 \), and by construction \( C'_1 \) is not falsified by \( \rho\sigma \).
+    \item So we must have \( C_1'' = C'_1 \).
+    \item From \( \beta_1' \) and \( C'_1 \) we can recover \( \beta_1 \), and from this and \( \pi_1' \) we can recover \( \pi_1 \).
     \item \( \sigma_1 \) and \( \pi_1 \) were assignments to the same variables, so we can construct a restriction \( \rho\sigma_1[\pi_1/\sigma_1] = \rho\pi_1\sigma_2 \dots \sigma_k \).
-    \item Let \( C_2' \) be the first term in \( F \) such that \( C_2' | \rho\pi_1\sigma_2 \dots \sigma_k \neq 0 \).
-    \item Then as above, \( C_2' \) must equal \( C_2 \), and we can recover \( \beta_2 \) and \( \pi_2 \) and carry on in the same way.
+    \item Let \( C_2'' \) be the first term in \( f \) such that \( C_2'' | \rho\pi_1\sigma_2 \dots \sigma_k \neq 0 \).
+    \item Then as above, \( {C''_2} \) must equal \( C'_2 \), and we can recover \( \beta_2 \) and \( \pi_2 \) and carry on in the same way.
+
 \end{itemize}
-
-\noindent
+ 
 Once we have recovered all the \( \beta_i \)'s, we know exactly what changed between \( \rho \) and \( \rho\sigma \) and can recover \( \rho \).
-
+\end{proof} 
 
 \begin{note}
 \( \rho\sigma \) is not necessarily a bad restriction.
 \end{note}
-\end{proof} %claim
-
-\begin{note}[defining $\sigma$ to be consistent with the conjuncts in F]
+\begin{note}[defining $\sigma$ to be consistent with the conjuncts in f]
 \noindent
 The point is that we want to avoid a situation in which \( C_i | \rho \not\equiv 0 \) but \( C_i | \rho\sigma \equiv 0 \). If this happens, then we can't know what was the clause queried by \( \pi_i \); it might have been \( C_i \), but because we ask for the first term in \( F \) such that \( C_i' | \rho\sigma \neq 0 \), we don't get to \( C_i \).
 \end{note}
@@ -1191,21 +1193,21 @@ The point is that we want to avoid a situation in which \( C_i | \rho \not\equiv
 We want to recover \( \rho \) given \( \rho{\sigma} \) and helper codes.
 
 \begin{itemize}
-    \item Consider the first AND clause \( C'_1 \) in \( f | \rho{\sigma} \) such that \( C_1' | \rho{\sigma} \neq 0 \).
-    \item Since \( \sigma \) never falsifies an AND in \( f \) by \textbf{construction}, then \( C_1' = C_1 \) (i.e., the first AND such that \( f | \rho \neq 0 \)).
-    \item \( C_1' \) cannot come before \( C_1 \) (in \( f \)) because \( C_1' | \rho{\sigma} \neq 0 \Rightarrow C_1' | \rho \neq 0 \), since \( \rho{\sigma} \) extends \( \rho \).
-    \item Thus, we know that \( C_1 \) was the first queried AND when we constructed \( T(f | \rho{\sigma}) \).
-    \item We know \( \beta_1' = \{ x_2, x_3 \} \), the position in \( C_1 \) of the literals queried. So we can find out they were \( x_2, x_3 \). Hence, we also know \( \pi_1 \).
+    \item Consider the first AND clause \( C''_1 \) in \( f | \rho{\sigma} \) such that \( C_1'' | \rho{\sigma} \neq 0 \).
+    \item Since \( \sigma \) never falsifies an AND in \( f \) by \textbf{construction}, then \( C_1'' = C'_1 \) (i.e., the first AND such that \( f | \rho \neq 0 \)).
+    \item \( C''_1 \) cannot come before \( C'_1 \) (in \( f \)) because \( C_1'' | \rho{\sigma} \neq 0 \Rightarrow C_1'' | \rho \neq 0 \), since \( \rho{\sigma} \) extends \( \rho \).
+    \item Thus, we know that \( C'_1 \) was the first queried AND when we constructed \( T(f{\rst}_ {\rho\sigma}) \).
+    \item We know \( \beta'_1 = \{ 2, 4 \} \). So we can find out the variables in $\beta_1$  are \( x_2, x_3 \). Hence, we also know \( \pi_1 \).
     \item So we can change \( \rho{\sigma} \): instead of \( \sigma \), assigning \( x_2, x_3 \) assign \( \pi_1 \) to \( x_2, x_3 \). In symbols, we get:
     \[
-    \rho{\sigma} [\sigma \to \pi_1]
+    \rho{\sigma} [\sigma \to \pi_1].
     \]
     \item Now, we do the same decoding procedure with \( T(f | \rho{\sigma} [\sigma \to \pi_1]) \), which is precisely the decision tree rooted at the third layer of the tree, left-most node (rooted at $x_5$).
-    \item At the end, we know what is:
+    \item Following this process until the end, we know what is:
     \[
-    \rho{\sigma} [\sigma_1 \to \pi_1, \dots, \sigma_k \to \pi_k]
+    \rho{\sigma} [\sigma_1 \to \pi_1, \dots, \sigma_k \to \pi_k].
     \]
-    Since we know all \( \pi_1, \dots, \pi_k \), we now know what was \( \rho \): We take \( \rho{\sigma} \) and assign stars to all variables queried on the path \( \pi_C \).
+    Since we know all \( \pi_1, \dots, \pi_k \), we now know what was \( \rho \): We take \( \rho{\sigma} \) and assign stars to all variables queried on the path \( \pi \).
 \end{itemize}
 
 \subsubsection{Wrapping up  the Proof of the Switching Lemma}

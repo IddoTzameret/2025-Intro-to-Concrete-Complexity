@@ -1,9 +1,9 @@
 \chapter{Introduction to Proof Complexity}
 
-Up to this point we have  seen \textbf{circuit complexity}, in which we wished to understand the resources required to \emph{compute} a function. And specifically, what is the minimal size of a Boolean circuit computing a given function (as a function of the number of input bits).
+Up to this point we have  seen \textbf{circuit complexity}, in which we wanted to understand the resources required to \emph{compute} a function. And specifically, what is the minimal size of a Boolean circuit computing a given function (as a function of the number of input bits).
 
 We now consider \textbf{proof complexity}. Instead of analysing the size of circuits computing Boolean
-functions, we address the question:
+functions, we address the following question:
 
 
 
@@ -12,27 +12,29 @@ functions, we address the question:
 \noindent
 \hangindent=2em
 \hangafter=0
-Given a propositional proof system, and a tautological
+{\it Given a propositional proof system, and a tautological
 statement (valid statement; namely a propositional
 formula that is 1 under any assignment), what is the
 shortest proof of this statement?
-
+}
 \bigskip
 
 
-Like circuit complexity was motivated by $\P$ vs $\NP$ (if SAT
+Similar to circuit complexity which is motivated by $\P$ vs $\NP$ (if SAT
 does not have small circuits then $\P \neq \NP$), proof
-complexity is motivated by the $\NP$ vs $\coNP$ question.
-
+complexity is motivated by the $\NP$ vs $\coNP$ question as we shall see.
 
 % Do not use float option, otherwise it's not put inline. 
 \begin{tcolorbox}[colframe=white, colback=gray!5, boxrule=0mm, sharp corners]
 \textbf{Recall some basic notions from complexity classes.
 }
+\\
 
-\textbf{NP}: all languages with polynomial-size witnesses. \\
-\textbf{coNP}: all languages whose \textit{negative} instances have
+\textbf{\NP}: the class of  languages whose positive instances have polynomial-size witnesses. Namely, languages for which a positive input can be verified in polynomial-time. \\\\
+\textbf{\coNP}: the class of  languages whose \textit{negative} instances have
 polynomial-size witnesses.
+Namely, languages for which a positive input may lack a short witness that can be efficiently verified, but a negative input does have an easily verifiable short witness.\\
+
 
 Formally:
 
@@ -40,37 +42,27 @@ Formally:
 
 
 
-$L \in NP$: There is a relation $R(\bar{x}, \bar{y})$ in $P$ and a constant $C$, such that $x \in L$ iff 
+$L \in \NP$: There is a relation $R(\bar{x}, \bar{y})$ in $\P$ and a constant $C$, such that $x \in L$ iff 
 \[ \exists \bar{y} (|\bar{y}| \leq |\bar{x}|^C \land R(\bar{x}, \bar{y}) = 1). \]
 
-$L \in coNP$: Let 
+$L \in \coNP$: Let 
 \[ \bar{L} = \{ x \in \{0,1\}^* \mid x \notin L \}. \]
 Then $L \in coNP$ iff $\bar{L} \in NP$.
 
-In other words, there is a relation $R(\bar{x}, \bar{y})$ in $P$ and a constant $C$, such that $x \in L$ iff 
+In other words, there is a relation $R(\bar{x}, \bar{y})$ in $\P$ and a constant $C$, such that $x \in L$ iff 
 \[ \forall \bar{y} (|\bar{y}| \leq |\bar{x}|^C \to R(\bar{x}, \bar{y}) = 0). \]
 
-For concreteness, we can think of $NP, coNP$ as:
+For concreteness, we can think of $\NP$ and $\coNP$ as their representative complete problem:
 \begin{align*}
-    SAT \text{ as }  NP \\
-    UNSAT \text{ as } coNP
+    SAT \text{ as }  \NP \\
+    UNSAT \text{ as } \coNP.
 \end{align*}
-
-\text{Given a CNF formula, given a CNF formula,}
-
-\text{accept if there exists accept if there is no}
-
-\text{a satisfying assignment satisfying assignment.}
-
-Indeed: 
-\begin{align*}
-    SAT &\text{ is NP-complete, hence,} \\
-    UNSAT &\text{ is coNP-complete.}
-\end{align*}
+Indeed  SAT is \NP-complete, hence, UNSAT is \coNP-complete.
+ 
 
 \begin{itemize}
-    \item For language $L$ in NP, we know we have short (polynomial-size) proofs for every $x$ in $L$: if $L = SAT$, then the short proof is simply the satisfying assignment.
-    \item For language $L$ in coNP, we don't know if $x$ in $L$ have short proofs. If $L = UNSAT$, and $x$ is in $L$, then what kind of short proofs are there for unsatisfiability? It's open if there are!
+    \item For a language $L$ in NP, we know we have short (polynomial-size) proofs for every $x$ in $L$: if $L = SAT$, then the short proof is simply the satisfying assignment.
+    \item For language $L$ in coNP, we don't know if $x$ in $L$ have short proofs. If $L = UNSAT$, and $x$ is in $L$, then it is unclear what kind of short proofs are there for unsatisfiability? In fact, it is open if there are.
     \item To study this question we investigate proofs in different proof systems (like circuits in different circuit classes).
 \end{itemize}
 
@@ -81,16 +73,19 @@ Indeed:
 \section{The Resolution Refutation  System} 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-For the rest of this chapter we focus on a  concrete proof system, which is well studies, simple to describe, and quite well-understood. 
+For the rest of this chapter we focus on a  concrete proof system, which is well studied, simple enough to describe and investigate, and quite well-understood. 
 
 
 \begin{tcolorbox}[colframe=white, colback=red!5, boxrule=0mm, sharp corners]
-\textbf{Resolution Refutations}
+\begin{definition}[Resolution Refutations]
+Let $F$ be a set of  clauses $C_1, \dots, C_m$. A \textit{resolution derivation of the clause $D$ from $F$}, in symbols $F\vdash D$,  is a sequence of clauses $D_1, \dots, D_t$ such that the final clause $D_t = D$ 
+%(the empty clause, which stands for the truth-value %\emph{false}), 
+and every $D_i$, $i=1,\dots,t$, is one of the following:
 \begin{itemize}
-    \item Let $F$ be an unsatisfiable set of  clauses $C_1, \dots, C_m$.
-    \item A \textit{resolution refutation} of $F$ is a sequence of clauses $D_1, \dots, D_t$ such that $D_t = \square$ (the empty clause, which stands for the true value false), and every $D_i$ is either $C_i$ for some $i=1,\dots,m$, or was derived from $D_j, D_k$ with $j,k < i$ via the resolution derivation rule:
-\end{itemize}
-
+\item 
+$D_i$ is an initial clause $C_j$ for some $j=1,\dots,m$, or
+\item $D_i$ was derived from $D_j, D_k$ with $j,k < i$ via the following resolution derivation rule:
+ 
 \textbf{Resolution Rule:}
 \begin{center}
     \begin{tabular}{c}
@@ -100,22 +95,31 @@ For the rest of this chapter we focus on a  concrete proof system, which is well
         \hline
     \end{tabular}
 \end{center}
-
-Where $A, B$ are some clauses themselves.
+where $D_i=A\lor B$ and $A, B$ are some (possibly empty) clauses.
+\item 
+$D_i$ was derived by the following rule: 
 
 \textbf{Weakening Rule:}
 \begin{center}
     \begin{tabular}{c}
         \hline
-        From $A$ (a clause) \\
-        Derive $A \lor l$ ($l$ a literal) \\
+        From $A$   \\
+        Derive $A \lor l$   \\
         \hline
     \end{tabular}
 \end{center}
+where $D_i=A\lor l$, for $l$ some literal and $A$\ some possibly empty clause. 
+\end{itemize}
 
-The \textbf{size} of a resolution refutation is the number of clauses it has.
+The \textbf{size} of a resolution derivation is the \emph{number of clauses} it has.
+
+A \textbf{resolution refutation} of the CNF formula $F$ is a derivation of the  empty clause $\square$ (which stands for the truth-value \emph{false}).
+\end{definition}
 \end{tcolorbox}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%
 \begin{figure}[H]\label{fig:res-refutation}
 \includegraphics{images/resolution-example.png}
 \caption{Example of a resolution refutation depicted as a tree whose labels are clauses.}
@@ -154,14 +158,23 @@ As a sequence of clauses, we can depict the refutation in Figure \ref{fig:res-re
 %     \item Derive from $7,8$
 % \end{itemize}
 
-\textbf{Comments:} The example depicted a \textbf{tree-like} resolution refutation because the underlying structure is a \textbf{tree}. Formally, this means that every clause in the refutation is used at most once in a resolution rule (to derive a new clause). Hence, the underlying structure of the proof can be drawn as a \textbf{tree}.
+ The example depicted a \textbf{tree-like} resolution refutation because the underlying structure is a \textbf{tree}. Formally, this means that every clause in the refutation is used at most once in a resolution rule (to derive a new clause). 
 
-A resolution refutation that is \textbf{not} a tree, namely, the same occurrence of a clause can be used in more than one resolution-rule applications, is called a \textbf{DAG-like refutation}. Because the refutation can be drawn as a \textbf{Directed Acyclic Graph}.
+A resolution refutation that is \textbf{not} a tree, namely, the same occurrence of a clause can be used in more than one resolution-rule or weakening-rule applications, is called a \textbf{DAG-like refutation}. Because the refutation can be drawn as a \textbf{Directed Acyclic Graph}.
 
 
-\textbf{Comment:} We use the word "proof" and "refutation" interchangeably in proof complexity.
+\begin{remark}
+We use the word "proof" and "refutation" interchangeably in proof complexity.
+\end{remark}
 
-A refutation of a CNF is a proof that it is unsatisfiable. Or in other words, a proof that the negation of the CNF is a tautology, i.e., evaluates to 1 under any assignment.
+Note that a refutation of a CNF formula is a proof that the CNF formula  is unsatisfiable. Or in other words, a proof that the negation of the CNF is a tautology, i.e., evaluates to 1 under every assignment.
+
+\begin{exercise}
+Prove that if a CNF formula $F$ has a resolution refutation then $F$ is unsatisfiable. 
+(Hint: assume by way of contradiction the existence of a satisfying assignment, and use induction on refutation  length to get a contradiction, using the fact that $\square$ has no satisfying assignments.)
+\end{exercise}
+
+
 
 
 We need the following simple definitions and notations to explain the completeness of the resolution refutation system.
@@ -169,13 +182,13 @@ We need the following simple definitions and notations to explain the completene
 For a variable $x$ we define $x^1 := x$ and $x^0 := \neg x$.
  
 
-\begin{definition}[Restriction of a proof/refutation]
-Let $F$ be a CNF.
-Define $F\rst_{x_i := \epsilon}$, $\epsilon \in \{0,1\}$ as follows:
+\begin{definition}[Restriction of a  refutation]
+Let $F$ be a CNF formula.
+Define $F{\rst}_{x_i = \epsilon}$, $~\epsilon \in \{0,1\}$ as follows:
 For all clauses $C$ in $F$ do:
 \begin{enumerate}
-    \item If $C$ is a clause in $F$ and $x_i^\epsilon \in C$, then delete $C$ from $F$.
-    \item If $x_i^{1-\epsilon} \in C$, then delete the literal $x_i^{1-\epsilon}$ from $C$ (keep $C$).
+    \item If $C$ is a clause in $F$ and $x_i^\epsilon \in C$, then delete $C$ from $F$ (because the clause is true under the assignment, it does not contribute to unsatisfiability).
+    \item If $x_i^{1-\epsilon} \in C$, then delete the literal $x_i^{1-\epsilon}$ from $C$, but keep $C$ (because, $C\lor x_i^{1-\eps}\equiv C$; note that $C$ can be the empty clause $\square $). 
     \item Otherwise, do nothing.
 \end{enumerate}
 \end{definition}
@@ -184,18 +197,18 @@ For all clauses $C$ in $F$ do:
 \begin{enumerate}
     \item $(x_1 \lor x_2 \lor x_3)$  
     \[
-    F\rst_{x_1 := 0} \Rightarrow (x_2 \lor x_3)
+    F\rst_{x_1 = 0} \Rightarrow (x_2 \lor x_3)
     \]
 
     \item $(x_1 \lor x_2 \lor \neg x_3)$  
     \[
-    F\rst_{x_1 := 1} \Rightarrow (1\lor x_2 \lor \neg x_3)\equiv 1
+    F\rst_{x_1 = 1} \Rightarrow (1\lor x_2 \lor \neg x_3)\equiv 1
     \]
     (Delete this clause  because it is not usable in a refutation).
 \end{enumerate}
 
 \textbf{Conclusion:}  
-$F\rst_{x := \epsilon}$ for $\epsilon \in \{0,1\}$ is simply assigning $0,1$ in $F$ for $x$, where $0,1$ then leads to deletion of literal or clause, respectively.
+$F\rst_{x = \epsilon}$ for $\epsilon \in \{0,1\}$ is simply assigning $0,1$ in $F$ for $x$, where $0,1$ then leads to deletion of literal or clause, respectively.
 
 
 
@@ -205,7 +218,7 @@ Resolution is a complete refutation system for unsatisfiable CNF formulas. In ot
 \end{theorem}
 
 \begin{proof}
-Let $F$ be a CNF formula that is unsatisfiable. This means that $F$ evaluates to false (or 0) under every truth assignment to the variables of $F$. Our goal is to show that the empty clause (denoted as $\square$) can be derived using resolution.
+Let $F$ be a CNF formula that is unsatisfiable. This means that $F$ evaluates to false (or 0) under every truth assignment to the variables of $F$. Our goal is to show that the empty clause $\square$ can be derived using resolution.
 
 We construct a resolution refutation by induction on the number of variables $n$.
 
@@ -217,67 +230,63 @@ Resolving these two immediately yields the empty clause $\square$.
     \item Now, consider a CNF $F$ with $n+1$ variables.
     \item We perform a ``splitting method'' by considering:
     \begin{itemize}
-        \item $F[x_{n+1}=1]$, the simplified formula when $x$ is set to true.
-        \item $F[x_{n+1}=0]$, the simplified formula when $x$ is set to false. Since $F$ is unsatisfiable, both $F[x_{n+1}=1]$ and $F[x_{n+1}=0]$ must also be unsatisfiable.
-        \item By the induction hypothesis, there exist resolution refutations for both. We can \emph{glue} these refutations into one, as is shown in the Gluing Lemma below eventually leading to $\square$.
+        \item $F\rst_{x_{n+1}=1}$, the simplified formula when $x$ is set to true.
+        \item $F\rst_{x_{n+1}=0}$, the simplified formula when $x$ is set to false. 
+
+Since $F$ is unsatisfiable, both $F\rst_{x_{n+1}=1}$ and $F\rst_{x_{n+1}=0}$ must also be unsatisfiable.
+        \item By the induction hypothesis, there exist resolution refutations for both. We can \emph{glue} these refutations into one, as is shown in the Gluing Lemma below eventually leading to the empty clause $\square$.
     \end{itemize}
  
   
  
  
 
-\begin{lemma}[The glueing lemma]
+\begin{lemma}[The Gluing Lemma]
 \label{lem:glueing-no-width}
-The resolution refutation of $F_{x_i := 0} \vdash \square$ and the resolution refutation of $F_{x_i := 1} \vdash \square$ can be glued together into a refutation of $F$.
+The resolution refutation of $F_{x_i = 0} \vdash \square$ and the resolution refutation of $F_{x_i = 1} \vdash \square$ can be glued together into a refutation of $F$.
 
 \end{lemma}
-This suffices for our proof of completeness, when we put $i = n+1$.
+This suffices for our proof of completeness theorem above, when we put $i = n+1$.
 
-
+\begin{tcolorbox}[colframe=white, colback=blue!5, boxrule=0mm, sharp corners]
 \para{Upshot of the argument}
 
-We construct from a refutation of $F\!\rst_{x_i=0}$ a derivation of $x_i$ from $F$. We then use this derivation, namely the clause $x_i$, to cut all occurrences of $\neg x_i$ from $F$. By cutting $\neg x_i$ from $F$ we get $F\!\rst_{x_i=1}$, because $F\!\rst_{x_i=1}$ contains precisely all clauses $C$ such that $\neg x\lor C$ in $F$ and all clauses $D$ that neither contain $x_i$ nor $\neg x_i$ (clauses $x_i\lor E$ in $F$ are discarded from $F$ when we assign $x_i=1$). By induction hypothesis we know that  $F\!\rst_{x_i=1}$ has a resolution refutation and we are finished.
+We construct from a refutation of $F\!\rst_{x_i=0}$ a derivation of $x_i$ from $F$. We then use this derivation, namely the clause $x_i$, to ``cut'' (using the resolution rule) all occurrences of $\neg x_i$ from $F$. By cutting $\neg x_i$ from $F$ we are able to obtain  $F\!\rst_{x_i=1}$, because $F\!\rst_{x_i=1}$ contains precisely all clauses $C$ such that $\neg x_i\lor C$ is in $F$ and all clauses $D$ that neither contain $x_i$ nor $\neg x_i$ (clauses $x_i\lor E$ in $F$ are discarded from $F$ when we assign $x_i=1$). By induction hypothesis we know that  $F\!\rst_{x_i=1}$ has a resolution refutation and we are finished.
+\end{tcolorbox}
 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{images/second-glueing-illustration.png}
-    \caption{An illustration of the glueing lemma. }
-    \label{fig:gluing-lemma}
-\end{figure}
 
 
 %Using induction assumption, we construct from a refutation of $F\!\rst_{x_i=0}$ a derivation of $x_i$ from $F$. We then use this derivation, namely the clause $x_i$, to cut all occurrences of $\neg x_i$ from $F$. By cutting $\neg x_i$ from $F$ we get $F\!\rst_{x_i=1}$, because $F\!\rst_{x_i=1}$ contains precisely all clauses $C$ such that $\neg x\lor C$ in $F$ and all clauses $D$ that neither contain $x_i$ nor $\neg x_i$ (clauses $x_i\lor E$ in $F$ are discarded from $F$ when we assign $x_i=1$). By induction hypothesis we know that  $F\!\rst_{x_i=1}$ has a resolution refutation and we are finished.
 
 
 \begin{proof}
-Assume $F_{x_i := 0} \vdash \square$, meaning that we have a resolution refutation of $F_{x_i := 0}$.
+\mbox{}
 
-Then, $F \vdash x_i$, meaning there is a resolution derivation of $x_i$ from $F$.
+\para{Step I}
+
+Assume $F_{x_i = 0} \vdash \square$, meaning that we have a resolution refutation of $F_{x_i = 0}$.
+
+We show that we can build a derivation $F \vdash x_i$, meaning a resolution derivation of $x_i$ from $F$.
+We are going to turn the refutation from $F_{x_i = 0}$ to a \textbf{derivation} of $x_i$ from $F$.
+  Intuitively, this is done by adding OR of $x_i$ to each clause in the refutation $F_{x_i = 0} \vdash \square$.
+How do we do this precisely?  
   
 
-Consider $F_{x_i := 0} \vdash \square$.
-
-- We are going to turn this refutation from $F_{x_i := 0}$ to a \textbf{derivation} of $x_i$ from $F$.
-
-  This is done by, roughly, adding OR of $x_i$ to each clause in the refutation $F_{x_i := 0} \vdash \square$.
-
-- How do we do this precisely?  
-  Consider three types of clauses in $F$:
+Consider the three types of clauses in $F$:
 
   1) \textbf{Clauses containing literal $x_i$:}  
      We denote this set of clauses by $F_1$.
 
   2) \textbf{Clauses containing literal $\neg x_i$:}  
      We denote this set of clauses by $F_2$.  
-     ($F_1$ is disjoint from $F_2$, because we assume we don’t have clauses of the form $C' \lor x_i \lor \neg x_i$, since we can get rid of such clauses without increasing the size).
+     ($F_1$ is disjoint from $F_2$, because we assume we do not  have clauses of the form $C' \lor x_i \lor \neg x_i$).
 
   3) \textbf{Clauses without $x_i$ and without $\neg x_i$:}  
      We denote this set of clauses by $F_3$.
-```
+
  
 
-Now consider what happens to $F = F_1 \cup F_2 \cup F_3$ when we assign $x_i = 0$ in $F_{x_i := 0}$:
+Now consider what happens to $F = F_1 \cup F_2 \cup F_3$ in $F_{x_i := 0}$:
 
 \begin{enumerate}
     \item A clause in $F_1$ looks like $x_i \lor D$.
@@ -287,7 +296,7 @@ Now consider what happens to $F = F_1 \cup F_2 \cup F_3$ when we assign $x_i = 0
 
     \item A clause in $F_2$ contains $\neg x_i$.
     \begin{itemize}
-        \item So in $F_{x_i := 0}$, this clause becomes True and is erased.
+        \item So in $F_{x_i := 0}$, this clause becomes True and is deleted.
     \end{itemize}
 
     \item A clause in $F_3$ does not contain the variable $x_i$, so in $F_{x_i := 0}$ it stays the same.
@@ -306,26 +315,16 @@ It remains to show that doing so turns
 $F_{x_i := 0} \vdash \square$ into $F \vdash x_i$.
 
 \begin{enumerate}
-    \item A clause $D$ in $F_{x_i := 0}$ was the clause $D \lor x_i$ in $F$,
-    
-    \begin{itemize}
-        \item which when assigning $x_i = 0$ turned into $D$. Now, when we add $\lor x_i$, we get back to the original clause $D \lor x_i$ in $F$.
-    \end{itemize}
-
-    \item A clause $D \lor \neg x_i$ in $F_2$ has disappeared in $F_{x_i := 0}$, so it doesn’t appear in $F_{x_i := 0} \vdash \square$.
-
-    \item A clause $D$ in $F_3$ does not contain $x_i$ or $\neg x_i$. When we add $\lor x_i$ to $D$, we get a new clause not in $F$.
-    
-    \begin{itemize}
-        \item But we can derive, using a single \textbf{Weakening Rule}, the clause $D \lor x_i$.  
-        \item Hence, in every place $D \lor x_i$ appears, we simply add $D$ to the resolution derivation, which turns it into a legal resolution derivation from $F$.
-    \end{itemize}
-\end{enumerate}
-
+    \item   A clause $D \lor x_i$ in $F_1$ turned into the clause $D$ in $F_{x_i := 0}$.  
+Now, when we add $\lor x_i$, we get back to the original clause $D \lor x_i$ in $F$.
  
+    \item A clause $D \lor \neg x_i$ in $F_2$ has disappeared in $F_{x_i := 0}$, so it does not appear in $F_{x_i := 0} \vdash \square$.
 
-\begin{enumerate}
-    \item[e)] If in $F_{x_i := 0} \vdash \square$ we used the resolution rule:
+    \item A clause $D$ in $F_3$ does not contain $x_i$ or $\neg x_i$. When we add $\lor x_i$ to $D$, we get a new clause not in $F$. But we can derive, using a single \textbf{Weakening Rule}, the clause $D \lor x_i$.  
+Hence, in every place $D \lor x_i$ appears, we simply add $D$ and a weakening rule application to derive $D\lor x_i$ to the resolution derivation, which turn it into a legal resolution derivation from $F$.
+
+\item 
+ If in $F_{x_i := 0} \vdash \square$ we used the resolution rule:
     \[
     \frac{A \lor x_j\qquad B\lor \neg x_j}{A \lor B} 
     \]
@@ -338,35 +337,31 @@ $F_{x_i := 0} \vdash \square$ into $F \vdash x_i$.
     x_i \lor A \lor x_j \qquad x_i \lor B \lor \neg x_j}{    x_i \lor A \lor B
  }   \]
 
-    \hfill $\square$ (Claim)
+\item Finally, adding $x_i\lor$ to $\square$ turns it into $x_i$. Which concludes the claim.
 \end{enumerate}
-
-\textbf{Illustration of the transformation from $F$ to $F_{x_i := 0}$}
-
-\begin{center}
-\begin{tabular}{c c c}
-    $x_i \in F_1$ & $x_i \in F_2$ & $x_i, \neg x_i \notin F$ \\
-    $(x_i \lor D_1), (x_i \lor D_2)$ & $(\neg x_i \lor C_1), (\neg x_i \lor C_2)$ & $F_3$ \\
-    Original $F$ & Original $F$ & $F_{x_i := 0}$ \\
-    $D_1, \dots, D_k$ & & $F_3$ \\
-    $F_1$ & & $F_3 \lor x_i$ (weakening) \\
-\end{tabular}
-\end{center}
-
-By the claim, we get a resolution derivation $\pi$ of $x_i$ from $F$.
  
 
-- Now, we use $F \vdash x_i$ on the clauses of $F$ to get rid (resolve) all the literals $\neg x_i$ in $F$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{images/second-glueing-illustration.png}
+    \caption{An illustration of the gluing lemma. }
+    \label{fig:gluing-lemma}
+\end{figure}
+
+By the above, we get a resolution derivation $\pi$ of $x_i$ from $F$.
+ 
+
+- Now, we use this derivation  $F \vdash x_i$ on the clauses of $F$ to get rid (resolve, i.e., use the resolution rule to cut) all the literals $\neg x_i$ in $F$.
 
   This is simple: derive $x_i$ from $F$, and then resolve $D \lor \neg x_i$ in $F$ by $x_i$ to get $D$.
 
 - Note that this way we got a derivation of $F_{x_i := 1}$ from $F$.
 
-  This is because $F_{x_i := 1}$ contains precisely all the clauses in $F$ that contain neither $x_i$ nor $\neg x_i$ ($F_3$ above), and the clauses $D$ such that $x_i \lor D$ is in $F$ (i.e., $F_2$ above).  
-  (The clause $x_i \lor D$ in $F$ gets deleted in $F_{x_i := 1}$.)
-
+  This is because $F_{x_i := 1}$ contains precisely all the clauses in $F$ that contain neither $x_i$ nor $\neg x_i$ ($F_3$ above), and the clauses $D$ such that $\neg x_i \lor D$ is in $F$ (i.e., $F_2$ above).  
+  (The clause $ x_i \lor D$ in $F_1$ gets deleted in $F_{x_i := 1}$.)
+\medskip 
  
-By assumption $F_{x_i := 1} \vdash \square$, namely, after we derived $F_{x_i := 1}$ from $F$ with a resolution derivation, we derive $\square$, and finish the proof of the glueing lemma.
+By assumption $F_{x_i := 1} \vdash \square$, namely, after we derived $F_{x_i := 1}$ from $F$ with a resolution derivation, we derive $\square$, and finish the proof of the gluing lemma.
 \end{proof} % Gluing lemma
 \end{proof} % completeness of resolution 
  
@@ -857,7 +852,7 @@ Since $|\pi^*|\le|\pi|$ we have
     \[
     d + b + k \le d + \log_{\left(\frac{1}{1 - \frac{d}{2n}}\right)}s + k.
     \]
-    We use the following simple approximation for $0<\varepsilon<1$ (see below):
+    We use the following simple approximation for $0<\varepsilon<1$:
     \[
     \frac{1}{1 - \varepsilon} \ge  1 + \varepsilon,
     \]
@@ -865,7 +860,7 @@ Since $|\pi^*|\le|\pi|$ we have
     \[
     \leq d + \log_{\left(1 + \frac{d}{2n} \right)} s + k.
     \]
-We use another simple approximation (see also below):
+We use another simple approximation:
 \[
  \quad \log_{1+\varepsilon} x \ge 2\cd \frac{1}{\varepsilon} \log x,
     \]

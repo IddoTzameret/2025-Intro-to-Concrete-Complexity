@@ -228,7 +228,7 @@ Resolving these two immediately yields the empty clause $\square$.
 
 \induction  Assume that resolution is complete for CNFs with $n$ variables.
     \item Now, consider a CNF $F$ with $n+1$ variables.
-    \item We perform a ``splitting method'' by considering:
+    \item We perform a ``splitting argument'' by considering:
     \begin{itemize}
         \item $F\rst_{x_{n+1}=1}$, the simplified formula when $x$ is set to true.
         \item $F\rst_{x_{n+1}=0}$, the simplified formula when $x$ is set to false. 
@@ -260,14 +260,10 @@ We construct from a refutation of $F\!\rst_{x_i=0}$ a derivation of $x_i$ from $
 
 
 \begin{proof}
-\mbox{}
-
-\para{Step I}
-
 Assume $F_{x_i = 0} \vdash \square$, meaning that we have a resolution refutation of $F_{x_i = 0}$.
 
 We show that we can build a derivation $F \vdash x_i$, meaning a resolution derivation of $x_i$ from $F$.
-We are going to turn the refutation from $F_{x_i = 0}$ to a \textbf{derivation} of $x_i$ from $F$.
+We are going to turn the refutation from $F_{x_i = 0}$ to a \emph{derivation} of $x_i$ from $F$.
   Intuitively, this is done by adding OR of $x_i$ to each clause in the refutation $F_{x_i = 0} \vdash \square$.
 How do we do this precisely?  
   
@@ -286,7 +282,7 @@ Consider the three types of clauses in $F$:
 
  
 
-Now consider what happens to $F = F_1 \cup F_2 \cup F_3$ in $F_{x_i := 0}$:
+Now consider what happens to $ F_1, F_2, F_3$ in $F_{x_i := 0}$:
 
 \begin{enumerate}
     \item A clause in $F_1$ looks like $x_i \lor D$.
@@ -296,7 +292,7 @@ Now consider what happens to $F = F_1 \cup F_2 \cup F_3$ in $F_{x_i := 0}$:
 
     \item A clause in $F_2$ contains $\neg x_i$.
     \begin{itemize}
-        \item So in $F_{x_i := 0}$, this clause becomes True and is deleted.
+        \item So in $F_{x_i := 0}$, this clause becomes \textit{True} and is deleted.
     \end{itemize}
 
     \item A clause in $F_3$ does not contain the variable $x_i$, so in $F_{x_i := 0}$ it stays the same.
@@ -304,10 +300,9 @@ Now consider what happens to $F = F_1 \cup F_2 \cup F_3$ in $F_{x_i := 0}$:
 
 Now we are ready to convert $F_{x_i := 0} \vdash \square$ to $F \vdash x_i$ (i.e., a derivation of the clause $x_i$ from $F$).
 
-\textbf{Idea:}
-
 \begin{center}
-\textit{Simply add} $ \lor x_i$ \textit{to each clause in} $F_{x_i := 0} \vdash \square$.
+\textbf{Idea:}
+``\textit{Simply add} $ \lor x_i$ \textit{to each clause in} $F_{x_i := 0} \vdash \square$.''
 \end{center}
  
 
@@ -456,25 +451,23 @@ Hence, $\mathsf{NP} = \mathsf{coNP}$.
 
 \section{Size-Width Relations for Resolution}
 
-- We'll show that short resolution refutations $\Rightarrow$ small width resolution.
-
-- This enables to lower bound the size of resolution refutations via lower bounding the width of resolutions.
+ We show here that the existence of short resolution refutations for a CNF formulas means that there is a resolution refutation of this formula that has small width, namely a refutation in which each clause has small amount of literals. This enables to lower bound the size of resolution refutations via lower bounding the width of resolution refutations  (since, a short refutation would imply a small width refutation, contradicting the width lower bound).
 
 \subsection*{Notations:}
 \begin{enumerate}
-    \item The size/length of a resolution refutation is the number of clauses in it.
+    \item The \emph{size} (equivalently, length) of a resolution refutation is the number of clauses in it.
     \item Let $S_T(F \vdash \square)$ be the minimal size of a \textbf{tree-like} resolution refutation of $F$.
     \item Let $S(F \vdash \square)$ be the minimal size of a \textbf{DAG-like} resolution refutation of $F$.
     \item Let $w(F)$ be the \textbf{width} of a CNF $F$; namely, the maximal number of literals in a clause in $F$.
     \item Let $\pi$ be a refutation of $F$. Then the width of $\pi$, denoted $w(\pi)$, is the maximal width of a clause in $\pi$.
-    \item $W(F \vdash \square)$ is the minimal width of a refutation of $F$.
+    \item $w(F \vdash \square)$ is the minimal width of a refutation of $F$.
 \end{enumerate}
 
 
 \begin{tcolorbox}[colframe=white, colback=blue!4, boxrule=0mm, sharp corners]
 \begin{theorem}[Tree-like Resolution Size-Width Tradeoffs]
 \label{thm:tree-like-sw}
-Let $F$ be an unsatisfiable CNF with $n$ variables. Then, $S_T(F \vdash \square) \geq 2^{(W(F \vdash \square) - w(F))}$
+Let $F$ be an unsatisfiable CNF with $n$ variables. Then, $S_T(F \vdash \square) \geq 2^{(w(F \vdash \square) - w(F))}$
 % $S(F \vdash \square) \geq 2^{\Omega\left(\frac{(W(F %\vdash \square) - w(F))^2}{n}\right)}$
 \end{theorem}
 \end{tcolorbox}
@@ -487,42 +480,44 @@ Let $F$ be an unsatisfiable CNF with $n$ variables. Then, $S_T(F \vdash \square)
 
 
 \noindent \textbf{Upshot of the argument}:
-The idea is to  recurse by partitioning the tree-like refutation into two \emph{disjoint} sub-refutations, of which one is at most $s/2$. Thus, we partition the derivation of $\Box$ into two disjoint parts, the first deriving $x_i$ and the second $\neg x_i$, for some $i$. Since one of these derivations is of size at most $s/2$ we can now use induction on the logarithm of $s$: if we denote $b=\log s$ then $\log\ s/2 =b-1$. 
+The idea is to  recurse by partitioning the tree-like refutation into two \emph{disjoint} sub-refutations, of which one is at most $s/2$. Thus, we partition the derivation of $\Box$ into two disjoint parts, the first deriving $x_i$ and the second $\neg x_i$, for some $i$ (note this must always occur in a refutation: it would always end with this resolution rule application, except for the trivial case in which  the CNF formula already contain the empty clause). Since one of these derivations is of size at most $s/2$ we can now use induction on the logarithm of $s$: if we denote $b=\log s$ then $\log\ s/2 =b-1$. 
 \bigskip 
 
 
 We prove that:
-\[
+\begin{equation}
+\label{eq:gluing-lemma-1-to-prove}
 w(F \vdash \square) \leq \log_2(S_T(F \vdash \square)) + w(F).
-\]
+\end{equation}
 
 Let $b \in \mathbb{Z}$ be the minimal value such that $S_T(F \vdash \square) \leq 2^b$.  
-Proceed by induction on $n$ (where $n$ is the number of variables).
+Proceed by \emph{double} induction on the number of variables $n$ \emph{and} $b$.
 
-\textbf{Base Case:}  
-If $b = 0$, then $S_T(F \vdash \square) \leq 2^0 = 1$. So the refutation is just $\square$.  
-Thus,  
+\textbf{Base case 1:}  
+ $b = 0$. Thus, $S_T(F \vdash \square) \leq 2^0 = 1$. So the refutation is just $\square$.  
+Noting that the width of $\square$ is 0, we get    
 \[
-0 \leq \log_2(1) + w(F).
+w(F \vdash \square) = 0 \leq \log_2(1) + w(F).
 \]
 
-\textbf{Case:} If $n = 1$, then the only possible refutation is:
+\textbf{Base case 2:} If $n = 1$, then the only possible refutation is:
 
 \[
 \begin{array}{c}
     x_1 \quad \neg x_1 \\
-    \hline
+    \hline 
     \square
-\end{array}
+\end{array}~,
 \]
-
-And so $w(F) = 1$ and  
+and so $w(F) = 1$ and the size of the refutation is 3, hence  
 \[
-1 - w(F \vdash \square) \leq \log_2(3) + 1.
+w(F \vdash \square) = 1  \leq \log_2(3) + 1.
 \]
 
-\textbf{Induction Step:}  
-The refutation must end with the following rule:
+\textbf{Induction step:}  
+We assume that  \Cref{eq:gluing-lemma-1-to-prove} holds for $b-1$ and $n-1$ and prove it for $b$ and $n$.
+
+Consider a tree-like refutation of $F$ whose size is at most $2^b$. As mentioned before, every (non trivial) refutation must end with the following rule application, for some variables $x_i$:
 
 \includegraphics[width=0.2\textwidth]{images/image016.png}
 
@@ -534,20 +529,19 @@ The refutation must end with the following rule:
 % \end{array}
 % \]
 
-(W.l.o.g., assume that $\pi$ is of size $\leq 2^b$.) Then by induction on $b$:
-
+Without loss of generality, we assume that $\Gamma$ on the left is of size $\leq 2^{b-1}$ (as it is impossible that both sides are larger than $2^{b-1}$). Then, by induction hypothesis (on $b$):
 \[
-w(F_{x_i := 0} \vdash \square) \leq \log_2(S_T(F_{x_i := 0} \vdash \square)) + w(F) = b - 1 + w(F).
+w(F|_{x_i := 0} \vdash \square) \leq \log_2(S_T(F|_{x_i := 0} \vdash \square)) + w(F) = b - 1 + w(F).
 \]
 
 And by induction on $n$:
 
 \[
-w(F_{x_i := 1} \vdash \square) \leq \log_2(S_T(F_{x_i := 1} \vdash \square)) + w(F) \leq b.
+w(F_{x_i := 1} \vdash \square) \leq \log_2(S_T(F_{x_i := 1} \vdash \square)) + w(F) \leq b+w(F).
 \]
 
 It suffices now to glue the two proofs together in a way that preserved small width.
-This is shown below via inspecting that the glueing lemma we proved in \Cref{lem:glueing-no-width} indeed preserves small width. 
+This is shown below via inspecting that the gluing lemma we proved in \Cref{lem:glueing-no-width} indeed preserves small width. 
 \subsubsection{The Gluing Lemma Preserves Small Width }
 
 We need the following simple structural claims.
@@ -655,19 +649,7 @@ F_{x_i := 0} \vdash_{b - 1 + w(F)} \square \quad \text{into} \quad F \vdash_{b +
     \]
 \end{enumerate}
 
-\textbf{Illustration of the transformation from $F$ to $F_{x_i := 0}$:}
 
-\begin{center}
-    \begin{tabular}{|c|c|c|}
-        \hline
-        $x_i \in F_1$ & $x_i \in F_2$ & $x_i \notin F$ \\
-        \hline
-        $(x_i \lor D_1), (x_i \lor D_2), \dots$ & $(\neg x_i \lor C_1), (\neg x_i \lor C_2), \dots$ & Original $F$ \\
-        \hline
-        $D_1, \dots, D_t$ & Removed & $F_3$ \\
-        \hline
-    \end{tabular}
-\end{center}
 
 \textbf{Conclusion:}  
 By the claim, we obtain a resolution derivation $\pi$ of $x_i$ from $F$  

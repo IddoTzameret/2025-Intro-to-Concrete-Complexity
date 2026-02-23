@@ -541,11 +541,12 @@ w(F_{x_i := 1} \vdash \square) \leq \log_2(S_T(F_{x_i := 1} \vdash \square)) + w
 \]
 
 It suffices now to glue the two proofs together in a way that preserved small width.
-This is shown below via inspecting that the gluing lemma we proved in \Cref{lem:glueing-no-width} indeed preserves small width. 
-\subsubsection{The Gluing Lemma Preserves Small Width }
+This is shown below via inspecting that the gluing lemma we proved in \Cref{lem:glueing-no-width} indeed preserves small width.
 
-We need the following simple structural claims.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{The Gluing Lemma Preserves Small Width}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The following gluing lemma is identical to the gluing lemma above, only that we inspect every step and observe that the depth in each step does not increase above $b$, when we glue together a $(b-1)$-width refutation  with a $b$-width  refutation.
 
 \begin{lemma}
 The refutation $F_{x_i := 0} \vdash \square$ of width $b - 1 + w(F)$  
@@ -554,20 +555,22 @@ can be glued into a refutation of $F$ with width $b + w(F)$.
 \end{lemma}
 
 \begin{proof}
-
+We start with the following claim that is identical to the claim above, only that we make sure the width  is preserved at most $b$.
 \begin{claim}
-Assume $F_{x_i := 0} \vdash_{b - 1 + w(F)} \square$, meaning that from $F_{x_i := 0}$ we have a resolution refutation of width $\leq b - 1 + w(F)$. Then, $F \vdash_{b + w(F)} x_i$, meaning there is a resolution derivation of $x_i$ from $F$ of width $\leq b + w(F)$.
+ $\leq b - 1 + w(F)$. Then, $F \vdash_{b + w(F)} x_i$, meaning there is a resolution derivation of $x_i$ from $F$ of width $\leq b + w(F)$.
+
 \end{claim}
 
-\textbf{Proof of Claim:} 
+\begin{proof}[Proof of claim]
+By inspection of the claim in the proof of \Cref{lem:glueing-no-width}.
+
 
 Consider $F_{x_i := 0} \vdash \square$. By assumption, it has width $b - 1 + w(F)$.
 
 - We are going to turn this refutation from $F_{x_i := 0}$ into a \textbf{derivation} of $x_i$ from $F$ of width $b + w(F)$ (i.e., we add one to the width).  
   This is done by, roughly, adding $\lor x_i$ to each clause in the refutation of $F_{x_i := 0} \vdash \square$.
 
-- \textbf{How do we do this precisely?}  
-  Consider three types of clauses in $F$:
+ Consider three types of clauses in $F$:
 
   \begin{enumerate}
       \item \textbf{Clauses containing literal $x_i$:}  
@@ -596,7 +599,7 @@ when we assign $x_i := 0$ in $F_{x_i := 0}$:
     so in $F_{x_i := 0}$, it stays the same.
 \end{enumerate}
 
-Now we are ready to convert  
+By adding $\lor x_i$ to each clause in $F_{x_i := 0} \vdash_{b - 1 + w(F)} \square$ we are able  to convert  
 \[
 F_{x_i := 0} \vdash_{b - 1 + w(F)} \square
 \]  
@@ -604,18 +607,7 @@ to
 \[
 F \vdash_{b + w(F)} x_i
 \]  
-(i.e., a derivation of the clause $x_i$ from $F$, of width $b + w(F)$).
-
-\begin{center}
-        \textbf{Simply add $\lor x_i$ to each clause in $F_{x_i := 0} \vdash_{b - 1 + w(F)} \square$.}
-\end{center}
- 
-
-It remains to show that doing so turns  
-\[
-F_{x_i := 0} \vdash_{b - 1 + w(F)} \square \quad \text{into} \quad F \vdash_{b + w(F)} x_i.
-\]
-
+(i.e., a derivation of the clause $x_i$ from $F$, of width $b + w(F)$), as we explain below.
 \begin{enumerate}
     \item Since we add one variable to each clause, the width is indeed $\leq b + w(F)$.
     
@@ -636,7 +628,7 @@ F_{x_i := 0} \vdash_{b - 1 + w(F)} \square \quad \text{into} \quad F \vdash_{b +
 \textbf{ }
 
 \begin{enumerate}
-    \item[e)] If in $F_{x_i := 0} \vdash \square$, we used the \textbf{resolution rule}:
+    \item[] If in $F_{x_i := 0} \vdash \square$, we used the \textbf{resolution rule}:
     \[
     \frac{A \lor x_j \quad B \lor \neg x_j}{A \lor B}
     \]
@@ -648,22 +640,16 @@ F_{x_i := 0} \vdash_{b - 1 + w(F)} \square \quad \text{into} \quad F \vdash_{b +
     \frac{x_i \lor A \lor x_j \quad x_i \lor B \lor \neg x_j}{x_i \lor A \lor B}
     \]
 \end{enumerate}
+This concludes the claim. 
+\end{proof}
 
-
-
-\textbf{Conclusion:}  
 By the claim, we obtain a resolution derivation $\pi$ of $x_i$ from $F$  
 of width $b + w(F)$.
-
-
-\textbf{ }
-
 Now, we use $F \vdash_{b + w(F)} x_i$ on the clauses of $F$ to get rid (resolve)  
 all the literals $\neg x_i$ in $F$.  
 This is simple: derive $x_i$ from $F$, and then resolve $D \lor \neg x_i$ in $F$  
 by $x_i$ to get $D$.
-
-\textbf{Note} that this way we get a derivation of $F_{x_i := 1}$ from $F$, of width $b + w(F)$.  
+Note that this way we get a derivation of $F_{x_i := 1}$ from $F$, of width $b + w(F)$.  
 This is because $F_{x_i := 1}$ contains precisely all the clauses in $F$ that  
 contain neither $x_i$ nor $\neg x_i$ ($F_3$ above), and the clauses $D$  
 such that $x_i \lor D$ is in $F$ (i.e., $F_2$ above).  
@@ -674,14 +660,11 @@ By assumption,
 F_{x_i := 1} \vdash_{b + w(F)} \square,
 \]
 namely, after we derived $F_{x_i := 1}$ from $F$ with a resolution derivation of width $b + w(F)$,  
-we derive $\square$, and finish the proof of the theorem.
-
-
-
-
-
-\mbox{}
+we derive $\square$, and finish the proof of the lemma.
 \end{proof}
+
+
+ 
 %%%%%%%%%%%%%%%%%%%%%%%%%% Glueing Lemma end of Proof
 
 % 
@@ -1170,7 +1153,7 @@ Thus, the inequality holds for **constant \( c = 2 \)**. This proof **only used 
 % -----------------------------
 
 \section{Feasible Interpolation for Resolution Refutations}
-We describe a different way to obtain resolution refutation size lower bounds via the notion of \emph{Feasible Interpolation}. 
+Here we describe a different way to obtain resolution refutation size lower bounds via the notion of \emph{Feasible Interpolation}. 
 
 The idea is to take a short resolution refutation of a certain type of unsatisfiable formulas, and convert it to a Boolean circuit computing a certain function. If the function is hard for small Boolean circuits, then we could not have started from a short resolution refutation to begin with. In other words, \emph{there is no short resolution refutation of the unsatisfiable formula}.
 
@@ -1178,11 +1161,12 @@ The idea is to take a short resolution refutation of a certain type of unsatisfi
 \bigskip
 
 \begin{theorem}[Interpolation Theorem]
-Let \(\varphi(\mathbf{x},\mathbf{z})\) be a propositional formula over variables \(x_{1},\dots,x_{m}, z_{1},\dots,z_{m}\), and let \(\psi(\mathbf{y},\mathbf{z})\) be a propositional formula over variables \(y_{1},\dots,y_{m}, z_{1},\dots,z_{m}\). 
-Suppose that the only shared variables between \(\varphi\) and \(\psi\) are \(\mathbf{z}\). 
-Assume that 
+\label{thm:logical-interpolant-thm}
+Let \(\varphi(\overline{x},\overline{z})\) be a propositional formula over variables \(x_{1},\dots,x_{n}, z_{1},\dots,z_{m}\), and let \(\psi(\overline{y},\overline{z})\) be a propositional formula over variables \(y_{1},\dots,y_{\ell}, z_{1},\dots,z_{m}\). 
+Suppose that the only shared variables between \(\varphi\) and \(\psi\) are \(\overline{z}\). 
+Assume that the formula 
 \[
-\varphi(\mathbf{x},\mathbf{z}) \;\land\; \psi(\mathbf{y},\mathbf{z})
+\varphi(\overline{x},\overline{z}) \;\land\; \psi(\overline{y},\overline{z})
 \]
 is unsatisfiable.
 
@@ -1191,45 +1175,42 @@ Then there is a Boolean function
 I \colon \{0,1\}^m \;\to\;\{0,1\}
 \]
 called the \emph{interpolant} of \(\varphi\) and \(\psi\) such that
-\[
-\bigl(\varphi(\mathbf{x},\mathbf{z}) \;\land\; I(\mathbf{z})\bigr)
+\begin{equation}\label{eq:1178}
+\bigl(\varphi(\overline{x},\overline{z}) \;\land\; I(\overline{z})\bigr)
 \;\;\lor\;\;
-\bigl(\psi(\mathbf{y},\mathbf{z}) \;\land\;\neg I(\mathbf{z})\bigr)
-\]
+\bigl(\psi(\overline{y},\overline{z}) \;\land\;\neg I(\overline{z})\bigr)
+\end{equation}
 is unsatisfiable.
 \end{theorem}
-
-Illustration of the simple argument :
-
-\includegraphics{images/image020.png}
-\includegraphics{images/image019.png}
+% 
+% Illustration of the simple argument:
+% 
+% \includegraphics[scale=0.8]{images/image020.png}
+% \includegraphics[scale=0.5]{images/image019.png}
 
 
 
 \begin{proof}
-For every assignment \(\mathbf{c} \in \{0,1\}^m\), either \(\varphi(\mathbf{x}, \mathbf{c})\) is unsatisfiable or \(\psi(\mathbf{y}, \mathbf{c})\) is unsatisfiable (or both are unsatisfiable). 
-
- 
- 
-This is because if both \(\varphi(\mathbf{x},\mathbf{c})\) and \(\psi(\mathbf{y},\mathbf{c})\) are satisfiable, then we could combine these two assignments for \(\mathbf{x}\) and \(\mathbf{y}\) (noting that \(\mathbf{x}\) and \(\mathbf{y}\) are disjoint) to obtain a satisfying assignment for \(\varphi \wedge \psi\). Hence \(\varphi \wedge \psi\) would not be unsatisfiable, contradicting our assumption.
+For every assignment \(\overline{c} \in \{0,1\}^m\), either \(\varphi(\overline{x}, \overline{c})\) is unsatisfiable or \(\psi(\overline{y}, \overline{c})\) is unsatisfiable (or both are unsatisfiable). 
+This is because if both \(\varphi(\overline{x},\overline{c})\) and \(\psi(\overline{y},\overline{c})\) are satisfiable, then we could combine these two assignments for \(\overline{x}\) and \(\overline{y}\) (noting that \(\overline{x}\) and \(\overline{y}\) are disjoint) to obtain a satisfying assignment for \(\varphi \wedge \psi\). Hence \(\varphi \wedge \psi\) would not be unsatisfiable, contradicting our assumption.
 
 \begin{enumerate}[label=\textbf{(\alph*)}]
-    \item \textbf{Case 1:} \(\varphi(\mathbf{x},\mathbf{c})\) is satisfiable, which implies \(\psi(\mathbf{y},\mathbf{c})\) must be unsatisfiable. 
+    \item \textbf{Case 1:} \(\varphi(\overline{x},\overline{c})\) is satisfiable, which implies \(\psi(\overline{y},\overline{c})\) must be unsatisfiable. 
 
-    We define \( I(\mathbf{c}) := 0\). Then observe that
+    We define \( I(\overline{c}) := 0\). Then observe that
     \[
-      \bigl(\underbrace{\overbrace{\varphi(\mathbf{x},\mathbf{c})}^{\rm satisfiable} \;\land\; \underbrace{I(\mathbf{c})}_{0}}_0\bigr)
+      \bigl(\underbrace{\overbrace{\varphi(\overline{x},\overline{c})}^{\rm satisfiable} \;\land\; \underbrace{I(\overline{c})}_{0}}_0\bigr)
       \;\;\lor\;\;
-      \bigl(\overbrace{\psi(\mathbf{y},\mathbf{c}) }^{\rm unsatisfiable}\;\land\;\underbrace{\neg I(\mathbf{c})}_1\bigr)
+      \bigl(\overbrace{\psi(\overline{y},\overline{c}) }^{\rm unsatisfiable}\;\land\;\underbrace{\neg I(\overline{c})}_1\bigr)
     \]
     is unsatisfiable. 
     %(1)
 
-    \item \textbf{Case 2:} Otherwise, \(\varphi(\mathbf{x},\mathbf{c})\) is unsatisfiable. We then set \(I(\mathbf{c}) := 1\). Hence
+    \item \textbf{Case 2:} Otherwise, \(\varphi(\overline{x},\overline{c})\) is unsatisfiable. We then set \(I(\overline{c}) := 1\). Hence
     \[
-      \bigl(\varphi(\mathbf{x},\mathbf{c}) \;\land\; I(\mathbf{c})\bigr)
+      \bigl(\varphi(\overline{x},\overline{c}) \;\land\; I(\overline{c})\bigr)
       \;\;\lor\;\;
-      \bigl(\psi(\mathbf{y},\mathbf{c}) \;\land\;\neg I(\mathbf{c})\bigr)
+      \bigl(\psi(\overline{y},\overline{c}) \;\land\;\neg I(\overline{c})\bigr)
     \]
     is unsatisfiable.
 
@@ -1239,75 +1220,84 @@ This is because if both \(\varphi(\mathbf{x},\mathbf{c})\) and \(\psi(\mathbf{y}
 Therefore, \(I\) is well-defined completing the construction of the interpolant.
 \end{proof}
 
+The following corollary stems immediately from the fact that  formula \eqref{eq:1178} is unsatisfiable.
+\begin{corollary} \label{cor:simple-interpolation-cor}
+The interpolant in \Cref{thm:logical-interpolant-thm} has the following properties:
+
+ If \(I_n(\overline{z}) = 1\), then \(\varphi_n(\overline{x},\overline{z})\) is unsatisfiable;
+
+ If \(I_n(\overline{z}) = 0\), then \(\psi_n(\overline{y},\overline{z})\) is unsatisfiable.
+\end{corollary}
 
 \begin{theorem}
-[Interpolation Theorem for Resolution]
+[Feasible Interpolation Theorem for Resolution]
 \label{thm:interpolation-circuit}
 In the setting of the previous theorem, suppose 
-\(\varphi(\mathbf{x},\mathbf{z}) \wedge \psi(\mathbf{y},\mathbf{z})\) 
+\(\varphi(\overline{x},\overline{z}) \wedge \psi(\overline{y},\overline{z})\) 
 admits a resolution refutation of size \(s\). Then there is an interpolant function 
 \[
 I \colon \{0,1\}^m \to \{0,1\}
 \]
 that can be computed by a Boolean circuit of size \(O(s^2)\).
 
-Furthermore, if the variables \(\mathbf{z}\) appear all in \emph{positive} form in 
-\(\psi(\mathbf{y},\mathbf{z})\), then the above circuit is \emph{monotone}. 
-Similarly, if all \(\mathbf{x}\) variables in \(\varphi(\mathbf{x},\mathbf{z})\) 
+Furthermore, if the variables \(\overline{z}\) appear all in \emph{positive} form in 
+\(\psi(\overline{y},\overline{z})\), then the above circuit is \emph{monotone}. 
+Similarly, if all \(\overline{x}\) variables in \(\varphi(\overline{x},\overline{z})\) 
 appear in \emph{negative} form, the resulting circuit is also monotone.
 \end{theorem}
 
-Applying this theorem to derive a resolution refutation lower bound is now straightforward, as we can argue that any short resolution refutation would yield a small circuit for a function believed to be hard, leading to a contradiction.
+Applying this theorem to derive a resolution refutation lower bound is now quite easy to attain, as we can argue that any short resolution refutation would yield a small circuit for a function known to hard for monotone circuits, leading to a contradiction.
 
-\begin{theorem}[Lower bounds on resolution refutations of the CLIQUE--COLOURING principle]\label{thm:interpolation-lower-bound}
-Let us define the following unsatisfiable CNF formulas \(\varphi_n(\mathbf{x},\mathbf{z})\) and \(\psi_n(\mathbf{y},\mathbf{z})\). Intuitively,
+\sloppy 
+
+\begin{theorem}[Lower bounds on resolution refutations of the Clique--Colouring principle]\label{thm:interpolation-lower-bound}
+Let us define the following unsatisfiable CNF formulas \(\varphi_n(\overline{x},\overline{z})\) and \(\psi_n(\overline{y},\overline{z})\). Intuitively, let
 \[
-\varphi_n(\mathbf{x},\mathbf{z}) = 1 \quad\text{iff}\quad \mathbf{x} \text{ encodes a }\sqrt[4]{n}\text{-clique in the graph on }n\text{ nodes represented by }\mathbf{z}.
+\varphi_n(\overline{x},\overline{z}) = 1 \quad\text{iff}\quad \overline{x} \text{ encodes a }\sqrt[4]{n}\text{-clique in the graph on }n\text{ nodes represented by }\overline{z}.
 \]
 \[
-\psi_n(\mathbf{y},\mathbf{z}) = 1 \quad\text{iff}\quad \mathbf{y} \text{ encodes a }(\sqrt[4]{n}-1)\text{-colouring of that same graph.}
+\psi_n(\overline{y},\overline{z}) = 1 \quad\text{iff}\quad \overline{y} \text{ encodes a }(\sqrt[4]{n}-1)\text{-colouring of that same graph represented by $\overline{z}$.}
 \]
-Then 
+Then,
 \[
-\varphi_n(\mathbf{x},\mathbf{z}) \;\wedge\; \psi_n(\mathbf{y},\mathbf{z})
+\varphi_n(\overline{x},\overline{z}) \;\wedge\; \psi_n(\overline{y},\overline{z})
 \]
 is unsatisfiable, and the smallest resolution refutation of \(\varphi_n \wedge \psi_n\) has size at least
 \[
-2^{\,c\sqrt[8]{n}}
+2^{\,c\cd\sqrt[8]{n}}
 \]
 for some constant \(c>0\).
 \end{theorem}
 
 \medskip
 \noindent
-\textbf{Note:} Indeed, \(\varphi_n \wedge \psi_n\) is unsatisfiable because no graph on \(n\) nodes can simultaneously contain a \(\sqrt[4]{n}\)-clique and admit a \((\sqrt[4]{n}-1)\)-colouring.
+\textbf{Note:} Indeed, \(\varphi_n \wedge \psi_n\) is unsatisfiable because no graph on \(n\) nodes can simultaneously contain a \(\sqrt[4]{n}\)-clique and admit a \((\sqrt[4]{n}-1)\)-colouring. 
 
 \medskip
 
 To be precise, we now show how to encode 
-$ \varphi_n(\mathbf{x},\mathbf{z}) \;\wedge\; \psi_n(\mathbf{y},\mathbf{z})$ formally, with a CNF of total size \(O(n^2)\) size, ensuring that all \(\mathbf{z}\) variables appear \emph{positively} in \(\varphi_n\) and \emph{negatively} in \(\psi_n\).
+$ \varphi_n(\overline{x},\overline{z}) \;\wedge\; \psi_n(\overline{y},\overline{z})$ formally, with a CNF of  \(O(n^2)\) size, ensuring that all \(\overline{z}\) variables appear \emph{positively} in \(\varphi_n\) and \emph{negatively} in \(\psi_n\).
 This formulation is taken from Raz-Tzameret \cite{RT07}. 
 
 
 
 
 Let $G=(V,E)$ be an undirected graph with $n$ vertices and let $k'<k$ be
-two integers.
-Then, one of the following must hold:
+two integers. Then the graph $G$ cannot be an \emph{extreme graph} as in \Cref{sec:Razborov}, which is simultaneously a positive and negative input to the ${\rm Clique}(n,k)$ problem. In other words, one of the following must hold:
 \begin{description}
 \item[(i)] The graph $G$ does not contain a \emph{clique with $k$ vertices};
 
 \item[(ii)] The graph $G$ is not a \emph{complete $k'$-partite graph}.
-In other words, there is no way to partition $G$ into $k'$ subgraphs
+Namely, there is no way to partition $G$ into $k'$ subgraphs
 $G_1\dots G_{k'}$,
-such that every $G_i$ is an independent set, and for all $i\ne j \in[k']$,
+such that each $G_i$ is an independent set, and for all $i\ne j \in[k']$,
 all the vertices in $G_i$ are connected by edges (in $E$) to all the vertices in $G_j$.
 \end{description}
 
 Obviously, if Item (ii) above is false
 (that is, if $G$ is a complete $k'$-partite graph),
 then there exists a $k'$-coloring of
-the vertices of $G$; hence the name \emph{clique-coloring} for the principle.
+the vertices of $G$; hence the name \emph{clique-coloring} for the principle. 
 
 The propositional formulation of the (negation of the)
 clique-coloring principle is as follows.
@@ -1325,7 +1315,7 @@ pertains to the independent set $G_\ell$.
 The negation of the clique-coloring principle consists of the following
 unsatisfiable collection of clauses:
 
-$\varphi_n(\mathbf{x,z})$:
+\underline{$\varphi_n(\mathbf{x,z})$}:
 \renewcommand{\theenumi}{\roman{enumi}}   % change temporarily to Roman items
 \begin{enumerate}
 \item $x_{\ell,1}\lor\dots\lor x_{\ell,n}, \mbox{ for all } \ell\in[k]$
@@ -1353,7 +1343,7 @@ then there is an edge in $G$ between $i$ and $j$).
 \label{eq-clique-p-and-q-vars}%\vspace{-6pt}
 \end{enumerate}
 
-$\psi_n(\mathbf{y},\mathbf{z})$:
+\underline{$\psi_n(\overline{y},\overline{z})$}:
 
 \begin{enumerate}
 
@@ -1381,8 +1371,8 @@ $i$ and $j$ cannot be in the same independent set);
 
 
 \begin{proof}[of \Cref{thm:interpolation-lower-bound}]
-By the feasible interpolation theorem, if there exists a resolution refutation of 
-\(\varphi_n(\mathbf{x},\mathbf{z}) \;\wedge\; \psi_n(\mathbf{y},\mathbf{z})\)
+By the feasible interpolation \Cref{thm:interpolation-circuit}, if there exists a resolution refutation of 
+\(\varphi_n(\overline{x},\overline{z}) \;\wedge\; \psi_n(\overline{y},\overline{z})\)
 of size smaller than \(2^{c\sqrt[8]{n}}\) (for sufficiently small \(c\)), then there is an interpolant 
 \[
 I_n : \{0,1\}^{n \choose 2} \;\longrightarrow\; \{0,1\}
@@ -1390,84 +1380,78 @@ I_n : \{0,1\}^{n \choose 2} \;\longrightarrow\; \{0,1\}
 for \(\varphi_n \wedge \psi_n\) that can be computed by a \emph{monotone} circuit of size less than \(2^{2\,c\sqrt[8]{n}}\).
 
 But this interpolant \(I_n\) then decides the function 
-\(\textsc{CLIQUE}(n,\sqrt[4]{n})\), thus contradicting the monotone circuit lower bound we proved earlier!
+\(\textsc{CLIQUE}(n,\sqrt[4]{n})\), thus contradicting the monotone circuit lower bound we proved in \Cref{sec:Razborov}!
 
 \medskip
 
 \noindent
 \textbf{Why does \(I_n\) compute \(\textsc{CLIQUE}(n,\sqrt{n})\)?}
-Consider the ``extreme'' positive or negative assignments to \(\mathbf{z}\). By definition:
+Consider the extreme positive or negative input graphs to \(\overline{z}\). By \Cref{cor:simple-interpolation-cor}:
 \begin{enumerate}[label=\textbf{(\alph*)}]
-    \item If \(I_n(\mathbf{z}) = 1\), then \(\varphi_n(\mathbf{x},\mathbf{z})\) is unsatisfiable.
-    \item If \(I_n(\mathbf{z}) = 0\), then \(\varphi_n(\mathbf{x},\mathbf{z})\) is satisfiable, which forces \(\psi_n(\mathbf{y},\mathbf{z})\) to be unsatisfiable.
+    \item If \(I_n(\overline{z}) = 1\), then \(\varphi_n(\overline{x},\overline{z})\) is unsatisfiable;
+    \item If \(I_n(\overline{z}) = 0\), then \(\psi_n(\overline{y},\overline{z})\) is unsatisfiable.
 \end{enumerate}
 
-Thus, for \(\mathbf{z}\) that encodes either a \(\sqrt[4]{n}\)-clique or a \((\sqrt[4]{n}-1)\)-colouring in the underlying graph,
+Thus, for \(\overline{z}\in\bits^n\) that encodes either a \(\sqrt[4]{n}\)-clique or a \((\sqrt[4]{n}-1)\)-colouring in the underlying graph, namely, $\overline{z}$ comes from the class of extreme graphs, we have the following:
 \[
-I_n(\mathbf{z}) = 
+I_n(\overline{z}) = 
 \begin{cases}
-1, & \text{if }\mathbf{z}\text{ encodes a }(\sqrt[4]{n}-1)\text{-colouring},\\
-0, & \text{if }\mathbf{z}\text{ encodes a }\sqrt[4]{n}\text{-clique}.
+1, & \text{if }\overline{z}\text{ encodes a }(\sqrt[4]{n}-1)\text{-colouring},\\
+0, & \text{if }\overline{z}\text{ encodes a }\sqrt[4]{n}\text{-clique}.
 \end{cases}
 \]
-Hence \(I_n\) distinguishes between \(\sqrt[4]{n}\)-cliques and \((\sqrt[4]{n}-1)\)-colourings, which is exactly the \(\textsc{CLIQUE}(n,\sqrt{n})\) function, contradicting the known monotone circuit lower bound. 
+Hence \(I_n\) distinguishes between \(\sqrt[4]{n}\)-cliques and \((\sqrt[4]{n}-1)\)-colourings, which is exactly the function we showed in \Cref{sec:Razborov} to require size $2^{\Omega(\sqrt[8]{n})}$. 
 \end{proof}
 
 \bigskip 
 
 
 \begin{proof}[of \Cref{thm:interpolation-circuit}]
-Given an assignment \(\mathbf{c} \in \{0,1\}^m\), we explain how to compute \(I(\mathbf{c})\) by transforming a size-\(s\) resolution refutation of
+Given an assignment \(\overline{c} \in \{0,1\}^m\), we explain how to compute \(I(\overline{c})\) by transforming a size-\(s\) resolution refutation of
 \[
-\varphi(\mathbf{x},\mathbf{z}) \;\wedge\; \psi(\mathbf{y},\mathbf{z})
+\varphi(\overline{x},\overline{z}) \;\wedge\; \psi(\overline{y},\overline{z})
 \]
-into a refutation of either \(\varphi(\mathbf{x}, \mathbf{c})\) (meaning \(\varphi(\mathbf{x}, \mathbf{c})\) is unsatisfiable, so \(I(\mathbf{c}) = 1\)) or \(\psi(\mathbf{y}, \mathbf{c})\) (meaning \(I(\mathbf{c}) = 0\)). We accomplish this in time \(O(s^2)\).
+into a refutation of either \(\varphi(\overline{x}, \overline{c})\) (meaning \(\varphi(\overline{x}, \overline{c})\) is unsatisfiable, so \(I(\overline{c}) = 1\)) or \(\psi(\overline{y}, \overline{c})\) (meaning \(I(\overline{c}) = 0\)). We accomplish this in time \(O(s^2)\).
 Since this algorithm is computed in time $O(s^2)$ there is also a Boolean circuit, that by inspection of the algorithm is also a monotone one. 
 
 
 
 \paragraph{Size of the new refutation}
-The resulting refutation has size \(O(s)\). Concretely, we take the original resolution refutation and, using the assignment \(\mathbf{c}\), \emph{discard} all \(\mathbf{z}\) variables from every clause in the proof. By doing so, we obtain a refutation of
+The resulting refutation has size \(O(s)\). Concretely, we take the original resolution refutation and, using the assignment \(\overline{c}\), \emph{discard} all \(\overline{z}\) variables from every clause in the proof. By doing so, we obtain a refutation of
 \[
-\varphi(\mathbf{x},\mathbf{c}) \;\wedge\; \psi(\mathbf{y},\mathbf{c}),
-\]
-which must end in a contradiction.
+\varphi(\overline{x},\overline{c}) \;\wedge\; \psi(\overline{y},\overline{c}).\]
+%(which must end in a contradiction).
 
 \paragraph{Maintaining the structure}
 We ensure that each clause in the modified refutation:
 \begin{enumerate}
 \item 
-  contains \emph{only} \(\mathbf{x}\)-variables or \emph{only} \(\mathbf{y}\)-variables; and 
+  contains \emph{only} \(\overline{x}\)-variables or \emph{only} \(\overline{y}\)-variables; and 
 
 \item  is derived correctly from previous (already modified) clauses, or is an axiom; and
 
-\item we do not remove $\overline x$-variables 
- from $\overline x$-clauses and  
-we do not remove $\overline y$-variables 
- from $\overline y$-clauses.
+\item we do not remove $\overline{x}$-variables 
+ from $\overline{x}$-clauses and  
+we do not remove $\overline{y}$-variables 
+ from $\overline{y}$-clauses.
  
 \end{enumerate}
 
 Symbolically, we map every original clause
 \[
-C_i \quad\longmapsto\quad \widetilde{C_i},
+C_i \quad\longmapsto\quad {\widetilde{C_i}},
 \]
-where \(\widetilde C_i\) is the version of \(C_i\) with all \(\mathbf{z}\) variables removed, leaving either only \(\mathbf{x}\) or only \(\mathbf{y}\).
+where \(\widetilde C_i\) is the version of \(C_i\) with all \(\overline{z}\) variables removed, leaving either only \(\overline{x}\) or only \(\overline{y}\).
 
 \paragraph{Conclusion}
-Since the final line \(\widetilde C_m\) in the refutation is false (denoted by \(\Box\)), and by induction statement is derived correctly from previous clauses, we derive a contradiction in either \(\varphi(\mathbf{x}, \mathbf{c})\) or \(\psi(\mathbf{y}, \mathbf{c})\). 
+Since the final line \(\widetilde C_m\) in the refutation is false (denoted by \(\Box\)), and by induction statement is derived correctly from previous clauses, we derive a contradiction in either \(\varphi(\overline{x}, \overline{c})\) or \(\psi(\overline{y}, \overline{c})\). 
 
 
-
-
-
-
-
-\paragraph{Inductive Argument on Resolution Refutation Length.}
+\paragraph{Inductive Argument on Resolution Refutation Length}
 
 \noindent
 \textbf{Base Case:} 
-Every axiom clause in \(\varphi(\overline{x}, \overline{c})\) or \(\psi(\overline{y}, \overline{c})\) is already an \(\overline{x}\)-clause or a \(\overline{y}\)-clause (i.e., it contains only \(\overline{x}\) variables or only \(\overline{y}\) variables).
+Every axiom clause in \(\varphi(\overline{x}, \overline{c})\) or \(\psi(\overline{y}, \overline{c})\) is already an \(\overline{x}\)-clause or a \(\overline{y}\)-clause (i.e., it contains only \(\overline{x}\) variables or only \(\overline{y}\) variables, because $\overline c$ is a constant assignment).
 
 \medskip
 
@@ -1483,18 +1467,18 @@ C' \;=\; w \;\lor\; C
 \quad\quad\text{and}\quad\quad
 D' \;=\; \neg w \;\lor\; D
 \]
-by a resolution step.
+by a resolution rule application.
 By the induction hypothesis, we already have transformed versions \(\widetilde{C'}, \widetilde{D'}\), each of which is either an \(\overline{x}\)-clause or a \(\overline{y}\)-clause. We consider three cases:
 
 \begin{description}
 \item[Case 1:] 
-\(\widetilde{C'}, \widetilde{D'}\) are both \(\overline{x}\)-clauses. Then \(w\) must be an \(\overline{x}\)-variable common to both (because we maintain the invariant that we do not remove $\overline x$-variables from $\overline x$-clauses or $\overline y$-variables from $\overline y$-clauses). We thus apply the usual resolution rule on \(\widetilde{C'}, \widetilde{D'}\).
+\(\widetilde{C'}, \widetilde{D'}\) are both \(\overline{x}\)-clauses. Then \(w\) must be an \(\overline{x}\)-variable common to both (because we maintain the invariant that we do not remove $\overline x$-variables from $\overline x$-clauses, and $\overline y$-variables from $\overline y$-clauses). We thus apply the usual resolution rule on \(\widetilde{C'}, \widetilde{D'}\).
 
 \item[Case 2:]
 \(\widetilde{C'}, \widetilde{D'}\) are both \(\overline{y}\)-clauses. This is analogous to Case 1, but with a \(\overline{y}\)-variable \(w\).
 
 \item[Case 3:]
-\(\widetilde{C'}\) is an \(\overline{x}\)-clause, whereas \(\widetilde{D'}\) is a \(\overline{y}\)-clause, or vice versa. In this scenario, \(w\) must be a \(\overline{z}\)-variable. According to the assignment \(\overline{c}\), we fix the value of \(w\) (it cannot be in \(\overline{x}\) or \(\overline{y}\), so it must be in \(\overline{z}\)). If \(w = 0\), we  define \(\widetilde{C_j} := \widetilde{C'}\). 
+\(\widetilde{C'}\) is an \(\overline{x}\)-clause, whereas \(\widetilde{D'}\) is a \(\overline{y}\)-clause, or vice versa. In this scenario, \(w\) must be a \(\overline{z}\)-variable. According to the assignment \(\overline{c}\), we fix the value of \(w\) (it cannot be in \(\overline{x}\) or \(\overline{y}\), so it must be in \(\overline{z}\)). If \(w = 0\), we  set \(\widetilde{C_j} := \widetilde{C'}\). 
 If \(w = 1\), we set \(\widetilde{C_j} := \widetilde{D'}\).
 
 
@@ -1512,16 +1496,16 @@ If \(w = 1\), we set \(\widetilde{C_j} := \widetilde{D'}\).
 
 
 \medskip
-Note that the last line \(C_m\) of the original resolution refutation is \(\Box\) (i.e.\ false). Hence in our new refutation (possibly ending earlier than the \(m\)-th clause), we must also reach \(\Box\). Starting from the axioms, we obtain a refutation of either \(\varphi(\overline{x},\overline{c})\) or \(\psi(\overline{y},\overline{c})\). 
+Note that the last line  of the original resolution refutation is \(\Box\) (i.e.\ false). Hence in our new refutation (possibly ending earlier than the last clause of the original refutation), we must also reach \(\Box\). Starting from the axioms, we obtain a refutation of either \(\varphi(\overline{x},\overline{c})\) or \(\psi(\overline{y},\overline{c})\). 
 Thus, the proof concludes with the desired contradiction in one of these formulas. 
 
 
 \bigskip 
 
-To prove that the same algorithm can be implemented with a \emph{monotone} circuit in case the $\overline z$-variables all appear positive in $\psi$ or they all appear negative in $\varphi$, we notice the following:\ For every index \(j\), let \(d_j(\mathbf{c}) = 0\) if the \(j\)-th clause \(\widetilde{C_j}\) in the modified refutation can be derived using only the \(\mathbf{y}\) variables. It is possible to show that 
- each \(d_j(\mathbf{c})\) can be computed by a monotone circuit of size \(O(s^2)\) in the variables \(\mathbf{c}\).
+To prove that the same algorithm can be implemented with a \emph{monotone} circuit in case the $\overline z$-variables all appear positive in $\psi$ or they all appear negative in $\varphi$, we notice the following:\ For every index \(j\), let \(d_j(\overline{c}) = 0\) if the \(j\)-th clause \(\widetilde{C_j}\) in the modified refutation can be derived using only the \(\overline{y}\) variables. It is possible to show that 
+ each \(d_j(\overline{c})\) can be computed by a monotone circuit of size \(O(s^2)\) in the variables \(\overline{c}\).
 
-Observe that \(I(\mathbf{c}) = d_m(\mathbf{c})\), namely $I(\mathbf c)$ is zero only if  $\psi(\mathbf y,\mathbf c)$ is unsatisfiable, and otherwise it is 1, as desired. 
+Observe that \(I(\overline{c}) = d_m(\overline{c})\), namely $I(\overline{c})$ is zero only if  $\psi(\overline y,\overline{c})$ is unsatisfiable, and otherwise it is 1, as desired. 
 \end{proof}
 
 
